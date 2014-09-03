@@ -49,13 +49,15 @@ body {
 
     article {
       margin: 1em auto;
-      padding: 1em;
+      padding: 1em 0;
+
       background-color: #444;
 
       @media screen and (max-width: 20rem) {
         width: 95%;
       }
       @media screen and (min-width: 20.063rem) {
+        padding: 1em 1em;
         width: 90%;
       }
       @media screen and (min-width: 40em) {
@@ -79,6 +81,7 @@ body {
       }
 
       margin: 0 auto;
+      word-wrap: break-word;
     }
     code {
       line-height: 150%;
@@ -111,6 +114,12 @@ body {
       code {
         display: inline;
         padding: 0;
+      }
+    }
+
+    pre {
+      code {
+        word-wrap: normal;
       }
     }
   }
