@@ -4,8 +4,6 @@ html {
   width: 100%;
   a {
     text-decoration: none;
-//    background-color: #fc0;
-//    color: #222;
     color: #fc0;
     padding:0.1em 0.2em;
     border-radius: 0.25em;
@@ -33,20 +31,12 @@ body {
 
     ul {
       display: flex;
+      display: -webkit-flex;
       margin: 0 auto;
       padding: 1em;
       justify-content: space-between;
+      -webkit-justify-content: space-between;
       list-style-type: none;
-
-//      @media screen and (max-width: 20rem) {
-//        width: 95%;
-//      }
-//      @media screen and (min-width: 20.063rem) {
-//        width: 90%;
-//      }
-//      @media screen and (min-width: 40em) {
-//        width: 36rem;
-//      }
     }
   }
 
