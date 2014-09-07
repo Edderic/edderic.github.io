@@ -120,6 +120,16 @@ body {
     pre {
       code {
         word-wrap: normal;
+        font-size: 0.5em;
+
+        @media screen and (min-width: 26.667rem) {
+          font-size: 0.6em;
+        }
+
+        @media screen and (min-width: 30rem) {
+          font-size: 0.7em;
+        }
+
       }
     }
   }
