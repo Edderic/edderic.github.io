@@ -1,6 +1,7 @@
 ---
 ---
 html {
+  height: 100%;
   width: 100%;
   a {
     text-decoration: none;
@@ -14,6 +15,7 @@ html {
 }
 
 body {
+  height: 100%;
   font: 300 21px Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: #333;
   color: #ddd;
@@ -93,10 +95,16 @@ body {
       overflow: scroll;
       padding: 0.5em;
 
-      .no {
-        color: olive;
+      .no, .nc {
+        color: rgb(255, 253, 158);
       }
-      .s2, .s1 {
+      .ss {
+        color: rgb(132, 122, 255);
+      }
+      .nf {
+        color: rgb(255, 231, 12);
+      }
+      .s2, .s1, .sx {
         color: #00FF40;
       }
       .si {
@@ -104,6 +112,12 @@ body {
       }
       .sr {
         color: #4169E1;
+      }
+      .k {
+        color: orange;
+      }
+      .kp {
+        color: #FFFC8F;
       }
     }
 
