@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Stubbing Multiple CarrierWave Buckets with Fog
+# Mocking Multiple CarrierWave Buckets with Fog
 
 At work, I came across the issue of having to deal with having multiple Amazon S3 buckets.
 Our file-uploading section of our `rails_helper` originally was like the following:
