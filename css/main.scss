@@ -58,6 +58,10 @@ body {
         font-size: 0.75em;
         margin: 1em 0;
       }
+
+      img {
+        background-color: white;
+      }
     }
     article {
       margin: 1em auto;
@@ -86,15 +90,23 @@ body {
       margin-left: 0.25em;
     }
 
-    p, code, h1 {
+    ul li {
+      width: 90%;
+    }
+
+    blockquote {
+      width: inherit;
+    }
+
+    p, code, h1, article, body {
       @media screen and (max-width: 20rem) {
         width: 93%;
       }
       @media screen and (min-width: 20.063rem) {
         width: 88%;
       }
-      @media screen and (min-width: 40em) {
-        width: 45rem;
+      @media screen and (min-width: 43em) {
+        width: 41rem;
       }
 
       margin: 0 auto;
