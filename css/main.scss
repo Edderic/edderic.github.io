@@ -15,7 +15,6 @@ html {
 }
 
 body {
-  height: 100%;
   font: 300 21px Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: #333;
   color: #ddd;
@@ -49,6 +48,17 @@ body {
     left: 0;
     width: 100%;
 
+    li {
+      margin: 1em;
+    }
+
+    figure {
+      text-align: center;
+      figcaption {
+        font-size: 0.75em;
+        margin: 1em 0;
+      }
+    }
     article {
       margin: 1em auto;
       padding: 1em 0;
@@ -69,6 +79,11 @@ body {
 
     h1 {
       padding-bottom: 0.5em;
+      text-align: center;
+    }
+
+    h2 {
+      margin-left: 0.25em;
     }
 
     p, code, h1 {
