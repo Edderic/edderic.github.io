@@ -96,6 +96,11 @@ body {
 
     blockquote {
       width: inherit;
+      margin: 0 1em;
+      p {
+        font-size: 0.8em;
+        font-style: oblique;
+      }
     }
 
     p, code, h1, article, body {
