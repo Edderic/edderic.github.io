@@ -25,14 +25,14 @@ the estimates:
 
 Time estimation is hard, and that is why agile project management software like
 Pivotal Tracker lets developers estimate *complexity* instead: stories
-estimated as "1" are easy, "2" as medium, etc. Pivotal Tracker calculates
+estimated as `1` are easy, `2` as medium, etc. Pivotal Tracker calculates
 *velocity* and *volatility*, which are useful in reporting to the business.
 Velocity is how fast the team is able to finish stories, taking into account
 the complexity, and averaged over time.  Volatility calculates how much the
 velocity has changed over time, which affects our confidence on the velocity.
 
-However, this system might be too simplistic. For example, 20 points made up of
-20 1-pointers might drastically be done faster than 10 2-pointers. In order to
+However, this system might be too simplistic. For example, `20` points made up of
+`20` `1`-pointers might drastically be done faster than `10` `2`-pointers. In order to
 test this hunch, I extracted the product development accepted stories (feature,
 bug, chore) and calculated the elapsed time between the time stories were
 started and the time stories were delivered, for the last six months. I came up
@@ -52,20 +52,20 @@ major outliers removed):
 </figcaption>
 </figure>
 
-Looking at the histograms of 1-point stories and 2-point stories verifies the
-intuition that a backlog that is dominated by two-point stories will probably
+Looking at the histograms of `1`-point stories and `2`-point stories verifies the
+intuition that a backlog that is dominated by `2`-point stories will probably
 take longer than a backlog that isn't, given that the total points are the same.
-The 2-point probability distribution has a significant amount of stories that take
-longer than 10 hours. Summing the probabilities from 11th hour to the end shows that
-there is about a 30% chance that a 2-point story will take longer than 10 hours.
-On the other hand, there is a 0% chance that a 1-point story will take longer than
+The `2`-point probability distribution has a significant amount of stories that take
+longer than `10` hours. Summing the probabilities from `11`th hour to the end shows that
+there is about a `30`% chance that a `2`-point story will take longer than `10` hours.
+On the other hand, there is a `0`% chance that a `1`-point story will take longer than
 ten hours, given this data without outliers.
 
 ## Computing the probability of how long milestones will take
 
 So how do we calculate our "confidence" in finishing a milestone, given that
-`X` amount of stories are estimated to be 1-point and `Y` amount of stories are
-estimated to be 2-points?
+`X` amount of stories are estimated to be `1`-point and `Y` amount of stories are
+estimated to be `2`-points?
 
 According to [Wikipedia](https://en.wikipedia.org/wiki/Convolution):
 
@@ -84,9 +84,9 @@ According to [Wikipedia](https://en.wikipedia.org/wiki/Convolution):
 The independent random variables we would like to consider, more explicitly, are
 that of times elapsed given a story estimate (one-point and two-points).
 
-For example, let's say a milestone has 5 1-pointers and 2 2-pointers. Let's
-represent the time-elapsed distribution over a 1-pointer as `A`, and let's
-represent the time-elapsed distribution over a 2-pointer as `B`. Thus, we could
+For example, let's say a milestone has `5` `1`-pointers and `2` `2`-pointers. Let's
+represent the time-elapsed distribution over a `1`-pointer as `A`, and let's
+represent the time-elapsed distribution over a `2`-pointer as `B`. Thus, we could
 get the `T` total distribution by convolving the distributions as follows:
 
 ```
@@ -95,6 +95,148 @@ B(t) * B(t)
 ```
 
 where `*` is the convolution operator.
+
+### What is convolution intuitively?
+
+Assume you have two arrays of numbers. Convolution is the process of sliding
+one array on top of the other, and multiplying the columns that line up with
+one another, and then summing the result of the multiplications. For example,
+let's say `A` is an array of `[1,2,3]` and `B` is an array of `[4,5,6]`.
+Notice that I flipped one of the signals (`B`) so that that the first indices
+are lined up:
+
+
+          [1, 2, 3]
+    [6, 5, 4]
+    ---------------
+           4
+
+          [1, 2, 3]
+       [6, 5, 4]
+    ---------------
+           5+8
+
+          [1, 2, 3]
+          [6, 5, 4]
+    ---------------
+           6+10+12
+
+          [1, 2, 3]
+             [6, 5, 4]
+    ---------------
+             12+15
+
+          [1, 2, 3]
+                [6, 5, 4]
+    ---------------
+                18
+
+The resulting array is the convolution: `[4, 13, 28, 27, 18]`
+
+### How is convolution related to probability?
+The following example is taken from this [link](http://www.dartmouth.edu/~chance/teaching_aids/books_articles/probability_book/Chapter7.pdf) Assume that you are rolling
+two fair dice.  What if we want to figure out the distribution of the
+totals (i.e. calculate the probability that the sum will be `2`, `3`, `4`, ...
+,`11`, `12`)?
+
+The probability of getting a sum of `2` is the probability of getting a `1` twice:
+
+    p(Sum = 2) = p(roll = 1) * p(roll = 1)
+               = 1/6 * 1/6
+               = 1/36
+
+The probability of getting a sum of `3` is the probability of rolling a `1` and `2`
+plus the probability of rolling a `2` and a `1`:
+
+    p(Sum = 3) = p(roll = 1) * p(roll = 2)
+                  + p(roll = 2) * p(roll = 1)
+               = 1/6 * 1/6 + 1/6 * 1/6
+               = 2/36
+               = 1/18
+
+The probability of getting a sum of `4` is the probability of rolling a `1` and `3`
+plus the probability of rolling a `2` and `2`, plus the probability of rolling a `3` and a `1`:
+
+    p(Sum = 4) = p(roll = 1) * p(roll = 3)
+                  + p(roll = 2) * p(roll = 2)
+                  + p(roll = 3) * p(roll = 1)
+               = 1/6 * 1/6 + 1/6 * 1/6 + 1/6 * 1/6
+               = 3/36
+               = 1/12
+
+We can represent this distribution of sums by convolution:
+
+                               roll   |  1   2   3   4   5   6  |
+                               ----------------------------------
+                                       [1/6  1/6  1/6  1/6  1/6  1/6 ]
+              [1/6  1/6  1/6  1/6  1/6  1/6 ]
+            ----------------------------------
+     roll   |   6    5    4    3    2    1  |
+
+    total                              1/36
+
+
+                          roll   |  1    2    3    4    5    6  |
+                                 --------------------------------
+                                  [1/6  1/6  1/6  1/6  1/6  1/6 ]
+              [1/6  1/6  1/6  1/6  1/6  1/6 ]
+            ----------------------------------
+     roll   |   6    5    4    3    2    1  |
+
+    total                         1/36+1/36
+
+
+                          roll   |  1   2   3   4   5   6  |
+                                 --------------------------------
+                                  [1/6  1/6  1/6  1/6  1/6  1/6 ]
+                   [1/6  1/6  1/6  1/6  1/6  1/6 ]
+                 ----------------------------------
+          roll   |   6    5    4    3    2    1  |
+
+    total                         1/36+1/36+1/36
+
+
+                          roll   |  1   2   3   4   5   6  |
+                                 ---------------------------
+                                  [1/6  1/6  1/6  1/6  1/6  1/6 ]
+                        [1/6  1/6  1/6  1/6  1/6  1/6 ]
+                      ----------------------------------
+               roll   |   6    5    4    3    2    1  |
+
+    total                         1/36+1/36+1/36+1/36
+
+etc.
+
+The distribution of sums is:
+
+ [`1/36`, `2/36`, `3/36`, `4/36`, `5/36`, `6/36`, `5/36`, `4/36`, `3/36`, `2/36`, `1/36`]
+
+for
+
+`p(total=2), p(total=3), ... ,p(total=11), p(total=12)`
+
+Let's get back to our idea of finding the probability of getting a number of stories
+that have variable estimates finished by a certain amount of time. So instead of
+convolving the probability distribution of rolling a dice with itself to get
+the probabilities of the sums, we will convolve the probability distributions
+of time elapsed (from starting a story to delivering a story) of stories
+estimated as `1`-pointers with the probability distributions of time elapsed of
+stories estimated as `2`-pointers.
+
+The number of convolutions we do will depend on the number of stories there are. So for
+example, let's say that the probability distribution of stories estimated as 1 is `A(t)`
+and the probability distributions of stories estimated as `2` is `B(t)`. If we have `3`
+`1`-pointer stories and `2` `2`-pointer stories, then we convolve as follows:
+
+    A(t) * A(t) * A(t) * B(t) * B(t)
+
+Once we have the total distribution of elapsed time, we can then answer the question
+of "What is the probability of getting `3` `1`-pointer stories and `2` `2`-pointer stories
+under `24` hours?" by adding the probabilities from `0` hours to `24` hours. Note that
+looking at the probability at the `24`th hour will only give you the probability that
+those stories going to get done *around* `24` hours, not *under*. So we'll make sure to add
+from the `0`th hour to the `X`th hour if we're trying to get the confidence level that
+stories will get done *under* `X` hours.
 
 ## Experiment
 
@@ -166,15 +308,15 @@ feelings agree with the total distribution.
 </figcaption>
 </figure>
 
-With regards to nine 1-pointers, 24 hours gives us a 95.7% probability, while
-48 and 72 hours give us 99.9%. One might think that the 24-hour estimate for
-nine 1-pointers might too optimistic. I'd argue that it makes sense since
-a large chunk, 35%, a little bit over a third, of 1-pointers took less than 30
+With regards to nine `1`-pointers, 24 hours gives us a `95.7`% probability, while
+`48` and `72` hours give us `99.9`%. One might think that the `24`-hour estimate for
+nine `1`-pointers might too optimistic. I'd argue that it makes sense since
+a large chunk, `35`%, a little bit over a third, of `1`-pointers took less than `30`
 minutes to complete.
 
 ### Five 1-pointers and Two 2-pointers
 
-Again let's use the example 5 1-pointers and 2 2-pointers.
+Again let's use the example `5` `1`-pointers and `2` `2`-pointers.
 
 
 <figure>
@@ -226,10 +368,10 @@ Again let's use the example 5 1-pointers and 2 2-pointers.
 </figcaption>
 </figure>
 
-According to my program, the team will be able to finish the milestone with 5
-1-point and 2 2-point stories with 49.5% confidence in 24 hours, 78.3% in 48
-hours, and 95.5% in 72 hours. It makes sense that the introduction of 2-pointers
-significantly lowered the confidence since 2-pointers have much more variability.
+According to my program, the team will be able to finish the milestone with `5`
+`1`-point and `2` `2`-point stories with `49.5`% confidence in `24` hours, `78.3`% in `48`
+hours, and `95.5`% in `72` hours. It makes sense that the introduction of `2`-pointers
+significantly lowered the confidence since `2`-pointers have much more variability.
 
 ### Four 2-pointers
 
@@ -261,11 +403,11 @@ significantly lowered the confidence since 2-pointers have much more variability
 </figcaption>
 </figure>
 
-24 hours gives us 26.7%. 48 hours gives us 55.6%. 72 hours gives us 80.5%.
-This is inline with our thinking -- that a milestone with 2-pointers probably
-will take longer to do than a milestone with 1-pointers, given equal total
-estimates. In this case, the milestone with 4 2-pointers is much more likely to
-take longer than 9 1-pointers, even though the total points assigned to the
+`24` hours gives us `26.7`%. `48` hours gives us `55.6`%. `72` hours gives us `80.5`%.
+This is inline with our thinking -- that a milestone with `2`-pointers probably
+will take longer to do than a milestone with `1`-pointers, given equal total
+estimates. In this case, the milestone with `4` `2`-pointers is much more likely to
+take longer than `9` `1`-pointers, even though the total points assigned to the
 former is less than the total points assigned to the latter.
 
 ## Conclusion
