@@ -14,52 +14,67 @@ Estimation is hard
 </figcaption>
 </figure>
 
- So many
-things can introduce variability into how long stories get done in relation to
-the estimates:
+So many things can introduce variability into how long stories get done in
+relation to the estimates:
 
-* unforeseen complications (i.e. it was harder than was previously thought).
+* unforeseen complications
 * someone who used to work on your backlog is pulled out and tasked to focus on a different project.
 * someone you need in order to keep moving on the story, is in a meeting with other people.
 * coworker takes paid time off.
 
+
+<figure>
+   <img class="blend-in" src="/images/pivotal-tracker.png" alt="Pivotal Tracker">
+<figcaption>
+Pivotal Tracker
+</figcaption>
+</figure>
+
 Time estimation is hard, and that is why agile project management software like
 Pivotal Tracker lets developers estimate *complexity* instead: stories
 estimated as `1` are easy, `2` as medium, etc. Pivotal Tracker calculates
-*velocity* and *volatility*, which are useful in reporting to the business.
-Velocity is how fast the team is able to finish stories, taking into account
-the complexity, and averaged over time.  Volatility calculates how much the
-velocity has changed over time, which affects our confidence on the velocity.
+*velocity*, which is how fast the team is able to finish stories, taking
+into account the complexity, averaged over time. With this calculation it makes
+a prediction as to how many stories can be done in one iteration or sprint.
 
 However, this system might be too simplistic. For example, `20` points made up of
 `20` `1`-pointers might drastically be done faster than `10` `2`-pointers. In order to
 test this hunch, I extracted the product development accepted stories (feature,
 bug, chore) and calculated the elapsed time between the time stories were
 started and the time stories were delivered, for the last six months. I came up
-with the following probability distributions (binned to the nearest hour, with
-major outliers removed):
-
+with the following probability distributions (rounded to the nearest hour,
+assuming a `40`-hour workweek, with major outliers removed):
 
 <figure>
    <img src="/images/1-point-distribution-over-time.png" alt="1-point distribution">
 <figcaption>
+  Probability Distribution of One-Pointers over Time
 </figcaption>
 </figure>
 
 <figure>
    <img src="/images/2-point-distribution-over-time.png" alt="2-point distribution">
 <figcaption>
+  Probability Distribution of Two-Pointers over Time
 </figcaption>
 </figure>
 
 Looking at the histograms of `1`-point stories and `2`-point stories verifies the
 intuition that a backlog that is dominated by `2`-point stories will probably
 take longer than a backlog that isn't, given that the total points are the same.
-The `2`-point probability distribution has a significant amount of stories that take
-longer than `10` hours. Summing the probabilities from `11`th hour to the end shows that
-there is about a `30`% chance that a `2`-point story will take longer than `10` hours.
-On the other hand, there is a `0`% chance that a `1`-point story will take longer than
-ten hours, given this data without outliers.
+`2`-pointers have a *lot* more variability than `1`-pointers, even with outliers
+removed.
+
+In this article, I use a technique that accounts for variability in the
+distributions of stories estimated as `1`-point and `2`-points over the time
+taken to finish those stories. My hope is that when a project manager asks
+us how confident we are that we will finish a number of stories by `X` date, we
+could:
+
+* give them a sound answer that is firmly rooted in data to guide our intuition.
+* augment the existing project management tools so that we could give more reliable
+  estimates.
+
 
 ## Computing the probability of how long milestones will take
 
@@ -90,11 +105,11 @@ represent the time-elapsed distribution over a `2`-pointer as `B`. Thus, we coul
 get the `T` total distribution by convolving the distributions as follows:
 
 ```
-T(t) = A(t) * A(t) * A(t) * A(t) * A(t) *
-B(t) * B(t)
+T(t) = A(t) ∗ A(t) ∗ A(t) ∗ A(t) ∗ A(t) ∗
+B(t) ∗ B(t)
 ```
 
-where `*` is the convolution operator.
+where `∗` is the convolution operator.
 
 ### What is convolution intuitively?
 
@@ -228,7 +243,7 @@ example, let's say that the probability distribution of stories estimated as 1 i
 and the probability distributions of stories estimated as `2` is `B(t)`. If we have `3`
 `1`-pointer stories and `2` `2`-pointer stories, then we convolve as follows:
 
-    A(t) * A(t) * A(t) * B(t) * B(t)
+    A(t) ∗ A(t) ∗ A(t) ∗ B(t) ∗ B(t)
 
 Once we have the total distribution of elapsed time, we can then answer the question
 of "What is the probability of getting `3` `1`-pointer stories and `2` `2`-pointer stories
@@ -240,175 +255,196 @@ stories will get done *under* `X` hours.
 
 ## Experiment
 
-Let's derive the total distribution iteratively and see whether our gut
-feelings agree with the total distribution.
+In the following experiments I consider two extreme cases -- where all the
+points are strictly made up of one type (either by `2`-pointers or `1`-pointers). I
+also consider the case where there is a mix of types. I aim to keep the total
+number of points about the same to more properly observe the effect of just
+changing the story estimates on the time that it takes to finish the stories.
+
+Note that the titles of the probability distributions plots with
+area-under-the-curve shaded assume a *sequential* total of hours (i.e. only one
+stream of development is happening at once). If it says there is an `X%` chance
+that a set of tasks will get done by `24` hours, this only assumes that one
+developer or one pair is working on finishing stories one by one.
+
+A divide-and-conquer strategy will be discussed below for projects that are
+parallelizable.
 
 ### Nine 1-pointers
 
 <figure>
-   <img src="/images/one-1-point.png" alt="Original 1-point">
+   <img src="/images/nine-1-pointers-convolution.gif" alt="Convolution of 9 1-pointers">
 <figcaption>
-  Original 1-point time-elapsed distribution
+  Convolution of Nine 1-Pointers
 </figcaption>
 </figure>
 
 <figure>
-   <img src="/images/1-point-convolved-with-itself.png" alt="One-point convolved with itself">
+   <img src="/images/1-point-conv-wself-8-prob-under-hrs-8.png" alt="Probability of getting Nine 1-Pointers done under One Day">
 <figcaption>
-  A(t) * A(t)
+  Probability of getting Nine 1-Pointers done under One Day
 </figcaption>
 </figure>
 
 <figure>
-   <img src="/images/1-point-convolved-with-itself-twice.png" alt="One-point convolved with itselftwice">
+   <img src="/images/1-point-conv-wself-8-prob-under-hrs-16.png" alt="Probability of getting Nine 1-Pointers done under Two Days">
 <figcaption>
-  A(t) * A(t) * A(t)
+  Probability of getting Nine 1-Pointers done under Two Days
 </figcaption>
 </figure>
 
 <figure>
-   <img src="/images/1-point-convolved-with-itself-thrice.png" alt="One-point convolved with itself thrice">
+   <img src="/images/1-point-conv-wself-8-prob-under-hrs-24.png" alt="Probability of getting Nine 1-Pointers done under Three Days">
 <figcaption>
-  A(t) * A(t) * A(t) * A(t)
+  Probability of getting Nine 1-Pointers done under Three Days
 </figcaption>
 </figure>
 
-<figure>
-   <img src="/images/1-point-convolved-with-itself-four-times.png" alt="One-point convolved with itself four times">
-<figcaption>
-  A(t) * A(t) * A(t) * A(t) * A(t)
-</figcaption>
-</figure>
-
-<figure>
-   <img src="/images/1-point-convolved-with-itself-five-times.png" alt="One-point convolved with itself five times">
-<figcaption>
-  A(t) * A(t) * A(t) * A(t) * A(t) * A(t)
-</figcaption>
-</figure>
-
-<figure>
-   <img src="/images/1-point-convolved-with-itself-six-times.png" alt="One-point convolved with itself six times">
-<figcaption>
-  A(t) * A(t) * A(t) * A(t) * A(t) * A(t) * A(t)
-</figcaption>
-</figure>
-
-<figure>
-   <img src="/images/1-point-convolved-with-itself-seven-times.png" alt="One-point convolved with itself seven times">
-<figcaption>
-  A(t) * A(t) * A(t) * A(t) * A(t) * A(t) * A(t) * A(t)
-</figcaption>
-</figure>
-
-<figure>
-   <img src="/images/1-point-convolved-with-itself-eight-times.png" alt="One-point convolved with itself eight times">
-<figcaption>
-  A(t) * A(t) * A(t) * A(t) * A(t) * A(t) * A(t) * A(t) * A(t)
-</figcaption>
-</figure>
-
-With regards to nine `1`-pointers, 24 hours gives us a `95.7`% probability, while
-`48` and `72` hours give us `99.9`%. One might think that the `24`-hour estimate for
-nine `1`-pointers might too optimistic. I'd argue that it makes sense since
-a large chunk, `35`%, a little bit over a third, of `1`-pointers took less than `30`
-minutes to complete.
+With regards to nine `1`-pointers, our model is not very confident (`17.6%`)
+that the tasks can be done in one work day. However it is very confident that
+it can be done under 2-3 work days (`87.7%` and `99.9%` respectively).
 
 ### Five 1-pointers and Two 2-pointers
 
-Again let's use the example `5` `1`-pointers and `2` `2`-pointers.
-
-
 <figure>
-   <img src="/images/one-1-point.png" alt="Original 1-point">
+   <img src="/images/five-1-pointers-two-2-pointers-convolution.gif" alt="Convolution of Five 1-pointers and Two 2-pointers">
 <figcaption>
-  Original 1-point time-elapsed distribution
+  Convolution of Five 1-pointers and Two 2-pointers
 </figcaption>
 </figure>
 
 <figure>
-   <img src="/images/1-point-convolved-with-itself.png" alt="One-point convolved with itself">
+   <img src="/images/1-point-conv-wself-5-2-point-conv-wself-1-prob-under-hrs-8.png" alt="Probability of getting Five 1-Pointers and Two 2-Pointers done under One Day">
 <figcaption>
-  A(t) * A(t)
+  Probability of getting Five 1-Pointers and Two 2-Pointers done under One Day
 </figcaption>
 </figure>
-
 <figure>
-   <img src="/images/1-point-convolved-with-itself-twice.png" alt="One-point convolved with itselftwice">
+   <img src="/images/1-point-conv-wself-5-2-point-conv-wself-1-prob-under-hrs-16.png" alt="Probability of getting Five 1-Pointers and Two 2-Pointers done under Two Days">
 <figcaption>
-  A(t) * A(t) * A(t)
+  Probability of getting Five 1-Pointers and Two 2-Pointers done under Two Days
 </figcaption>
 </figure>
-
 <figure>
-   <img src="/images/1-point-convolved-with-itself-thrice.png" alt="One-point convolved with itself thrice">
+   <img src="/images/1-point-conv-wself-5-2-point-conv-wself-1-prob-under-hrs-24.png" alt="Probability of getting Five 1-Pointers and Two 2-Pointers done under Three Days">
 <figcaption>
-  A(t) * A(t) * A(t) * A(t)
+  Probability of getting Five 1-Pointers and Two 2-Pointers done under Three Days
 </figcaption>
 </figure>
 
-<figure>
-   <img src="/images/1-point-convolved-with-itself-four-times.png" alt="One-point convolved with itself four times">
-<figcaption>
-  A(t) * A(t) * A(t) * A(t) * A(t)
-</figcaption>
-</figure>
-
-<figure>
-   <img src="/images/1-point-convolved-with-itself-four-times-then-convolved-with-2-point.png" alt="One-point convolved with itself four times then convolved with two-point">
-<figcaption>
-  A(t) * A(t) * A(t) * A(t) * A(t) * B(t)
-</figcaption>
-</figure>
-
-<figure>
-   <img src="/images/1-point-convolved-with-itself-four-times-then-convolved-with-2-point-twice.png" alt="One-point convolved with itself four times then convolved with two-point twice">
-<figcaption>
-  A(t) * A(t) * A(t) * A(t) * A(t) * B(t) * B(t)
-</figcaption>
-</figure>
-
-According to my program, the team will be able to finish the milestone with `5`
-`1`-point and `2` `2`-point stories with `49.5`% confidence in `24` hours, `78.3`% in `48`
-hours, and `95.5`% in `72` hours. It makes sense that the introduction of `2`-pointers
-significantly lowered the confidence since `2`-pointers have much more variability.
+According to my program, a developer (or two developers working as a pair) from
+my team will be able to finish the `5` `1`-point and `2` `2`-point stories with
+`12.0%` confidence in `8` working hours, `52.0%` in `16` working hours, and
+`84.7`% in `24` working hours. It makes sense that the introduction of
+`2`-pointers significantly lowered the confidence -- even though the total
+number of points stays the same -- since `2`-pointers have much more
+variability.
 
 ### Four 2-pointers
 
+
 <figure>
-   <img src="/images/2-point-distribution-over-time.png" alt="Two-point distribution over time">
+   <img src="/images/four-2-pointers-convolution.gif" alt="Convolution of Four 2-pointers">
 <figcaption>
-  B(t)
+  Convolution of Four 2-pointers
 </figcaption>
 </figure>
 
 <figure>
-   <img src="/images/2-point-convolved-with-itself.png" alt="Two-point convolved with itself">
+   <img src="/images/2-point-conv-wself-3-prob-under-hrs-8.png" alt="Probability of getting Four 2-Pointers done under One Day">
 <figcaption>
-  B(t) * B(t)
+  Probability of getting Four 2-Pointers done under One Day
 </figcaption>
 </figure>
-
 <figure>
-   <img src="/images/2-point-convolved-with-itself-twice.png" alt="Two-point convolved with itself-twice">
+   <img src="/images/2-point-conv-wself-3-prob-under-hrs-16.png" alt="Probability of getting Four 2-Pointers done under Two Days">
 <figcaption>
-  B(t) * B(t) * B(t)
+  Probability of getting Four 2-Pointers done under Two Days
 </figcaption>
 </figure>
-
 <figure>
-   <img src="/images/2-point-convolved-with-itself-thrice.png" alt="Two-point convolved with itself-thrice">
+   <img src="/images/2-point-conv-wself-3-prob-under-hrs-24.png" alt="Probability of getting Four 2-Pointers done under Three Days">
 <figcaption>
-  B(t) * B(t) * B(t) * B(t)
+  Probability of getting Four 2-Pointers done under Three Days
 </figcaption>
 </figure>
 
-`24` hours gives us `26.7`%. `48` hours gives us `55.6`%. `72` hours gives us `80.5`%.
-This is inline with our thinking -- that a milestone with `2`-pointers probably
+`8` working hours gives us a measley `9.9`%. `16` working hours gives us
+`36.7`%  and `24` working hours gives us a much better `68.5%` chance that
+the four `2`-pointer stories will be done under that time constraint.
+This is inline with my thinking -- that a milestone with `2`-pointers probably
 will take longer to do than a milestone with `1`-pointers, given equal total
-estimates. In this case, the milestone with `4` `2`-pointers is much more likely to
-take longer than `9` `1`-pointers, even though the total points assigned to the
-former is less than the total points assigned to the latter.
+estimates. In this case, the milestone with `4` `2`-pointers is much more
+likely to take longer than `9` `1`-pointers, even though the total points
+assigned to the former is less than the total points assigned to the latter.
+
+## Parallelization
+
+So far the assumption all along is only one developer (or a couple of
+developers working as a pair) will work on the stories sequentially. But what
+if you are planning to parallelize the work? Let's take, for example, the case
+where there are `5` `1`-pointers and `2` `2`-pointers and we assume that the
+stories are parallelizable and that we have one lone wolf and one pair of
+developers. A project manager might assign the `2` `2`-pointers to the pair
+and assign the `5` `1`-pointers to the lone wolf because `2`-pointers are
+usually more difficult than `1`-pointers. Let's assume that the big deadline
+is in `8` working hours.
+
+<figure>
+   <img src="/images/1-point-conv-wself-4-prob-under-hrs-8.png" alt="Probability of getting Five 1-Pointers done in Eight Working Hours">
+<figcaption>Probability of getting Five 1-Pointers done in Eight Working Hours
+</figcaption>
+</figure>
+
+
+<figure>
+   <img src="/images/2-point-conv-wself-1-prob-under-hrs-8.png" alt="Probability of getting Two 2-Pointers done in Eight Working Hours">
+<figcaption>Probability of getting Two 2-Pointers done in Eight Working Hours
+</figcaption>
+</figure>
+
+I would just take the average of the two probabilities:
+
+    0.694 + 0.421
+    ------------- = 0.5575
+          2
+
+It's only slightly better than `50%`. It's possible that we might have to make
+overtime to finish the stories in this case (hopefully not!).
+
+## Code
+
+
+## Caveats
+
+The distributions for `1`-point stories and `2`-point stories did not make a
+distinction as to which stories were done by pairs and which stories were done
+by a single person. It is possible that performance between pairs and
+developers might have a lot of variation in my team (and other teams). I did
+not take the time to make that distinction because my team now has a habit of
+having people who are going solo ask to pair with available people when they
+are stuck. I'm assuming that the difference in performance between people
+working solo and people working as pairs is negligible, which might be a bad
+assumption for other teams.
+
+Another similar caveat is that it is assumed that a developer in the team are
+all competent and get stories done in about the same time as every other
+developer in the team. People who might want to use my code to munge their own
+data sets should take this into account (especially if newbie junior developers
+are present). They might want to have a more fine-grained probability
+distribution of estimates over time (i.e. have a junior 1-pointer probability
+distribution and a senior 1-pointer probability distribution) to take into
+account the difference in familiarity with the tech stack and overall skill
+level between junior and senior developers.
+
+Another caveat I have is that the code for calculating the probabilities only
+assumes that a project only has `1`-point and `2`-point stories. We usually don't
+have stories larger than `2`-point stories because we break those down into
+smaller ones. It wouldn't be hard to take those into account, however. You could
+take my code as a starting block, and change the `prob_get_done` function to take
+into account `4`-pointers, `8`-pointers, etc.
+
+
 
 ## Conclusion
 

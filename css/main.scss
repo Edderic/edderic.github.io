@@ -61,6 +61,10 @@ body {
 
       img {
         background-color: white;
+
+        &.blend-in {
+          background-color: rgba(0,0,0,0);
+        }
       }
     }
     article {
