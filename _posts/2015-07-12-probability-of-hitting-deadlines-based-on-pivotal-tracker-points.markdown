@@ -414,7 +414,7 @@ overtime to finish the stories in this case (hopefully not!).
 
 ## Code
 
-You can access my code [here](https://github.com/edderic/pivotal-tracker-time-estimation)
+You can access my code [here](https://github.com/edderic/pivotal-tracker-time-estimation).
 Follow the instructions in the readme.
 
 ## Caveats
