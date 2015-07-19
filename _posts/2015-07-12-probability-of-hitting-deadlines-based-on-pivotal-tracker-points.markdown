@@ -424,22 +424,18 @@ based on your team's previous performances on a project.
 The distributions for `1`-point stories and `2`-point stories did not make a
 distinction as to which stories were done by pairs and which stories were done
 by a single person. It is possible that performance between pairs and
-developers might have a lot of variation in my team (and other teams). I did
-not take the time to make that distinction because my team now has a habit of
-having people who are going solo ask to pair with available people when they
-are stuck. I'm assuming that the difference in performance between people
-working solo and people working as pairs is negligible, which might be a bad
-assumption for other teams.
+developers might have a lot of variation in my team (and other teams), and this
+might make our model underfit in those situations.
 
-Another similar caveat is that it is assumed that a developer in the team are
-all competent and get stories done in about the same time as every other
-developer in the team. People who might want to use my code to munge their own
-data sets should take this into account (especially if newbie junior developers
-are present). They might want to have a more fine-grained probability
-distribution of estimates over time (i.e. have a junior 1-pointer probability
-distribution and a senior 1-pointer probability distribution) to take into
-account the difference in familiarity with the tech stack and overall skill
-level between junior and senior developers.
+Another similar caveat is that it is assumed that a developer in the team is
+more or less as competent as the others in the team and get stories done in
+about the same time as every other developer in the team.  People who might
+want to use my code to munge their own data sets should take this into account
+(especially if newbie junior developers are present). They might want to have a
+more fine-grained probability distribution of estimates over time (i.e. have a
+junior 1-pointer probability distribution and a senior 1-pointer probability
+distribution) to take into account the difference in familiarity with the tech
+stack and overall skill level between junior and senior developers.
 
 Another caveat I have is that the code for calculating the probabilities only
 assumes that a project only has `1`-point and `2`-point stories. We usually don't
@@ -447,8 +443,6 @@ have stories larger than `2`-point stories because we break those down into
 smaller ones. It wouldn't be hard to take those into account, however. You could
 take my code as a starting block, and change the `prob_get_done` function to take
 into account `4`-pointers, `8`-pointers, etc.
-
-
 
 ## Conclusion
 
