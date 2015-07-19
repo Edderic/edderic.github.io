@@ -415,7 +415,9 @@ overtime to finish the stories in this case (hopefully not!).
 ## Code
 
 You can access my code [here](https://github.com/edderic/pivotal-tracker-time-estimation).
-Follow the instructions in the readme.
+Follow the instructions in the readme so that you can start analyzing and make predictions
+based on your team's previous performances on a project.
+
 
 ## Caveats
 
