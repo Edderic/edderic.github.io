@@ -458,5 +458,4 @@ with a way to incorporate variability introduced by different point estimates
 into determining what the probability of hitting a milestone is, based on past
 activity. I hope that this might be able to guide software development teams in
 accurately and reliably reporting estimates so that businesses can make better
-decisions.  Stay tuned for another post -- I might actually share the code that
-pulls-in the data, cleans it, and computes the probabilities. Till next time.
+decisions.
