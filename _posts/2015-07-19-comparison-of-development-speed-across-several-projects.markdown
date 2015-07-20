@@ -76,9 +76,10 @@ Are `1`-point stories in Website Development much easier than `1`-point stories
 in either Product Development and SGDs?
 
 Why is there such a big variation in the `2` `2`-pointer set of stories in
-Website Development? Is this because designing the website inherently takes a
-lot of time (i.e. Are 2-pointer stories involving design more open-ended than
-stories involving development)?
+Website Development, relative to SGDs and Product Development? Is this because
+designing the website inherently takes a lot of time (i.e. Are 2-pointer
+stories involving design more open-ended than stories involving development)?
+Or is it because of something else entirely?
 
 Can more pairing speed up finish `2`-pointers faster in SGDs and Website
 Development?
