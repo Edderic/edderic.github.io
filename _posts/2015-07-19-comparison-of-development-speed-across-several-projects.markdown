@@ -5,9 +5,7 @@ findings](/2015/07/12/probability-of-hitting-deadlines-based-on-pivotal-tracker-
 in incorporating variability in time taken to finish stories based on their
 complexity estimates (`1`-point vs `2`-points). I would like to see how
 different backlogs at Lingraphica compare in terms of quickly getting `1`-point
-and `2`-point stories done. For kicks, I also want to see the probability that
-a set of stories (`5` `1`-pointers and `2` `2`-pointers) will get done under
-`8` hours.
+and `2`-point stories done.
 
 Just for reference, members of the Lingraphica Product Development team aimed
 for a maximum of half-a-day for 1-pointer stories and a maximum of a full day
