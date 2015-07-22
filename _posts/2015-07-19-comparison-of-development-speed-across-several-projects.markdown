@@ -12,9 +12,10 @@ a set of stories (`5` `1`-pointers and `2` `2`-pointers) will get done under
 Just for reference, members of the Lingraphica Product Development team aimed
 for a maximum of half-a-day for 1-pointer stories and a maximum of a full day
 for 2-pointer stories. For more complex stories, they're usually broken down
-into simpler stories. I would like to see whether or not time goals of the
-estimates are being met. If not, I would like to examine the stories that took
-longer than estimated.
+into simpler stories. I would like to examine the stories that took longer than
+estimated. Below I list the stories that took longer than expected so that we
+as a team could, in the future, analyze what we could improve upon, so that we
+could give better estimates.
 
 ## Product Development
 
@@ -253,6 +254,7 @@ Name   | Elapsed
 [Add "Resources for this Post" sidebar item to post pages  ](https://www.pivotaltracker.com/story/show/92927806)  | 13
 
 ## 1-Pointers (Aggregate)
+
 <figure>
 <img src="/images/pd-1-pt-under-hrs-4-wout-outlier-removal.png" alt="1-pointer distribution from Product Development">
 <figcaption>
@@ -280,6 +282,15 @@ Name   | Elapsed
 1-pointer distribution from Website Development
 </figcaption>
 </figure>
+
+Website Development is the most consistent in delivering 1-pointers under 4
+hours (86.3%), followed by Product Development (73.4%), SGDs (70.7%), and
+Therapy App Content (35.1%). I wonder why Therapy App Content is so much more
+different than the rest.
+
+I would say that our 1-pointer estimates for most of the time, with the
+exception of our 1-pointers in Therapy App Content, are good estimates
+as most of the time they are quite over 50%.
 
 ## 2-Pointers (Aggregate)
 
@@ -310,3 +321,38 @@ Name   | Elapsed
 2-pointer distribution from Website Development
 </figcaption>
 </figure>
+
+Developers in Product Development are the most consistent performers,
+able to get 56.5% under 8 hours, although the performance is only a
+little bit greater than half. SGDs follow next (48.9%), then Website
+Development (45.5%), and finally, Therapy App Content (42.9%).
+
+It's interesting here that only Product Development has been able to
+go over 50%. Most are a little less than 50%. This could mean that
+we are not breaking down stories enough into 1-pointers. It's also
+possible that a lot of the things we encounter are just difficult
+and a lot more complex than expected.
+
+## Conclusion
+
+I think we as a whole team could investigate how to improve 2-pointer
+estimates so that they are more representative. Maybe we should start
+incorporating points higher than 2-pointers so that most 2-pointers do
+honor the under 8-hours of work that we strive for. However, that may
+be easier said than done. It's very likely that there might be just
+too many unforeseen complications in software development. In the process
+of actually doing the stories, when we actually face the complexities
+especially in our 2-pointer stories, it might be better to dynamically
+split the stories further. This would probably solve the issue of the
+2-pointers not being under 8 hours. By breaking down the story into smaller
+ones when in the process of working, we can ensure that 2-pointers could stay
+closer to the 8 hours deadline. The problem, with this approach, however is
+that the estimate in the beginning, prior to actually doing the work, still is
+an underestimate.
+
+I don't have a perfect answer to solving this estimation
+problem, but at least I've started gathering the data so that we could look
+into the stories that actually took really long. Maybe there are patterns
+in the data that are shared by these stories. Definitely something to look
+up in the future.
+
