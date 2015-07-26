@@ -6,3 +6,4 @@ defaults:
       layout: "default"
 
 host: localhost
+markdown: kramdown
