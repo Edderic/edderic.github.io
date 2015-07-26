@@ -104,10 +104,7 @@ represent the time-elapsed distribution over a `1`-pointer as `A`, and let's
 represent the time-elapsed distribution over a `2`-pointer as `B`. Thus, we could
 get the `T` total distribution by convolving the distributions as follows:
 
-```
-T(t) = A(t) ∗ A(t) ∗ A(t) ∗ A(t) ∗ A(t) ∗
-B(t) ∗ B(t)
-```
+$$T(t) = A(t) ∗ A(t) ∗ A(t) ∗ A(t) ∗ A(t) ∗ B(t) ∗ B(t)$$
 
 where `∗` is the convolution operator.
 
@@ -146,7 +143,7 @@ are lined up:
     ---------------
                 18
 
-The resulting array is the convolution: `[4, 13, 28, 27, 18]`
+The resulting array is the convolution: $$[4, 13, 28, 27, 18]$$
 
 ### How is convolution related to probability?
 The following example is taken from this [link](http://www.dartmouth.edu/~chance/teaching_aids/books_articles/probability_book/Chapter7.pdf) Assume that you are rolling
@@ -156,28 +153,41 @@ totals (i.e. calculate the probability that the sum will be `2`, `3`, `4`, ...
 
 The probability of getting a sum of `2` is the probability of getting a `1` twice:
 
-    p(Sum = 2) = p(roll = 1) * p(roll = 1)
-               = 1/6 * 1/6
-               = 1/36
+$$
+\begin{align}
+ p(Sum = 2) &= p(roll = 1) \times p(roll = 1) \\
+ &= \frac{1}{6} \times \frac{1}{6} \\
+ &= \frac{1}{36} \\
+\end{align}
+$$
 
 The probability of getting a sum of `3` is the probability of rolling a `1` and `2`
 plus the probability of rolling a `2` and a `1`:
 
-    p(Sum = 3) = p(roll = 1) * p(roll = 2)
-                  + p(roll = 2) * p(roll = 1)
-               = 1/6 * 1/6 + 1/6 * 1/6
-               = 2/36
-               = 1/18
+$$
+\begin{align}
+ p(Sum = 3) &= p(roll = 1) \times p(roll = 2) \\
+&+ p(roll = 2) \times p(roll = 1) \\
+ &= \frac{1}{6} \times \frac{1}{6} + \frac{1}{6} \times \frac{1}{6}\\
+ &= \frac{2}{36} \\
+ &= \frac{1}{18} \\
+\end{align}
+$$
 
 The probability of getting a sum of `4` is the probability of rolling a `1` and `3`
 plus the probability of rolling a `2` and `2`, plus the probability of rolling a `3` and a `1`:
 
-    p(Sum = 4) = p(roll = 1) * p(roll = 3)
-                  + p(roll = 2) * p(roll = 2)
-                  + p(roll = 3) * p(roll = 1)
-               = 1/6 * 1/6 + 1/6 * 1/6 + 1/6 * 1/6
-               = 3/36
-               = 1/12
+$$
+\begin{align}
+ p(Sum = 4) &= p(roll = 1) \times p(roll = 3) \\
+&+ p(roll = 2) \times p(roll = 2) \\
+&+ p(roll = 3) \times p(roll = 1) \\
+ &= \frac{1}{6} \times \frac{1}{6} \\
+  &+ \frac{1}{6} \times \frac{1}{6} + \frac{1}{6} \times \frac{1}{6}\\
+ &= \frac{3}{36} \\
+ &= \frac{1}{12} \\
+\end{align}
+$$
 
 We can represent this distribution of sums by convolution:
 
@@ -224,11 +234,11 @@ etc.
 
 The distribution of sums is:
 
- [`1/36`, `2/36`, `3/36`, `4/36`, `5/36`, `6/36`, `5/36`, `4/36`, `3/36`, `2/36`, `1/36`]
+$$[1/36, 2/36, 3/36, 4/36, 5/36, 6/36, 5/36, 4/36, 3/36, 2/36, 1/36]$$
 
 for
 
-`p(total=2), p(total=3), ... ,p(total=11), p(total=12)`
+$$p(total=2), p(total=3), ... ,p(total=11), p(total=12)$$
 
 Let's get back to our idea of finding the probability of getting a number of stories
 that have variable estimates finished by a certain amount of time. So instead of
@@ -243,7 +253,7 @@ example, let's say that the probability distribution of stories estimated as 1 i
 and the probability distributions of stories estimated as `2` is `B(t)`. If we have `3`
 `1`-pointer stories and `2` `2`-pointer stories, then we convolve as follows:
 
-    A(t) ∗ A(t) ∗ A(t) ∗ B(t) ∗ B(t)
+$$A(t) ∗ A(t) ∗ A(t) ∗ B(t) ∗ B(t)$$
 
 Once we have the total distribution of elapsed time, we can then answer the question
 of "What is the probability of getting `3` `1`-pointer stories and `2` `2`-pointer stories
@@ -403,14 +413,20 @@ is in `8` working hours.
 </figcaption>
 </figure>
 
-I would just take the average of the two probabilities:
+We assume that the probability of getting the five `1`-pointers done,
+\\(P(X)\\), is independent of getting the two `2`-pointers done, \\(P(Y)\\),
+because one should not influence the other. The probability of them both
+happening at the same time is:
 
-    0.694 + 0.421
-    ------------- = 0.5575
-          2
+$$
+\begin{align}
+P(X,Y) &= P(X) \times P(Y) \\
+         &= 0.694 \times 0.421 \\
+         &= 0.292174
+\end{align}
+$$
 
-It's only slightly better than `50%`. It's possible that we might have to make
-overtime to finish the stories in this case (hopefully not!).
+Looks like we might have to do some overtime...
 
 ## Code
 
