@@ -89,3 +89,98 @@ $$
   &= \frac{21}{37} \\
 \end{align}
 $$
+
+### Exercise 1.4
+
+Two balls are placed in a box as follows: A fair coin is tossed and a white
+ball is placed in the box if a head occurs, otherwise a red ball is placed in
+the box. The coin is tossed again and a red ball is placed in the box if a tail
+occurs, otherwise a white ball is placed in the box. Balls are drawn from the
+box three times in succession (always with replacing the drawn ball back in the
+box). It is found that on all three occasions a red ball is drawn. What is the
+probability that both balls in the box are red?)
+
+Because of the fair coin assumption:
+
+$$
+\begin{align}
+  p(coin=heads) &= \frac{1}{2} \\
+  p(coin=tails) &= \frac{1}{2}
+\end{align}
+$$
+
+We calculate the probabilities of the ball being of a certain color, given the
+flip of a coin:
+
+$$
+\begin{align}
+  p(ball=white|coin=heads) &= 1 \\
+  p(ball=red|coin=tails) &= 1 \\
+
+  p(ball=white|coin=tails) &= 0 \\
+  p(ball=red|coin=heads) &= 0
+
+\end{align}
+$$
+
+We marginalize over the coin values to get the overall probability that
+a ball is white:
+
+$$
+\begin{align}
+  p(ball=white) &= \Sigma_c p(ball=white, coin=c) \\
+    &= \Sigma_c p(ball=white| coin=c)p(coin=c) \\
+    &= p(ball=white| coin=heads)p(coin=heads)  \\
+    &+ p(ball=white| coin=tails)p(coin=tails) \\
+    &= 1(\frac{1}{2}) + 0(\frac{1}{2}) \\
+    &= \frac{1}{2}
+\end{align}
+$$
+
+We do the same thing to get the overall probability that a ball is red:
+
+$$
+\begin{align}
+  p(ball=red) &= \Sigma_c p(ball=red, coin=c) \\
+    &= \Sigma_c p(ball=red| coin=c)p(coin=c) \\
+    &= p(ball=red| coin=heads)p(coin=heads)  \\
+    &+ p(ball=red| coin=tails)p(coin=tails) \\
+    &= 0(\frac{1}{2}) + 1(\frac{1}{2}) \\
+    &= \frac{1}{2}
+\end{align}
+$$
+
+We calculate the probability that a ball picked is red, taking into
+consideration the balls' colors:
+
+$$
+\begin{align}
+p(pick=red|ball_1=red, ball_2=red) &= 1 \\
+p(pick=red|ball_1=white, ball_2=red) &= \frac{1}{2} \\
+p(pick=red|ball_1=red, ball_2=white) &= \frac{1}{2} \\
+p(pick=red|ball_1=white, ball_2=white) &= 0 \\
+\end{align}
+$$
+
+We use Bayes' Rule to figure out the posterior probability that both balls
+are actually red, given that the three picks have been all red:
+
+$$
+\begin{align}
+
+  p(ball_1=red, ball_2=red | pick_1=red, pick_2=red, pick_3=red) &= \frac{p(pick_1=red,pick_2=red,pick_3=red| ball_1=red, ball_2=red)p(ball_1=red)p(ball_2=red)}{p(pick_1=red,pick_2=red,pick_3=red)} \\
+&= \frac{p(pick_1=red| ball_1=red, ball_2=red)p(pick_2=red| ball_1=red, ball_2=red)p(pick_3=red| ball_1=red, ball_2=red)p(ball_1=red)p(ball_2=red)}{p(pick_1=red,pick_2=red,pick_3=red)} \\
+
+&= \frac{1 \times 1 \times 1 \times \frac{1}{2} \times \frac{1}{2}}{\Sigma_{b_2}\Sigma_{b_1} p(pick_1=red, pick_2=red, pick_3=red|ball_1=b_1, ball_2=b_2)p(ball_1=b_1, ball_2=b_2)} \\
+
+&= \frac{1 \times 1 \times 1 \times \frac{1}{2} \times \frac{1}{2}}{\frac{1}{2} \times \frac{1}{2}(1 \times 1 \times 1 + \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} +\frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} + 0 \times 0 \times 0)} \\
+
+&= \frac{1}{1 + \frac{1}{8} + \frac{1}{8}} \\
+&= \frac{1}{1 + \frac{1}{4}} \\
+&= \frac{1}{\frac{5}{4}} \\
+&= \frac{4}{5} \\
+
+\end{align}
+
+
+$$
