@@ -68,21 +68,53 @@ contains two red and five white balls. A box is chosen at random \\(p(box = 1)
 = p(box = 2) = 0.5\\) and a ball chosen at random from this box turns out to be
 red.  What is the posterior probability that the red ball came from box 1?
 
+We list the given information:
+
 $$
 \begin{align}
-
  p(color=red | box=1) &= \frac{3}{8} \\
  p(color=white | box=1) &= \frac{5}{8} \\
  p(color=red | box=2) &= \frac{2}{7} \\
  p(color=white | box=2) &= \frac{5}{7} \\
+\end{align}
+$$
+
+We use Bayes' Rule to figure out the probability that the box is 1 given
+that the picked ball is red:
+
+$$
+\begin{align}
  p(box=1 | color=red ) &= \frac{p(color=red,box=1)}{p(color=red)} \\
   &= \frac{p(color=red|box=1)p(box=1)}{p(color=red)} \\
-  &= \frac{p(color=red|box=1)p(box=1)}{\Sigma_b p(color=red,box=b)} \\
-  &= \frac{p(color=red|box=1)p(box=1)}{\Sigma_b p(color=red|box=b)p(box=b)} \\
-  &= \frac{p(color=red|box=1)p(box=1)}{p(color=red|box=1)p(box=1) + p(color=red|box=2)p(box=2)} \\
-  &= \frac{\frac{3}{8}\times\frac{1}{2}}{\frac{3}{8}\times\frac{1}{2} + \frac{2}{7}\times\frac{1}{2}} \\
-  &= \frac{\frac{1}{2}\times\frac{3}{8}}{\frac{1}{2}(\frac{3}{8} + \frac{2}{7})} \\
-  &= \frac{\frac{3}{8}}{\frac{3}{8} + \frac{2}{7}} \\
+\end{align}
+$$
+
+We calculate the numerator:
+
+$$
+\begin{align}
+p(color=red|box=1)p(box=1) &= \frac{1}{2}\times\frac{3}{8}
+\end{align}
+$$
+
+We find the marginal distribution of the color of the ball being red,
+so that we can substitute it in the denominator:
+
+$$
+\begin{align}
+ p(color=red) &= \Sigma_b p(color=red,box=b) \\
+  &= \Sigma_b p(color=red|box=b)p(box=b) \\
+  &= p(color=red|box=1)p(box=1) \\
+  &+ p(color=red|box=2)p(box=2) \\
+  &= \frac{3}{8}\times\frac{1}{2} + \frac{2}{7}\times\frac{1}{2} \\
+\end{align}
+$$
+
+Finally, we substitute:
+
+$$
+\begin{align}
+  p(box=1 | color=red ) &= \frac{\frac{3}{8}}{\frac{3}{8} + \frac{2}{7}} \\
   &= \frac{\frac{3}{8}}{\frac{21}{56} + \frac{16}{56}} \\
   &= \frac{\frac{3}{8}}{\frac{37}{56}} \\
   &= \frac{3}{8}\times\frac{56}{37} \\
@@ -166,21 +198,105 @@ We use Bayes' Rule to figure out the posterior probability that both balls
 are actually red, given that the three picks have been all red:
 
 $$
+  p(B_1=r, B_2=r | P_1=r, P_2=r, P_3=r) \\
+  = \frac{p(P_1=r,P_2=r,P_3=r| B_1=r, B_2=r)p(B_1=r,B_2=r)}{p(P_1=r,P_2=r,P_3=r)} \\
+$$
+
+The probability of the color of Ball 1 is independent of the probability of the
+color of Ball 2:
+
+$$
 \begin{align}
-
-  p(ball_1=red, ball_2=red | pick_1=red, pick_2=red, pick_3=red) &= \frac{p(pick_1=red,pick_2=red,pick_3=red| ball_1=red, ball_2=red)p(ball_1=red)p(ball_2=red)}{p(pick_1=red,pick_2=red,pick_3=red)} \\
-&= \frac{p(pick_1=red| ball_1=red, ball_2=red)p(pick_2=red| ball_1=red, ball_2=red)p(pick_3=red| ball_1=red, ball_2=red)p(ball_1=red)p(ball_2=red)}{p(pick_1=red,pick_2=red,pick_3=red)} \\
-
-&= \frac{1 \times 1 \times 1 \times \frac{1}{2} \times \frac{1}{2}}{\Sigma_{b_2}\Sigma_{b_1} p(pick_1=red, pick_2=red, pick_3=red|ball_1=b_1, ball_2=b_2)p(ball_1=b_1, ball_2=b_2)} \\
-
-&= \frac{1 \times 1 \times 1 \times \frac{1}{2} \times \frac{1}{2}}{\frac{1}{2} \times \frac{1}{2}(1 \times 1 \times 1 + \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} +\frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} + 0 \times 0 \times 0)} \\
-
-&= \frac{1}{1 + \frac{1}{8} + \frac{1}{8}} \\
-&= \frac{1}{1 + \frac{1}{4}} \\
-&= \frac{1}{\frac{5}{4}} \\
-&= \frac{4}{5} \\
-
+  p(B_1=r,B_2=r) &= p(B_1=r)p(B_2=r) \\
+    &= \frac{1}{2} \times \frac{1}{2} \\
+    &= \frac{1}{4}
 \end{align}
+$$
 
+Since there is replacement of the ball after picking one, we can also assume
+conditional independence:
 
+$$
+p(P_1=r,P_2=r,P_3=r| B_1=r, B_2=r) \\
+= p(P_1=r| B_1=r, B_2=r) \\
+\times p(P_2=r| B_1=r, B_2=r) \\
+\times p(P_3=r| B_1=r, B_2=r) \\
+= 1 \times 1 \times 1
+$$
+
+In the denominator, we marginalize out the ball values over the joint distribution:
+
+$$
+p(P_1=r,P_2=r,P_3=r) \\
+= \Sigma_{b_2}\Sigma_{b_1} p(P_1=r, P_2=r, P_3=r, B_1=b_1, B_2=b_2) \\
+= \Sigma_{b_2}\Sigma_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+\times p(B_1=b_1, B_2=b_2) \\
+= p(B_1=b_1, B_2=b_2) \\
+\times \Sigma_{b_2}\Sigma_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+$$
+
+We substitute \\(p(B_1=b_1, B_2=b_2)\\) into the equation right above:
+
+$$
+= \frac{1}{4} \Sigma_{b_2}\Sigma_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+$$
+
+We make the summations explicit:
+
+$$
+= \frac{1}{4} (p(P_1=r, P_2=r, P_3=r|B_1=r, B_2=r) \\
++ p(P_1=r, P_2=r, P_3=r|B_1=r, B_2=w) \\
++ p(P_1=r, P_2=r, P_3=r|B_1=w, B_2=r) \\
++ p(P_1=r, P_2=r, P_3=r|B_1=w, B_2=w)) \\
+$$
+
+Again, the event of picking a ball is independent of picking another ball
+because of replacement. We already calculated the case when someone picks
+three balls with replacement and both balls are actually red, so we'll just
+calculate the rest of the combinations:
+
+$$
+p(P_1=r, P_2=r, P_3=r|B_1=r, B_2=w) \\
+= p(P_1=r|B_1=r, B_2=w) \\
+\times p(P_2=r|B_1=r, B_2=w) \\
+\times p(P_2=r|B_1=r, B_2=w) \\
+= \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} \\
+= \frac{1}{8}
+$$
+
+$$
+p(P_1=r, P_2=r, P_3=r|B_1=w, B_2=r) \\
+= p(P_1=r|B_1=w, B_2=r) \\
+\times p(P_2=r|B_1=w, B_2=r) \\
+\times p(P_2=r|B_1=w, B_2=r) \\
+= \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} \\
+= \frac{1}{8}
+$$
+
+$$
+p(P_1=r, P_2=r, P_3=r|B_1=w, B_2=w) \\
+= p(P_1=r|B_1=w, B_2=w) \\
+\times p(P_2=r|B_1=w, B_2=w) \\
+\times p(P_2=r|B_1=w, B_2=w) \\
+= 0 \times 0 \times 0 \\
+= 0
+$$
+
+Substitute in the values:
+
+$$
+\begin{align}
+p(P_1=r,P_2=r,P_3=r) &= \frac{1}{4} (1 + \frac{1}{8} + \frac{1}{8} + 0) \\
+&= \frac{1}{4} (1 + \frac{1}{4}) \\
+&= \frac{1}{4} (\frac{5}{4}) \\
+\end{align}
+$$
+
+Finally, we substitute the values into Bayes' Rule:
+
+$$
+\begin{align}
+  p(B_1=r, B_2=r | P_1=r, P_2=r, P_3=r) &= \frac{\frac{1}{4}}{\frac{1}{4}(\frac{5}{4})} \\
+  &= \frac{4}{5} \\
+\end{align}
 $$
