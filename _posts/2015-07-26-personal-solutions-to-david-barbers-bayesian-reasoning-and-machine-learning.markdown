@@ -122,7 +122,7 @@ $$
 \end{align}
 $$
 
-### Exercise 1.4
+### Exercise 1.4a
 
 Two balls are placed in a box as follows: A fair coin is tossed and a white
 ball is placed in the box if a head occurs, otherwise a red ball is placed in
@@ -300,3 +300,89 @@ $$
   &= \frac{4}{5} \\
 \end{align}
 $$
+
+### Exercise 1.4b
+
+A secret government agency has developed a scanner which determines whether a
+person is a terrorist. The scanner is fairly reliable; 95% of all scanned
+terrorists are identified as terrorists, and 95% of all upstanding citizens are
+identified as such. An informant tells the agency that exactly one passenger of
+100 aboard an aeroplane in which you are seated is a terrorist. The police haul
+off the plane the first person for which the scanner tests positive. What is
+the probability that this person is a terrorist?
+
+"95% of all terrorists are identified as terrorists":
+
+$$
+p(label=true|terrorist=true) = 0.95
+$$
+
+We can infer from the former that only 5% of upstanding citizens got mislabeled
+(false positive):
+
+$$
+p(label=true|terrorist=false) = 0.05
+$$
+
+"95% of all upstanding citizens are identified as such":
+
+$$
+p(label=false|terrorist=false) = 0.95
+$$
+
+We can infer, based on the previous equation, that 5% of terrorists get
+misclassified (false negative):
+
+$$
+p(label=false|terrorist=true) = 0.05
+$$
+
+Assuming that the informant is correct:
+
+$$
+p(terrorist=true) = \frac{1}{100}
+$$
+
+We can then infer that \\(\frac{99}{100}\\) are not terrorists:
+
+$$
+p(terrorist=false) = \frac{99}{100}
+$$
+
+We can find out the probability that the person picked is a terrorist using Bayes' Rule:
+
+$$
+p(terrorist=true|label=true) \\
+= \frac{p(label=true|terrorist=true)p(terrorist=true)}{p(label=true)} \\
+$$
+
+To find out the denominator, we can marginalize over the joint distribution
+of \\(p(label=true)\\) and \\(p(terrorist)\\):
+
+$$
+    p(label=true) \\
+    = \Sigma_{t} p(label=true, terrorist=t) \\
+    = \Sigma_{t} p(label=true| terrorist=t)p(terrorist=t) \\
+$$
+
+We make the summation explicit:
+
+$$
+    p(label=true) \\
+    = p(label=true| terrorist=true)p(terrorist=true) \\
+    + p(label=true| terrorist=false)p(terrorist=false) \\
+    = 0.95(0.01) + 0.05(0.99) \\
+    = 0.059
+$$
+
+Substituting all the values into Bayes' Rule, we find out that even though
+the detector is "reliable," we still get a low posterior probability that the
+person suspected of being a terrorist is actually a terrorist:
+
+$$
+p(terrorist=true|label=true) \\
+= \frac{p(label=true|terrorist=true)p(terrorist=true)}{p(label=true)} \\
+= \frac{0.95(0.01)}{.059} \\
+= 0.1610169492 \\
+$$
+
