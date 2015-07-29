@@ -386,3 +386,38 @@ p(terrorist=true|label=true) \\
 = 0.1610169492 \\
 $$
 
+### Exercise 1.7
+
+Repeat the Inspector Clouseau scenario, example(1.3), but with the restriction
+that either the maid or the butler is the murderer, but not both. Explicitly,
+the probability of the maid being the murderer and not the butler is 0.04, the
+probability of the butler being the murderer and not the maid is 0.64. Modify
+*demoClouseau.m* to implement this.)
+
+    pot(knife).variables=[knife,butler,maid]; % define array below using this variable order
+
+    pot(knife).table(used, notmurderer, notmurderer)=0.3;
+    pot(knife).table(used, notmurderer, murderer)   =0.04;
+    pot(knife).table(used, murderer,    notmurderer)=0.64;
+    pot(knife).table(used, murderer,    murderer)   =0.0;
+
+Results:
+
+    p(butler|knife=used):
+    butler  =murderer       0.755906
+    butler  =not murderer   0.244094
+
+### Exercise 1.8
+
+Prove \\(p(a,(b\ or\ c)) = p(a,b)+p(a,c)−p(a,b,c)\\)
+
+$$
+\begin{align}
+  p(a,(b\ or\ c)) &= p(a,b)+p(a,c)−p(a,b,c) \\
+  &= p(a)p(b\ or\ c) \\
+  &= p(a)(p(b) + p(c) - p(b,c)) \\
+  &= p(a)p(b) + p(a)p(c) - p(a)p(b,c) \\
+  &= p(a,b) + p(a,c) - p(a,b,c) \\
+\end{align}
+$$
+
