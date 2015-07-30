@@ -421,3 +421,24 @@ $$
 \end{align}
 $$
 
+### Exercise 1.9
+
+Prove:
+
+$$
+    p(x|z) = \Sigma_y p(x|y, z)p(y|z) = \Sigma_{y,w} p(x|w, y, z)p(w|y, z)p(y|z)
+$$
+
+$$
+
+\begin{align}
+    \Sigma_y p(x|y, z)p(y|z)  &= \Sigma_y \frac{p(x,y, z)}{p(y,z)}\frac{p(y,z)}{p(z)} \\
+    &= \Sigma_y \frac{p(x,y,z)}{p(z)} \\
+    &= \frac{p(x,z)}{p(z)} \\
+    &= p(x|z) \\
+    \Sigma_{y,w} p(x|w,y,z)p(w|y,z)p(y|z) &= \Sigma_{y,w}\frac{p(x,w,y,z)}{p(w,y,z)}\frac{p(w,y,z)}{p(y,z)}\frac{p(y,z)}{p(z)} \\
+    &= \Sigma_{y,w}\frac{p(x,w,y,z)}{p(z)} \\
+    &= \frac{p(x,z)}{p(z)} \\
+    &= p(x|z) \\
+\end{align}
+$$
