@@ -467,6 +467,7 @@ about tensions between East Germany and West Germany would seriously change
 someone's prior belief that it will fall in a certain period of time. Therefore,
 I would not 'buy' a prediction from Prof. Gott.
 
+### Exercise 1.11
 
 Implement the soft XOR gate, example(1.7) using BRMLtoolbox. You may find
 condpot.m of use.)
