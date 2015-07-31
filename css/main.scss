@@ -125,7 +125,7 @@ body, .home {
       line-height: 150%;
       font-size: 0.75em;
       display: block;
-      background: rgb(78,78,78);
+      background: black;
       border-radius: 5px;
       color: white;
       overflow: scroll;
@@ -137,10 +137,13 @@ body, .home {
       .ss {
         color: rgb(132, 122, 255);
       }
+      .mf {
+        color: rgb(0,151,153);
+      }
       .nf {
         color: rgb(255, 231, 12);
       }
-      .s2, .s1, .sx {
+      .s, .s2, .s1, .sx {
         color: #00FF40;
       }
       .si {
@@ -151,6 +154,12 @@ body, .home {
       }
       .k {
         color: orange;
+      }
+      .p {
+        color: rgb(0,151,0);
+      }
+      .c {
+        color: rgb(155,48,223);
       }
       .kp {
         color: #FFFC8F;
