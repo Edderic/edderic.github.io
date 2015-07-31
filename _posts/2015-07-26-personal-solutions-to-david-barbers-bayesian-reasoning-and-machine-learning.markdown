@@ -394,12 +394,14 @@ the probability of the maid being the murderer and not the butler is 0.04, the
 probability of the butler being the murderer and not the maid is 0.64. Modify
 *demoClouseau.m* to implement this.)
 
-    pot(knife).variables=[knife,butler,maid]; % define array below using this variable order
+{% highlight matlab %}
+pot(knife).variables=[knife,butler,maid];
 
-    pot(knife).table(used, notmurderer, notmurderer)=0.3;
-    pot(knife).table(used, notmurderer, murderer)   =0.04;
-    pot(knife).table(used, murderer,    notmurderer)=0.64;
-    pot(knife).table(used, murderer,    murderer)   =0.0;
+pot(knife).table(used, notmurderer, notmurderer)=0.3;
+pot(knife).table(used, notmurderer, murderer)   =0.04;
+pot(knife).table(used, murderer,    notmurderer)=0.64;
+pot(knife).table(used, murderer,    murderer)   =0.0;
+{% endhighlight %}
 
 Results:
 
@@ -442,3 +444,73 @@ $$
     &= p(x|z) \\
 \end{align}
 $$
+
+### Exercise 1.10
+
+*As a young man Mr Gott visits Berlin in 1969. He’s surprised that he cannot
+cross into East Berlin since there is a wall separating the two halves of the
+city. He’s told that the wall was erected 8 years previously. He reasons that :
+The wall will have a finite lifespan; his ignorance means that he arrives
+uniformly at random at some time in the lifespan of the wall. Since only 5% of
+the time one would arrive in the first or last 2.5% of the lifespan of the wall
+he asserts that with 95% confidence the wall will survive between 8/0.975 ≈ 8.2
+and 8/0.025 = 320 years. In 1989 the now Professor Gott is pleased to find that
+his prediction was correct and promotes his prediction method in prestigious
+journals. This ‘delta-t’ method is widely adopted and used to form predictions
+in a range of scenarios about which researchers are ‘totally ignorant’. Would
+you ‘buy’ a prediction from Prof. Gott? Explain carefully your reasoning.*
+
+I would think that it would be hard to be totally ignorant about something
+if we are really trying hard to create a good model that predicts the lifespan
+of something. In this specific case of the Berlin Wall, I believe that knowing
+about tensions between East Germany and West Germany would seriously change
+someone's prior belief that it will fall in a certain period of time. Therefore,
+I would not 'buy' a prediction from Prof. Gott.
+
+
+Implement the soft XOR gate, example(1.7) using BRMLtoolbox. You may find
+condpot.m of use.)
+
+{% highlight matlab %}
+
+    function demoSoftXOR
+    a=1; b=2; c=3; % variables
+    on=1; off=2; % states
+
+    % The following definitions of variable are not necessary for computation,
+    % but are useful for displaying table entries:
+    variable(a).name='a'; variable(a).domain = {'on','off'};
+    variable(b).name='b'; variable(b).domain ={'on','off'};
+    variable(c).name='c'; variable(c).domain={'on','off'};
+
+    % Three potentials since p(a,b,c)=p(c|a,b)p(a)p(b).
+    % potential numbering is arbitary
+    pot(a).variables=a;
+    pot(a).table(on)=0.65;
+    pot(a).table(off)=0.35;
+
+    pot(b).variables=b;
+    pot(b).table(on)=0.77;
+    pot(b).table(off)=0.23;
+
+    pot(c).variables=[c,a,b]; % define array below using this variable order
+    pot(c).table(on, off, off) =0.1;
+    pot(c).table(on, off, on)  =0.99;
+    pot(c).table(on, on, off)  =0.8;
+    pot(c).table(on, on, on)   =0.25;
+    pot(c).table(off,:,:)=1-pot(c).table(on,:,:); % due to normalisation
+
+    jointpot = multpots(pot([a b c])); % joint distribution
+
+    drawNet(dag(pot),variable);
+    disp('p(a|c=0):')
+    disptable(condpot(setpot(jointpot,c,off),a),variable);
+{% endhighlight %}
+
+Results:
+
+    octave:6> demoSoftXOR
+    p(a|c=0):
+    a       =on     0.843585
+    a       =off    0.156415
+
