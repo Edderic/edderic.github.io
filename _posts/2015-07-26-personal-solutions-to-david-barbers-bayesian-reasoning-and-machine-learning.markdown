@@ -317,11 +317,11 @@ $$
 p(label=true|terrorist=true) = 0.95
 $$
 
-We can infer from the former that only 5% of upstanding citizens got mislabeled
-(false positive):
+We can infer from the former that only 5% of terrorists got mislabeled as
+good people (false negative):
 
 $$
-p(label=true|terrorist=false) = 0.05
+p(label=false|terrorist=true) = 0.05
 $$
 
 "95% of all upstanding citizens are identified as such":
@@ -330,11 +330,11 @@ $$
 p(label=false|terrorist=false) = 0.95
 $$
 
-We can infer, based on the previous equation, that 5% of terrorists get
-misclassified (false negative):
+We can infer, based on the previous equation, that 5% of good citizens get
+misclassified as terrorists (false positive):
 
 $$
-p(label=false|terrorist=true) = 0.05
+p(label=true|terrorist=false) = 0.05
 $$
 
 Assuming that the informant is correct:
