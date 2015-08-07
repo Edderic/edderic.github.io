@@ -519,7 +519,7 @@ Results:
 
 Implement the hamburgers, example(1.2) (both scenarios) using BRMLtoolbox. To
 do so you will need to define the joint distribution \\(p(hamburgers,KJ)\\) in which
-\\(dom(hamburgers) = dom(KJ) = {tr, fa}.\\)
+\\(dom(hamburgers) = dom(KJ) = \\{tr, fa\\}.\\)
 
 TODO
 
@@ -677,3 +677,167 @@ Results:
     s1      =four   s2      =six    0.000000
     s1      =five   s2      =six    0.000000
     s1      =six    s2      =six    0.000000
+
+### Exercise 1.14
+
+A redistribution lottery involves picking the correct four numbers from \\(1\\)
+to \\(9\\) (without replacement, so \\(3,4,4,1\\) for example is not possible).
+The order of the picked numbers is irrelevant. Every week a million people play
+this game, each paying \\(\unicode{163} 1\\) enter, with the numbers
+\\(3,5,7,9\\) being the most popular (\\(1\\) in every \\(100\\) people chooses
+these numbers). Given that the million pounds prize money is split equally
+between winners, and that any four (different) numbers come up at random, what
+is the expected amount of money each of the players choosing \\(3,5,7,9\\) will
+win each week? The least popular set of numbers is \\(1,2,3,4\\) with only
+\\(1\\) in \\(10,000\\) people choosing this. How much do they profit each
+week, on average? Do you think there is any ‘skill’ involved in playing this
+lottery?
+
+One out of a hundred people pick the set \\(\\{3, 5, 7, 9\\}\\):
+
+$$
+p(pick\{3,5,7,9\}) = \frac{1}{100}
+$$
+
+One out of a ten-thousand people pick the set \\(\\{1, 2, 3, 4\\}\\):
+
+$$
+p(pick\{1,2,3,4\}) = \frac{1}{10,000}
+$$
+
+There are \\(9\\) options in the first pick, \\(8\\) in the second, \\(7\\)
+in the third, and \\(6\\) in the fourth, giving us \\(3,024\\) ordered ways.
+
+$$
+9 \times 8 \times 7 \times 6 = 3,024
+$$
+
+
+One can arrange the numbers of any set of four numbers in \\(24\\) ways:
+
+$$
+\begin{align}
+  4! &= 4 \times 3 \times 2 \times 1 \\
+  &= 24
+\end{align}
+$$
+
+For the visual learners out there, there are the all the \\(24\\) possible ways
+of ordering a set with four numbers. Let's use \\(\\{3,5,7,9\\}\\) for example:
+
+$$
+  5\ 3\ 7\ 9\\
+  5\ 3\ 9\ 7\\
+  5\ 7\ 3\ 9\\
+  5\ 7\ 9\ 3\\
+  5\ 9\ 7\ 3\\
+  5\ 9\ 3\ 7\\
+$$
+
+$$
+  9\ 5\ 7\ 3\\
+  9\ 5\ 3\ 7\\
+  9\ 7\ 5\ 3\\
+  9\ 7\ 3\ 5\\
+  9\ 3\ 7\ 5\\
+  9\ 3\ 5\ 7\\
+$$
+
+$$
+  3\ 5\ 7\ 9\\
+  3\ 5\ 9\ 7\\
+  3\ 9\ 7\ 5\\
+  3\ 9\ 5\ 7\\
+  3\ 7\ 9\ 5\\
+  3\ 7\ 5\ 9\\
+$$
+
+$$
+  7\ 3\ 5\ 9\\
+  7\ 3\ 9\ 5\\
+  7\ 5\ 3\ 9\\
+  7\ 5\ 9\ 3\\
+  7\ 9\ 3\ 5\\
+  7\ 9\ 5\ 3\\
+$$
+
+Therefore, the probability of winning, without order mattering, is
+\\(\frac{1}{126}\\):
+
+$$
+\begin{align}
+  p(win=true) &= \frac{24}{3,024} \\
+              &= \frac{1}{126} \\
+\end{align}
+$$
+
+Amount of money to be distributed:
+
+$$
+\unicode{163} 1,000,000
+$$
+
+Number of people choosing the set \\(\\{3,5,7,9\\}\\):
+
+$$
+\begin{align}
+  num\ people\ choose \{3,5,7,9\} &= total\ num\ people \times p(pick\{3,5,7,9\}) \\
+&= 1,000,000\times\frac{1}{100} \\
+&= 10,000
+\end{align}
+$$
+
+Amount that someone wins, given that that person picked the
+set\\(\\{3,5,7,9\\}\\) and that those sets of numbers are the winning
+set:
+
+$$
+\begin{align}
+  prize_{winner=\{3,5,7,9\}} &= \frac{total\ cash\ prize}{num\ people_{\{3,5,7,9\}} } \\
+&= \frac{\unicode{163} 1,000,000}{10,000} \\
+&= \unicode{163} 100
+\end{align}
+$$
+
+Average amount that a person picking \\(\\{3,5,7,9\\}\\) wins, considering the
+likelihood of winning:
+
+$$
+\begin{align}
+  avg\ prize_{winner=\{3,5,7,9\}} &= prize_{winner=\{3,5,7,9\}} \times p(win=true) \\
+  &= \unicode{163} 100 \times \frac{1}{126} \\
+  &= \unicode{163} 0.79
+\end{align}
+$$
+
+Amount that someone wins, given that that person picked the
+set\\(\\{1,2,3,4\\}\\) and that those sets of numbers are the winning
+set:
+
+$$
+\begin{align}
+  prize_{winner=\{1,2,3,4\}} &= \frac{total\ cash\ prize}{num\ people_{\{1,2,3,4\}} } \\
+&= \frac{\unicode{163} 1,000,000}{100} \\
+&= \unicode{163} 10,000
+\end{align}
+$$
+
+Average amount that a person picking \\(\\{1,2,3,4\\}\\) wins, considering the
+likelihood of winning:
+
+$$
+\begin{align}
+  avg\ prize_{winner=\{1,2,3,4\}} &= prize_{winner=\{1,2,3,4\}} \times p(win=true) \\
+  &= \unicode{163} 10,000 \times \frac{1}{126} \\
+  &= \unicode{163} 79.37
+\end{align}
+$$
+
+Since the numbers are picked randomly and there is nothing that suggests that
+one set of four (unique) numbers is more likely to be picked than another, the
+only difference really is the number of people betting on a set of numbers.
+Someone cannot increase their chances of winning. However, by somehow figuring
+out which sets of numbers are the least popular and choosing the least popular
+one, this person can increase the possible amount of money won in the case that
+that person does win.
+
