@@ -132,7 +132,7 @@ body, .home {
       font-size: 0.75em;
       display: rgb(16,16,16);
       color: white;
-      overflow: scroll;
+      overflow: auto;
 
       .no, .nc {
         color: rgb(255, 253, 158);
@@ -188,19 +188,21 @@ body, .home {
 
     pre {
       padding: 1em;
-      code {
-        word-wrap: normal;
-        font-size: 0.5em;
+      overflow: auto;
+    }
 
-        @media screen and (min-width: 26.667rem) {
-          font-size: 0.6em;
-        }
+    pre code, .MathJax_Display {
+      word-wrap: normal;
+      font-size: 0.55em;
 
-        @media screen and (min-width: 30rem) {
-          font-size: 0.7em;
-        }
-
+      @media screen and (min-width: 26.667rem) {
+        font-size: 0.6em;
       }
+
+      @media screen and (min-width: 30rem) {
+        font-size: 0.7em;
+      }
+
     }
   }
 }
