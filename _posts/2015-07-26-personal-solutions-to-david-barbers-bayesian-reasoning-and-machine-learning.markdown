@@ -1005,7 +1005,17 @@ Just to increase my confidence in the correctness of my program, I want
 to see that the answers it gives regarding the number of times 5 matches, 4
 matches, and 3 matches occurs make sense.
 
+Let's say we have the keys set up as follows:
+
+$$
+ABCDE
+$$
+
 Since there is only one way to get all \\(5\\) correctly:
+
+$$
+ABCDE
+$$
 
 $$
 p(W=5) = \frac{1}{120}
@@ -1019,12 +1029,6 @@ exist without the last one also matching. Therefore:
 
 $$
 p(W=4\ only) = 0
-$$
-
-Let's say we have the keys set up as follows:
-
-$$
-ABCDE
 $$
 
 There are exactly \\(10\\) ways to getting only 3 correct.
@@ -1063,6 +1067,7 @@ $$
 p(W=3\ only) &= \frac{10}{120}\\
 \end{align}
 $$
+
 
 These numbers are in line with the output of the program. Therefore,
 I am more confident that the program is correct.
