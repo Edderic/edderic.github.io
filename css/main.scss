@@ -25,11 +25,6 @@ body, .home {
   box-shadow: inset 0 3px 30px rgba(0, 0, 0, 0.3);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 
-  pre, .MathJax_Display {
-    background: rgb(78,78,78);
-    border-radius: 3px;
-    padding: 1em 0;
-  }
 
   header {
     position: absolute;
@@ -203,6 +198,18 @@ body, .home {
         font-size: 0.7em;
       }
 
+    }
+
+    pre, .MathJax_Display {
+      background: rgb(78,78,78);
+      border-radius: 3px;
+      padding: 1em 0;
+    }
+
+    .MathJax_Display {
+      @media screen and (min-width: 31rem) {
+        font-size: 0.9em;
+      }
     }
   }
 }
