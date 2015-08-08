@@ -841,3 +841,228 @@ out which sets of numbers are the least popular and choosing the least popular
 one, this person can increase the possible amount of money won in the case that
 that person does win.
 
+### Exercise 1.15.
+
+In a test of ‘psychometry’ the car keys and wrist watches of \\(5\\) people are given
+to a medium. The medium then attempts to match the wrist watch with the car key
+of each person. What is the expected number of correct matches that the medium
+will make (by chance)? What is the probability that the medium will obtain at
+least \\(1\\) correct match?
+
+There are \\(120 \\) ways to match the car keys with the wrist watches:
+
+$$
+\begin{align}
+  5! &= 5 \times 4 \times 3 \times 2 \times 1 \\
+     &= 120
+\end{align}
+$$
+
+I automated the process of finding out the absolute frequency of each
+number of matches occuring (\\(0\\) matches, \\(1\\) matches, etc.):
+
+{% highlight ruby linenos %}
+require 'spec_helper'
+
+describe Psychometry do
+  describe 'when there are five pairs to be matched' do
+    describe '#absolute_frequencies_of_matches' do
+      it 'should return an array of absolute frequencies' do
+        # 0 matches occurs 44 times, 1 match occurs 45 times, etc.
+        psychometry = Psychometry.new
+
+        abs_freq = [44, 45, 20, 10, 0, 1]
+        expect(psychometry.absolute_frequencies_of_matches).
+          to eq abs_freq
+      end
+    end
+
+    describe '#permutations' do
+      before {@psychometry = Psychometry.new}
+
+      it 'should include ABCDE, EBACD' do
+        expect( @psychometry.permutations).
+          to include(['A', 'B', 'C', 'D', 'E'])
+        expect( @psychometry.permutations).
+          to include(['E', 'B', 'A', 'C', 'D'])
+      end
+
+      it 'should not include AAAAA' do
+        expect( @psychometry.permutations).
+          not_to include(['A', 'A', 'A', 'A', 'A'])
+      end
+    end
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+
+class Psychometry
+  def initialize
+    @num_pairs = 5
+  end
+
+  def absolute_frequencies_of_matches
+    permutations.inject(init_hash) do |accum, permutation|
+      accum[num_matches_in_one(permutation)] =
+        accum[num_matches_in_one(permutation)] + 1
+      accum
+    end
+  end
+
+  def permutations
+    combinations.inject([]) do |accum, combination|
+      permutation?(combination) ? (accum << combination) : accum
+    end
+  end
+
+  private
+
+  def num_matches
+    permutations.inject(0) do |accum, permutation|
+      accum += num_matches_in_one(permutation)
+    end
+  end
+
+  def num_matches_in_one(permutation)
+    (0..@num_pairs-1).inject(0) do |accum_2, index|
+      if permutation[index] == characters[index]
+        accum_2 += 1
+      else
+        accum_2
+      end
+    end
+  end
+
+  def init_hash
+    (0..@num_pairs).inject([]) { |accum, val| accum << 0 }
+  end
+
+  def combinations
+    characters.inject([]) do |accum_1, char_1|
+      accum_1 | characters.inject([]) do |accum_2, char_2|
+        accum_2 | characters.inject([]) do |accum_3, char_3|
+          accum_3 | characters.inject([]) do |accum_4, char_4|
+            accum_4 | characters.map do |char_5|
+              [char_1, char_2, char_3, char_4, char_5]
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def permutation?(combination)
+    combination.uniq.length == combination.length
+  end
+
+  def characters
+    ('A'..'Z').to_a[0..@num_pairs-1]
+  end
+end
+
+
+{% endhighlight %}
+
+I found out through my program that the most likely number of matches
+to occur is one; there are \\(45\\) ways to get one match.
+
+I also found out through my program that having no matches occurs \\(44\\)
+times:
+
+$$
+p(W=0) = \frac{44}{120}
+$$
+
+We know that the sum of probabilities of all states (nothing matching, one
+matching, ..., all matching) must sum up to \\(1\\):
+
+$$
+p(W=0) + \\ p(W=1\ only) + \\ p(W=2\ only) + \\ p(W=3\ only) + \\ p(W=4\ only) + \\
+p(W=5) = 1
+$$
+
+In short:
+
+$$
+p(W=0) + p(W\neq0) = 1
+$$
+
+Therefore, the probability of getting at least one match is:
+
+$$
+\begin{align}
+p(W\neq 0) &= 1 - p(W=0) \\
+&= 1 - \frac{44}{120} \\
+&= \frac{76}{120} \\
+&\approx 63.3%
+\end{align}
+$$
+
+Just to increase my confidence in the correctness of my program, I want
+to see that the answers it gives regarding the number of times 5 matches, 4
+matches, and 3 matches occurs make sense.
+
+Since there is only one way to get all \\(5\\) correctly:
+
+$$
+p(W=5) = \frac{1}{120}
+$$
+
+We also know that getting \\(4\\) correctly actually is the same event as
+getting \\(5\\) correctly, since if we have \\(4\\) correctly matched, then the
+last one must match. If one does not match, then we know another set of
+watch-to-key will be a mismatch. In other words, \\(4\\) matching pairs cannot
+exist without the last one also matching. Therefore:
+
+$$
+p(W=4\ only) = 0
+$$
+
+Let's say we have the keys set up as follows:
+
+$$
+ABCDE
+$$
+
+There are exactly \\(10\\) ways to getting only 3 correct.
+
+$$
+\begin{align}
+ABCED\\
+ABDCE\\
+ABEDC\\
+ACBDE\\
+ADCBE\\
+AECDB\\
+\end{align}
+$$
+
+$$
+BACDE
+$$
+
+$$
+CBADE
+$$
+
+$$
+DBCAE
+$$
+
+$$
+EBCDA
+$$
+
+Therefore:
+
+$$
+\begin{align}
+p(W=3\ only) &= \frac{10}{120}\\
+\end{align}
+$$
+
+These numbers are in line with the output of the program. Therefore,
+I am more confident that the program is correct.
