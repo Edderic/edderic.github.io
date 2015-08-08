@@ -102,8 +102,8 @@ so that we can substitute it in the denominator:
 
 $$
 \begin{align}
- p(color=red) &= \Sigma_b p(color=red,box=b) \\
-  &= \Sigma_b p(color=red|box=b)p(box=b) \\
+ p(color=red) &= \sum_b p(color=red,box=b) \\
+  &= \sum_b p(color=red|box=b)p(box=b) \\
   &= p(color=red|box=1)p(box=1) \\
   &+ p(color=red|box=2)p(box=2) \\
   &= \frac{3}{8}\times\frac{1}{2} + \frac{2}{7}\times\frac{1}{2} \\
@@ -160,8 +160,8 @@ a ball is white:
 
 $$
 \begin{align}
-  p(ball=white) &= \Sigma_c p(ball=white, coin=c) \\
-    &= \Sigma_c p(ball=white| coin=c)p(coin=c) \\
+  p(ball=white) &= \sum_c p(ball=white, coin=c) \\
+    &= \sum_c p(ball=white| coin=c)p(coin=c) \\
     &= p(ball=white| coin=heads)p(coin=heads)  \\
     &+ p(ball=white| coin=tails)p(coin=tails) \\
     &= 1(\frac{1}{2}) + 0(\frac{1}{2}) \\
@@ -173,8 +173,8 @@ We do the same thing to get the overall probability that a ball is red:
 
 $$
 \begin{align}
-  p(ball=red) &= \Sigma_c p(ball=red, coin=c) \\
-    &= \Sigma_c p(ball=red| coin=c)p(coin=c) \\
+  p(ball=red) &= \sum_c p(ball=red, coin=c) \\
+    &= \sum_c p(ball=red| coin=c)p(coin=c) \\
     &= p(ball=red| coin=heads)p(coin=heads)  \\
     &+ p(ball=red| coin=tails)p(coin=tails) \\
     &= 0(\frac{1}{2}) + 1(\frac{1}{2}) \\
@@ -228,17 +228,17 @@ In the denominator, we marginalize out the ball values over the joint distributi
 
 $$
 p(P_1=r,P_2=r,P_3=r) \\
-= \Sigma_{b_2}\Sigma_{b_1} p(P_1=r, P_2=r, P_3=r, B_1=b_1, B_2=b_2) \\
-= \Sigma_{b_2}\Sigma_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+= \sum_{b_2}\sum_{b_1} p(P_1=r, P_2=r, P_3=r, B_1=b_1, B_2=b_2) \\
+= \sum_{b_2}\sum_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
 \times p(B_1=b_1, B_2=b_2) \\
 = p(B_1=b_1, B_2=b_2) \\
-\times \Sigma_{b_2}\Sigma_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+\times \sum_{b_2}\sum_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
 $$
 
 We substitute \\(p(B_1=b_1, B_2=b_2)\\) into the equation right above:
 
 $$
-= \frac{1}{4} \Sigma_{b_2}\Sigma_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+= \frac{1}{4} \sum_{b_2}\sum_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
 $$
 
 We make the summations explicit:
@@ -361,8 +361,8 @@ of \\(p(label=true)\\) and \\(p(terrorist)\\):
 
 $$
     p(label=true) \\
-    = \Sigma_{t} p(label=true, terrorist=t) \\
-    = \Sigma_{t} p(label=true| terrorist=t)p(terrorist=t) \\
+    = \sum_{t} p(label=true, terrorist=t) \\
+    = \sum_{t} p(label=true| terrorist=t)p(terrorist=t) \\
 $$
 
 We make the summation explicit:
@@ -428,18 +428,18 @@ $$
 Prove:
 
 $$
-    p(x|z) = \Sigma_y p(x|y, z)p(y|z) = \Sigma_{y,w} p(x|w, y, z)p(w|y, z)p(y|z)
+    p(x|z) = \sum_y p(x|y, z)p(y|z) = \sum_{y,w} p(x|w, y, z)p(w|y, z)p(y|z)
 $$
 
 $$
 
 \begin{align}
-    \Sigma_y p(x|y, z)p(y|z)  &= \Sigma_y \frac{p(x,y, z)}{p(y,z)}\frac{p(y,z)}{p(z)} \\
-    &= \Sigma_y \frac{p(x,y,z)}{p(z)} \\
+    \sum_y p(x|y, z)p(y|z)  &= \sum_y \frac{p(x,y, z)}{p(y,z)}\frac{p(y,z)}{p(z)} \\
+    &= \sum_y \frac{p(x,y,z)}{p(z)} \\
     &= \frac{p(x,z)}{p(z)} \\
     &= p(x|z) \\
-    \Sigma_{y,w} p(x|w,y,z)p(w|y,z)p(y|z) &= \Sigma_{y,w}\frac{p(x,w,y,z)}{p(w,y,z)}\frac{p(w,y,z)}{p(y,z)}\frac{p(y,z)}{p(z)} \\
-    &= \Sigma_{y,w}\frac{p(x,w,y,z)}{p(z)} \\
+    \sum_{y,w} p(x|w,y,z)p(w|y,z)p(y|z) &= \sum_{y,w}\frac{p(x,w,y,z)}{p(w,y,z)}\frac{p(w,y,z)}{p(y,z)}\frac{p(y,z)}{p(z)} \\
+    &= \sum_{y,w}\frac{p(x,w,y,z)}{p(z)} \\
     &= \frac{p(x,z)}{p(z)} \\
     &= p(x|z) \\
 \end{align}
@@ -781,10 +781,10 @@ Number of people choosing the set \\(\\{3,5,7,9\\}\\):
 
 $$
 \begin{align}
-  num\ people\ choose \{3,5,7,9\} &= total\ num\ people \times p(pick\{3,5,7,9\}) \\
-&= 1,000,000\times\frac{1}{100} \\
-&= 10,000
-\end{align}
+    num\ people_\{3,5,7,9\} &= total\ num\ people \times p(pick\{3,5,7,9\}) \\
+  &= 1,000,000\times\frac{1}{100} \\
+  &= 10,000
+  \end{align}
 $$
 
 Amount that someone wins, given that that person picked the
@@ -793,7 +793,7 @@ set:
 
 $$
 \begin{align}
-  prize_{winner=\{3,5,7,9\}} &= \frac{total\ cash\ prize}{num\ people_{\{3,5,7,9\}} } \\
+    prize_{winner=\{3,5,7,9\}} &= \frac{total\ cash\ prize}{num\ people_{\{3,5,7,9\}} } \\
 &= \frac{\unicode{163} 1,000,000}{10,000} \\
 &= \unicode{163} 100
 \end{align}
@@ -816,7 +816,7 @@ set:
 
 $$
 \begin{align}
-  prize_{winner=\{1,2,3,4\}} &= \frac{total\ cash\ prize}{num\ people_{\{1,2,3,4\}} } \\
+  prize_{winner=\{1,2,3,4\}} &= \frac{total\ cash\ prize}{sum\ people_{\{1,2,3,4\}} } \\
 &= \frac{\unicode{163} 1,000,000}{100} \\
 &= \unicode{163} 10,000
 \end{align}
@@ -841,7 +841,7 @@ out which sets of numbers are the least popular and choosing the least popular
 one, this person can increase the possible amount of money won in the case that
 that person does win.
 
-### Exercise 1.15.
+### Exercise 1.15
 
 In a test of ‘psychometry’ the car keys and wrist watches of \\(5\\) people are given
 to a medium. The medium then attempts to match the wrist watch with the car key
@@ -976,7 +976,7 @@ $$
 p(W=0) = \frac{44}{120}
 $$
 
-We know that the sum of probabilities of all states (nothing matching, one
+We know that the probabilities of all states (nothing matching, one
 matching, ..., all matching) must sum up to \\(1\\):
 
 $$
@@ -1068,6 +1068,45 @@ p(W=3\ only) &= \frac{10}{120}\\
 \end{align}
 $$
 
-
 These numbers are in line with the output of the program. Therefore,
 I am more confident that the program is correct.
+
+### Exercise 1.16.1
+
+Show that for any function \\(f\\)
+
+$$
+\sum_xp(x|y)f(y) = f(y)
+$$
+
+$$
+\begin{align}
+\sum_xp(x|y)f(y) &= \sum_x\frac{p(x,y)}{p(y)}f(y) \\
+                 &= \sum_x\frac{p(x)p(y)}{p(y)}f(y) \\
+                 &= \sum_xp(x)f(y) \\
+                 &= f(y)\sum_xp(x) \\
+                 &= f(y)\times 1 \\
+                 &= f(y)
+\end{align}
+$$
+
+### Exercise 1.16.2
+
+Explain why, in general,
+
+$$
+\sum_xp(x|y)f(x,y) \neq \sum_xf(x,y)
+$$
+
+$$
+\begin{align}
+\sum_xp(x|y)f(x,y) &= \sum_x\frac{p(x,y)}{p(y)}f(x,y) \\
+                   &= \sum_x\frac{p(x)(y)}{p(y)}f(x,y) \\
+                   &= \sum_xp(x)f(x,y) \\
+                   &= f(x,y)\sum_xp(x) \\
+                   &= f(x,y) \\
+                   &\neq \sum_xf(x,y) \\
+\end{align}
+$$
+
+
