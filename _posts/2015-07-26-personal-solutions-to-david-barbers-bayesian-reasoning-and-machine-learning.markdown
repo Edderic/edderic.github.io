@@ -228,20 +228,20 @@ In the denominator, we marginalize out the ball values over the joint distributi
 
 $$
 p(P_1=r,P_2=r,P_3=r) \\
-= \sum_{b_2}\sum_{b_1} p(P_1=r, P_2=r, P_3=r, B_1=b_1, B_2=b_2) \\
-= \sum_{b_2}\sum_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+= \sum_{b_2, b_1} p(P_1=r, P_2=r, P_3=r, B_1=b_1, B_2=b_2) \\
+= \sum_{b_2, b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
 \times p(B_1=b_1, B_2=b_2) \\
 = p(B_1=b_1, B_2=b_2) \\
-\times \sum_{b_2}\sum_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+\times \sum_{b_2, b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
 $$
 
 We substitute \\(p(B_1=b_1, B_2=b_2)\\) into the equation right above:
 
 $$
-= \frac{1}{4} \sum_{b_2}\sum_{b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+= \frac{1}{4} \sum_{b_2,b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
 $$
 
-We make the summations explicit:
+We make the summation explicit:
 
 $$
 = \frac{1}{4} (p(P_1=r, P_2=r, P_3=r|B_1=r, B_2=r) \\
@@ -1101,7 +1101,7 @@ $$
 $$
 \begin{align}
 \sum_xp(x|y)f(x,y) &= \sum_x\frac{p(x,y)}{p(y)}f(x,y) \\
-                   &= \sum_x\frac{p(x)(y)}{p(y)}f(x,y) \\
+                   &= \sum_x\frac{p(x)p(y)}{p(y)}f(x,y) \\
                    &= \sum_xp(x)f(x,y) \\
                    &= f(x,y)\sum_xp(x) \\
                    &= f(x,y) \\
