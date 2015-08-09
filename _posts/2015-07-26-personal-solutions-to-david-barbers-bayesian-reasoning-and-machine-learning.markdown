@@ -13,33 +13,33 @@ section). These will be updated regularly.
 ### Exercise 1.1
 
 Prove
-  \\(p(x,y | z) = p(x|z)p(y|x,z)\\)
+  \\(p(x,y \mid  z) = p(x\mid z)p(y\mid x,z)\\)
 
   $$
   \begin{align}
-  p(x,y | z) &= \frac{p(x,y,z)}{p(z)} \\
-  p(x|z) &= \frac{p(x,z)}{p(z)} \\
-  p(y|x,z) &= \frac{p(x,y,z)}{p(x,z)} \\
+  p(x,y \mid  z) &= \frac{p(x,y,z)}{p(z)} \\
+  p(x\mid z) &= \frac{p(x,z)}{p(z)} \\
+  p(y\mid x,z) &= \frac{p(x,y,z)}{p(x,z)} \\
   \frac{p(x,y,z)}{p(z)} &= \frac{p(x,z)}{p(z)}\frac{p(x,y,z)}{p(x,z)} \\
   \frac{p(x,y,z)}{p(z)} &= \frac{p(x,y,z)}{p(z)} \\
-  p(x,y | z) &= p(x|z)p(y|x,z)
+  p(x,y \mid  z) &= p(x\mid z)p(y\mid x,z)
   \end{align}
   $$
 
 Prove
-  \\(p(x|y,z) = \frac{p(y|x,z)p(x|z)}{p(y|z)}\\)
+  \\(p(x\mid y,z) = \frac{p(y\mid x,z)p(x\mid z)}{p(y\mid z)}\\)
 
   $$
   \begin{align}
-  p(x|y,z) &= \frac{p(x,y,z)}{p(y,z)} \\
-  p(y|x,z) &= \frac{p(x,y,z)}{p(x,z)} \\
-  p(x|z) &= \frac{p(x,z)}{p(z)} \\
-  p(y|z) &= \frac{p(y,z)}{p(z)} \\
+  p(x\mid y,z) &= \frac{p(x,y,z)}{p(y,z)} \\
+  p(y\mid x,z) &= \frac{p(x,y,z)}{p(x,z)} \\
+  p(x\mid z) &= \frac{p(x,z)}{p(z)} \\
+  p(y\mid z) &= \frac{p(y,z)}{p(z)} \\
   \frac{p(x,y,z)}{p(y,z)} &= \frac{\frac{p(x,y,z)}{p(x,z)}\frac{p(x,z)}{p(z)}}{\frac{p(y,z)}{p(z)}} \\
   &= \frac{\frac{p(x,y,z)}{p(z)}}{\frac{p(y,z)}{p(z)}} \\
   &= \frac{p(x,y,z)}{p(z)}\frac{p(z)}{p(y,z)} \\
   &= \frac{p(x,y,z)}{p(y,z)} \\
-  p(x|y,z) &= \frac{p(y|x,z)p(x|z)}{p(y|z)}
+  p(x\mid y,z) &= \frac{p(y\mid x,z)p(x\mid z)}{p(y\mid z)}
   \end{align}
   $$
 
@@ -72,10 +72,10 @@ We list the given information:
 
 $$
 \begin{align}
- p(color=red | box=1) &= \frac{3}{8} \\
- p(color=white | box=1) &= \frac{5}{8} \\
- p(color=red | box=2) &= \frac{2}{7} \\
- p(color=white | box=2) &= \frac{5}{7} \\
+ p(color=red \mid  box=1) &= \frac{3}{8} \\
+ p(color=white \mid  box=1) &= \frac{5}{8} \\
+ p(color=red \mid  box=2) &= \frac{2}{7} \\
+ p(color=white \mid  box=2) &= \frac{5}{7} \\
 \end{align}
 $$
 
@@ -84,8 +84,8 @@ that the picked ball is red:
 
 $$
 \begin{align}
- p(box=1 | color=red ) &= \frac{p(color=red,box=1)}{p(color=red)} \\
-  &= \frac{p(color=red|box=1)p(box=1)}{p(color=red)} \\
+ p(box=1 \mid  color=red ) &= \frac{p(color=red,box=1)}{p(color=red)} \\
+  &= \frac{p(color=red\mid box=1)p(box=1)}{p(color=red)} \\
 \end{align}
 $$
 
@@ -93,7 +93,7 @@ We calculate the numerator:
 
 $$
 \begin{align}
-p(color=red|box=1)p(box=1) &= \frac{1}{2}\times\frac{3}{8}
+p(color=red\mid box=1)p(box=1) &= \frac{1}{2}\times\frac{3}{8}
 \end{align}
 $$
 
@@ -103,9 +103,9 @@ so that we can substitute it in the denominator:
 $$
 \begin{align}
  p(color=red) &= \sum_b p(color=red,box=b) \\
-  &= \sum_b p(color=red|box=b)p(box=b) \\
-  &= p(color=red|box=1)p(box=1) \\
-  &+ p(color=red|box=2)p(box=2) \\
+  &= \sum_b p(color=red\mid box=b)p(box=b) \\
+  &= p(color=red\mid box=1)p(box=1) \\
+  &+ p(color=red\mid box=2)p(box=2) \\
   &= \frac{3}{8}\times\frac{1}{2} + \frac{2}{7}\times\frac{1}{2} \\
 \end{align}
 $$
@@ -114,7 +114,7 @@ Finally, we substitute:
 
 $$
 \begin{align}
-  p(box=1 | color=red ) &= \frac{\frac{3}{8}}{\frac{3}{8} + \frac{2}{7}} \\
+  p(box=1 \mid  color=red ) &= \frac{\frac{3}{8}}{\frac{3}{8} + \frac{2}{7}} \\
   &= \frac{\frac{3}{8}}{\frac{21}{56} + \frac{16}{56}} \\
   &= \frac{\frac{3}{8}}{\frac{37}{56}} \\
   &= \frac{3}{8}\times\frac{56}{37} \\
@@ -146,11 +146,11 @@ flip of a coin:
 
 $$
 \begin{align}
-  p(ball=white|coin=heads) &= 1 \\
-  p(ball=red|coin=tails) &= 1 \\
+  p(ball=white\mid coin=heads) &= 1 \\
+  p(ball=red\mid coin=tails) &= 1 \\
 
-  p(ball=white|coin=tails) &= 0 \\
-  p(ball=red|coin=heads) &= 0
+  p(ball=white\mid coin=tails) &= 0 \\
+  p(ball=red\mid coin=heads) &= 0
 
 \end{align}
 $$
@@ -161,9 +161,9 @@ a ball is white:
 $$
 \begin{align}
   p(ball=white) &= \sum_c p(ball=white, coin=c) \\
-    &= \sum_c p(ball=white| coin=c)p(coin=c) \\
-    &= p(ball=white| coin=heads)p(coin=heads)  \\
-    &+ p(ball=white| coin=tails)p(coin=tails) \\
+    &= \sum_c p(ball=white\mid  coin=c)p(coin=c) \\
+    &= p(ball=white\mid  coin=heads)p(coin=heads)  \\
+    &+ p(ball=white\mid  coin=tails)p(coin=tails) \\
     &= 1(\frac{1}{2}) + 0(\frac{1}{2}) \\
     &= \frac{1}{2}
 \end{align}
@@ -174,9 +174,9 @@ We do the same thing to get the overall probability that a ball is red:
 $$
 \begin{align}
   p(ball=red) &= \sum_c p(ball=red, coin=c) \\
-    &= \sum_c p(ball=red| coin=c)p(coin=c) \\
-    &= p(ball=red| coin=heads)p(coin=heads)  \\
-    &+ p(ball=red| coin=tails)p(coin=tails) \\
+    &= \sum_c p(ball=red\mid  coin=c)p(coin=c) \\
+    &= p(ball=red\mid  coin=heads)p(coin=heads)  \\
+    &+ p(ball=red\mid  coin=tails)p(coin=tails) \\
     &= 0(\frac{1}{2}) + 1(\frac{1}{2}) \\
     &= \frac{1}{2}
 \end{align}
@@ -187,10 +187,10 @@ consideration the balls' colors:
 
 $$
 \begin{align}
-p(pick=red|ball_1=red, ball_2=red) &= 1 \\
-p(pick=red|ball_1=white, ball_2=red) &= \frac{1}{2} \\
-p(pick=red|ball_1=red, ball_2=white) &= \frac{1}{2} \\
-p(pick=red|ball_1=white, ball_2=white) &= 0 \\
+p(pick=red\mid ball_1=red, ball_2=red) &= 1 \\
+p(pick=red\mid ball_1=white, ball_2=red) &= \frac{1}{2} \\
+p(pick=red\mid ball_1=red, ball_2=white) &= \frac{1}{2} \\
+p(pick=red\mid ball_1=white, ball_2=white) &= 0 \\
 \end{align}
 $$
 
@@ -198,8 +198,8 @@ We use Bayes' Rule to figure out the posterior probability that both balls
 are actually red, given that the three picks have been all red:
 
 $$
-  p(B_1=r, B_2=r | P_1=r, P_2=r, P_3=r) \\
-  = \frac{p(P_1=r,P_2=r,P_3=r| B_1=r, B_2=r)p(B_1=r,B_2=r)}{p(P_1=r,P_2=r,P_3=r)} \\
+  p(B_1=r, B_2=r \mid  P_1=r, P_2=r, P_3=r) \\
+  = \frac{p(P_1=r,P_2=r,P_3=r\mid  B_1=r, B_2=r)p(B_1=r,B_2=r)}{p(P_1=r,P_2=r,P_3=r)} \\
 $$
 
 The probability of the color of Ball 1 is independent of the probability of the
@@ -217,10 +217,10 @@ Since there is replacement of the ball after picking one, we can also assume
 conditional independence:
 
 $$
-p(P_1=r,P_2=r,P_3=r| B_1=r, B_2=r) \\
-= p(P_1=r| B_1=r, B_2=r) \\
-\times p(P_2=r| B_1=r, B_2=r) \\
-\times p(P_3=r| B_1=r, B_2=r) \\
+p(P_1=r,P_2=r,P_3=r\mid  B_1=r, B_2=r) \\
+= p(P_1=r\mid  B_1=r, B_2=r) \\
+\times p(P_2=r\mid  B_1=r, B_2=r) \\
+\times p(P_3=r\mid  B_1=r, B_2=r) \\
 = 1 \times 1 \times 1
 $$
 
@@ -229,25 +229,25 @@ In the denominator, we marginalize out the ball values over the joint distributi
 $$
 p(P_1=r,P_2=r,P_3=r) \\
 = \sum_{b_2, b_1} p(P_1=r, P_2=r, P_3=r, B_1=b_1, B_2=b_2) \\
-= \sum_{b_2, b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+= \sum_{b_2, b_1} p(P_1=r, P_2=r, P_3=r\mid B_1=b_1, B_2=b_2) \\
 \times p(B_1=b_1, B_2=b_2) \\
 = p(B_1=b_1, B_2=b_2) \\
-\times \sum_{b_2, b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+\times \sum_{b_2, b_1} p(P_1=r, P_2=r, P_3=r\mid B_1=b_1, B_2=b_2) \\
 $$
 
 We substitute \\(p(B_1=b_1, B_2=b_2)\\) into the equation right above:
 
 $$
-= \frac{1}{4} \sum_{b_2,b_1} p(P_1=r, P_2=r, P_3=r|B_1=b_1, B_2=b_2) \\
+= \frac{1}{4} \sum_{b_2,b_1} p(P_1=r, P_2=r, P_3=r\mid B_1=b_1, B_2=b_2) \\
 $$
 
 We make the summation explicit:
 
 $$
-= \frac{1}{4} (p(P_1=r, P_2=r, P_3=r|B_1=r, B_2=r) \\
-+ p(P_1=r, P_2=r, P_3=r|B_1=r, B_2=w) \\
-+ p(P_1=r, P_2=r, P_3=r|B_1=w, B_2=r) \\
-+ p(P_1=r, P_2=r, P_3=r|B_1=w, B_2=w)) \\
+= \frac{1}{4} (p(P_1=r, P_2=r, P_3=r\mid B_1=r, B_2=r) \\
++ p(P_1=r, P_2=r, P_3=r\mid B_1=r, B_2=w) \\
++ p(P_1=r, P_2=r, P_3=r\mid B_1=w, B_2=r) \\
++ p(P_1=r, P_2=r, P_3=r\mid B_1=w, B_2=w)) \\
 $$
 
 Again, the event of picking a ball is independent of picking another ball
@@ -256,28 +256,28 @@ three balls with replacement and both balls are actually red, so we'll just
 calculate the rest of the combinations:
 
 $$
-p(P_1=r, P_2=r, P_3=r|B_1=r, B_2=w) \\
-= p(P_1=r|B_1=r, B_2=w) \\
-\times p(P_2=r|B_1=r, B_2=w) \\
-\times p(P_2=r|B_1=r, B_2=w) \\
+p(P_1=r, P_2=r, P_3=r\mid B_1=r, B_2=w) \\
+= p(P_1=r\mid B_1=r, B_2=w) \\
+\times p(P_2=r\mid B_1=r, B_2=w) \\
+\times p(P_2=r\mid B_1=r, B_2=w) \\
 = \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} \\
 = \frac{1}{8}
 $$
 
 $$
-p(P_1=r, P_2=r, P_3=r|B_1=w, B_2=r) \\
-= p(P_1=r|B_1=w, B_2=r) \\
-\times p(P_2=r|B_1=w, B_2=r) \\
-\times p(P_2=r|B_1=w, B_2=r) \\
+p(P_1=r, P_2=r, P_3=r\mid B_1=w, B_2=r) \\
+= p(P_1=r\mid B_1=w, B_2=r) \\
+\times p(P_2=r\mid B_1=w, B_2=r) \\
+\times p(P_2=r\mid B_1=w, B_2=r) \\
 = \frac{1}{2} \times \frac{1}{2} \times \frac{1}{2} \\
 = \frac{1}{8}
 $$
 
 $$
-p(P_1=r, P_2=r, P_3=r|B_1=w, B_2=w) \\
-= p(P_1=r|B_1=w, B_2=w) \\
-\times p(P_2=r|B_1=w, B_2=w) \\
-\times p(P_2=r|B_1=w, B_2=w) \\
+p(P_1=r, P_2=r, P_3=r\mid B_1=w, B_2=w) \\
+= p(P_1=r\mid B_1=w, B_2=w) \\
+\times p(P_2=r\mid B_1=w, B_2=w) \\
+\times p(P_2=r\mid B_1=w, B_2=w) \\
 = 0 \times 0 \times 0 \\
 = 0
 $$
@@ -296,7 +296,7 @@ Finally, we substitute the values into Bayes' Rule:
 
 $$
 \begin{align}
-  p(B_1=r, B_2=r | P_1=r, P_2=r, P_3=r) &= \frac{\frac{1}{4}}{\frac{1}{4}(\frac{5}{4})} \\
+  p(B_1=r, B_2=r \mid  P_1=r, P_2=r, P_3=r) &= \frac{\frac{1}{4}}{\frac{1}{4}(\frac{5}{4})} \\
   &= \frac{4}{5} \\
 \end{align}
 $$
@@ -314,27 +314,27 @@ the probability that this person is a terrorist?
 "95% of all terrorists are identified as terrorists":
 
 $$
-p(label=true|terrorist=true) = 0.95
+p(label=true\mid terrorist=true) = 0.95
 $$
 
 We can infer from the former that only 5% of terrorists got mislabeled as
 good people (false negative):
 
 $$
-p(label=false|terrorist=true) = 0.05
+p(label=false\mid terrorist=true) = 0.05
 $$
 
 "95% of all upstanding citizens are identified as such":
 
 $$
-p(label=false|terrorist=false) = 0.95
+p(label=false\mid terrorist=false) = 0.95
 $$
 
 We can infer, based on the previous equation, that 5% of good citizens get
 misclassified as terrorists (false positive):
 
 $$
-p(label=true|terrorist=false) = 0.05
+p(label=true\mid terrorist=false) = 0.05
 $$
 
 Assuming that the informant is correct:
@@ -352,8 +352,8 @@ $$
 We can find out the probability that the person picked is a terrorist using Bayes' Rule:
 
 $$
-p(terrorist=true|label=true) \\
-= \frac{p(label=true|terrorist=true)p(terrorist=true)}{p(label=true)} \\
+p(terrorist=true\mid label=true) \\
+= \frac{p(label=true\mid terrorist=true)p(terrorist=true)}{p(label=true)} \\
 $$
 
 To find out the denominator, we can marginalize over the joint distribution
@@ -362,15 +362,15 @@ of \\(p(label=true)\\) and \\(p(terrorist)\\):
 $$
     p(label=true) \\
     = \sum_{t} p(label=true, terrorist=t) \\
-    = \sum_{t} p(label=true| terrorist=t)p(terrorist=t) \\
+    = \sum_{t} p(label=true\mid  terrorist=t)p(terrorist=t) \\
 $$
 
 We make the summation explicit:
 
 $$
     p(label=true) \\
-    = p(label=true| terrorist=true)p(terrorist=true) \\
-    + p(label=true| terrorist=false)p(terrorist=false) \\
+    = p(label=true\mid  terrorist=true)p(terrorist=true) \\
+    + p(label=true\mid  terrorist=false)p(terrorist=false) \\
     = 0.95(0.01) + 0.05(0.99) \\
     = 0.059
 $$
@@ -380,8 +380,8 @@ the detector is "reliable," we still get a low posterior probability that the
 person suspected of being a terrorist is actually a terrorist:
 
 $$
-p(terrorist=true|label=true) \\
-= \frac{p(label=true|terrorist=true)p(terrorist=true)}{p(label=true)} \\
+p(terrorist=true\mid label=true) \\
+= \frac{p(label=true\mid terrorist=true)p(terrorist=true)}{p(label=true)} \\
 = \frac{0.95(0.01)}{.059} \\
 = 0.1610169492 \\
 $$
@@ -405,7 +405,7 @@ pot(knife).table(used, murderer,    murderer)   =0.0;
 
 Results:
 
-    p(butler|knife=used):
+    p(butler\mid knife=used):
     butler  =murderer       0.755906
     butler  =not murderer   0.244094
 
@@ -428,20 +428,20 @@ $$
 Prove:
 
 $$
-    p(x|z) = \sum_y p(x|y, z)p(y|z) = \sum_{y,w} p(x|w, y, z)p(w|y, z)p(y|z)
+    p(x\mid z) = \sum_y p(x\mid y, z)p(y\mid z) = \sum_{y,w} p(x\mid w, y, z)p(w\mid y, z)p(y\mid z)
 $$
 
 $$
 
 \begin{align}
-    \sum_y p(x|y, z)p(y|z)  &= \sum_y \frac{p(x,y, z)}{p(y,z)}\frac{p(y,z)}{p(z)} \\
+    \sum_y p(x\mid y, z)p(y\mid z)  &= \sum_y \frac{p(x,y, z)}{p(y,z)}\frac{p(y,z)}{p(z)} \\
     &= \sum_y \frac{p(x,y,z)}{p(z)} \\
     &= \frac{p(x,z)}{p(z)} \\
-    &= p(x|z) \\
-    \sum_{y,w} p(x|w,y,z)p(w|y,z)p(y|z) &= \sum_{y,w}\frac{p(x,w,y,z)}{p(w,y,z)}\frac{p(w,y,z)}{p(y,z)}\frac{p(y,z)}{p(z)} \\
+    &= p(x\mid z) \\
+    \sum_{y,w} p(x\mid w,y,z)p(w\mid y,z)p(y\mid z) &= \sum_{y,w}\frac{p(x,w,y,z)}{p(w,y,z)}\frac{p(w,y,z)}{p(y,z)}\frac{p(y,z)}{p(z)} \\
     &= \sum_{y,w}\frac{p(x,w,y,z)}{p(z)} \\
     &= \frac{p(x,z)}{p(z)} \\
-    &= p(x|z) \\
+    &= p(x\mid z) \\
 \end{align}
 $$
 
@@ -1076,12 +1076,12 @@ I am more confident that the program is correct.
 Show that for any function \\(f\\)
 
 $$
-\sum_xp(x|y)f(y) = f(y)
+\sum_xp(x\mid y)f(y) = f(y)
 $$
 
 $$
 \begin{align}
-\sum_xp(x|y)f(y) &= \sum_x\frac{p(x,y)}{p(y)}f(y) \\
+\sum_xp(x\mid y)f(y) &= \sum_x\frac{p(x,y)}{p(y)}f(y) \\
                  &= \sum_x\frac{p(x)p(y)}{p(y)}f(y) \\
                  &= \sum_xp(x)f(y) \\
                  &= f(y)\sum_xp(x) \\
@@ -1095,12 +1095,12 @@ $$
 Explain why, in general,
 
 $$
-\sum_xp(x|y)f(x,y) \neq \sum_xf(x,y)
+\sum_xp(x\mid y)f(x,y) \neq \sum_xf(x,y)
 $$
 
 $$
 \begin{align}
-\sum_xp(x|y)f(x,y) &= \sum_x\frac{p(x,y)}{p(y)}f(x,y) \\
+\sum_xp(x\mid y)f(x,y) &= \sum_x\frac{p(x,y)}{p(y)}f(x,y) \\
                    &= \sum_x\frac{p(x)p(y)}{p(y)}f(x,y) \\
                    &= \sum_xp(x)f(x,y) \\
                    &= f(x,y)\sum_xp(x) \\
@@ -1109,4 +1109,282 @@ $$
 \end{align}
 $$
 
+### Exercise 1.17
 
+#### Part I
+
+(Inspired by singingbanana.com). Seven friends decide to order
+pizzas by telephone from Pizza4U based on a flyer pushed through their
+letterbox. Pizza4U has only \\(4\\) kinds of pizza, and each person chooses a
+pizza independently. Bob phones Pizza4U and places the combined pizza order,
+simply stating how many pizzas of each kind are required. Unfortunately, the
+precise order is lost, so the chef makes seven randomly chosen pizzas and then
+passes them to the delivery boy.
+
+How many different combined orders are possible?
+
+I got all the combinations and filtered out the duplicates.  There seems to be
+\\(120\\) different combined orders:
+
+{% highlight ruby linenos %}
+require 'spec_helper'
+
+describe Pizza4U do
+  describe '#unique_combinations' do
+    it 'should not return any duplicates' do
+      pizza_4_u = Pizza4U.new
+      uniq_combs = pizza_4_u.unique_combinations
+
+      orig = ['A', 'A', 'A', 'A', 'A', 'A', 'B']
+      rearranged_1 = ['A', 'A', 'A', 'A', 'A', 'B', 'A']
+      rearranged_2 = ['A', 'B', 'A', 'A', 'A', 'A', 'A']
+
+      orig_1 = ['A', 'A', 'A', 'A', 'A', 'B', 'B']
+      rearranged_3 = ['A', 'B', 'A', 'B', 'A', 'A', 'A']
+      rearranged_4 = ['B', 'B', 'A', 'A', 'A', 'A', 'A']
+
+      orig_2 = [ 'B', 'B', 'D', 'D', 'D', 'D', 'D']
+
+      # should not be included because there are only four
+      # pizzas to choose from, not 5.
+      orig_3 = [ 'E','E','E','E','E','E','E' ]
+
+
+      expect(uniq_combs).to include(orig)
+      expect(uniq_combs).to include(orig_1)
+      expect(uniq_combs).to include(orig_2)
+      expect(uniq_combs).not_to include(orig_3)
+      expect(uniq_combs).not_to include(rearranged_1)
+      expect(uniq_combs).not_to include(rearranged_2)
+      expect(uniq_combs).not_to include(rearranged_3)
+      expect(uniq_combs).not_to include(rearranged_4)
+      expect(uniq_combs.count).to eq 120
+    end
+  end
+
+  describe '#accuracy(num_times)' do
+    it 'picks a random combination of pizzas (ordered by people) and compares it with another randomly-picked combination of pizzas (picked by the chef) and gives us a score' do
+      pizza_4_u = Pizza4U.new
+      accuracy = pizza_4_u.accuracy(1000000)
+
+      expect(accuracy).to eq 1/120.0
+    end
+  end
+
+  describe '#unique_absolute_freqs' do
+    it 'should return a dictionary with unique combinations as keys and absolute freqs as values' do
+
+      pizza_4_u = Pizza4U.new
+      unique_absolute_freqs = pizza_4_u.unique_absolute_freqs
+
+      total_count =  unique_absolute_freqs.inject(0){|accum,(k,v)| accum = accum + v; accum}
+      expect(total_count).to eq 16384
+      expect(unique_absolute_freqs['AAAAAAA']).to be 1
+      expect(unique_absolute_freqs['AAAAAAB']).to be 7
+    end
+  end
+
+  describe '#prob_correct' do
+    it 'gives us the chance that the chef was correct' do
+      pizza_4_u = Pizza4U.new
+      expect(pizza_4_u.prob_correct.round(3)).to eq 0.018383.round(3)
+    end
+  end
+end
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+
+require 'utils'
+
+class Pizza4U
+  attr_reader :combinations, :unique_combinations, :combinations_size, :unique_absolute_freqs
+
+  def initialize
+    @utils = Utils.new(4)
+    @combinations = @utils.combinations(7)
+    @unique_combinations = combinations.map {|combination| combination.sort}.uniq
+
+    @combinations_size = combinations.count
+    @unique_absolute_freqs = unique_combinations.inject({}) do |accum, uniq_combo|
+      accum[uniq_combo.join] = combinations.select{|combination| same_unique_combo(combination, uniq_combo)}.count
+      accum
+    end
+  end
+
+  def accuracy(num_times)
+    score(num_times) / num_times.to_f
+  end
+
+  def prob_correct
+    corrects_of_joint_distribution.inject(0) do |accum, hash|
+      accum = accum + hash[:prior_prob]
+      accum
+    end
+  end
+
+  private
+
+  def corrects_of_joint_distribution
+    joint_distribution.select{|item| item[:correct] == true}
+  end
+
+  def joint_distribution
+    unique_absolute_freqs.inject([]) do |accum_1, (chef_k,chef_v)|
+      accum_1 + unique_absolute_freqs.inject([]) do |accum_2, (customers_k,customers_v)|
+        prior_prob = chef_v / combinations_size.to_f * customers_v / combinations_size.to_f
+        hash = { correct: false, prior_prob: prior_prob}
+
+        if chef_k == customers_k
+          hash[:correct] = true
+        end
+
+        accum_2 << hash
+      end
+    end
+  end
+
+  def score(num_times)
+    r = Random.new
+
+    (0..num_times-1).inject(0) do |accum, count|
+      customers_pick = pick(r)
+      chefs_pick = pick(r)
+
+      if same_unique_combo(customers_pick, chefs_pick)
+        accum = accum + 1
+      else
+        accum
+      end
+    end
+  end
+
+  def same_unique_combo(pick1, pick2)
+    pick1.sort == pick2.sort
+  end
+
+  def pick(r)
+    pick_index = r.rand * combinations.length - 1
+    combinations[pick_index]
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+class Utils
+  def initialize(num_pairs)
+    @num_pairs = num_pairs
+  end
+
+  def combinations(num_iteration)
+    combine(characters, num_iteration)
+  end
+
+  def combine(accum, num_iteration)
+    return accum if num_iteration <= 1
+
+    new_accum = characters.inject([]) do |accum_1, char|
+      accum_1 | accum.map do |item|
+        [char, item].flatten
+      end
+    end
+
+    combine(new_accum, num_iteration - 1)
+  end
+
+  def characters
+    ('A'..'Z').to_a[0..@num_pairs-1]
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+require 'spec_helper'
+
+describe Utils do
+  describe '#combinations' do
+    it 'should return the right amount of items' do
+      num_items_to_choose_from = 4
+      num_times_to_combine = 7
+      utils = Utils.new(num_items_to_choose_from)
+      combinations = utils.combinations(num_times_to_combine)
+      expect(combinations.count).to eq 16384
+      expect(combinations).to include(['A', 'A', 'A', 'A', 'A', 'A', 'A'])
+    end
+  end
+end
+
+{% endhighlight %}
+
+
+#### Part II
+
+What is the probability that the delivery boy has the right order?
+
+Let \\(p(p_{x_y}=z)\\) where \\(dom(x)=\\{chef, customer\\}\\),
+\\(dom(y)=\\{1,2,3,4\\}\\), and \\(dom(z)=\\{1,2,...,6,7\\}\\).
+
+The overall correctness of the delivery person, regardless of what the chef
+or customers have picked can be represented as follows:
+
+$$
+\begin{align}
+
+p(correct) &= \sum_{a,b,c,d,e,f,g,h}
+p(correct,
+p_{cu_1}=a,
+ p_{cu_2}=b,
+ p_{cu_3}=c,
+ p_{cu_4}=d,
+ p_{ch_1}=e,
+ p_{ch_2}=f,
+ p_{ch_3}=g,
+ p_{ch_4}=h) \\
+&= \sum_{a,b,c,d,e,f,g,h}
+p(correct \mid
+p_{cu_1}=a,
+ p_{cu_2}=b,
+ p_{cu_3}=c,
+ p_{cu_4}=d,
+ p_{ch_1}=e,
+ p_{ch_2}=f,
+ p_{ch_3}=g,
+ p_{ch_4}=h)
+p(
+p_{cu_1}=a,
+ p_{cu_2}=b,
+ p_{cu_3}=c,
+ p_{cu_4}=d,
+ p_{ch_1}=e,
+ p_{ch_2}=f,
+ p_{ch_3}=g,
+ p_{ch_4}=h) \\
+&= \sum_{a,b,c,d,e,f,g,h}
+p(correct \mid
+p_{cu_1}=a,
+ p_{cu_2}=b,
+ p_{cu_3}=c,
+ p_{cu_4}=d,
+ p_{ch_1}=e,
+ p_{ch_2}=f,
+ p_{ch_3}=g,
+ p_{ch_4}=h)
+p(
+p_{cu_1}=a,
+ p_{cu_2}=b,
+ p_{cu_3}=c,
+ p_{cu_4}=d
+)
+p(
+ p_{ch_1}=e,
+ p_{ch_2}=f,
+ p_{ch_3}=g,
+ p_{ch_4}=h) \\
+\end{align}
+$$
+
+Calculating the probability that the delivery person has the correct order,
+regardless of what the customers and the chef actually chose, gives us
+\\(1.84%\\).
