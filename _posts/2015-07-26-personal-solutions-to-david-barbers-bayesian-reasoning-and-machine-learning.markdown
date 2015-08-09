@@ -1404,48 +1404,120 @@ and drives a white car. What is the probability that the friends are talking
 about Alice?  Assume maximal uncertainty in the absence of any knowledge of the
 probabilities.
 
-"She’s \\(90\%\\) sure that Alice has a white car, but doesn’t know if Bella’s
-car is white or black.":
+"Sally knows that they are talking about either Alice or Bella but doesn’t
+know which.":
 
 $$
-p(Alice\ car = white) = 90\%
+\begin{align}
+p(person = Alice) &= 50 \% \\
+p(person = Bella) &= 50 \% \\
+\end{align}
+$$
+
+"She’s \\(90\%\\) sure that Alice has a white car." In other words, if the
+person is Alice, then the probability of the car being white is \\(90\%\\),
+etc:
+
+$$
+p(car = white \mid person = Alice) = 90\%
+$$
+
+From this we can infer that Sally thinks that if the person is Alice, then
+there's only a \\(10\%\\) chance that the car is not white:
+
+$$
+p(car \neq white \mid person = Alice ) = 10\%
+$$
+
+
+"...but doesn’t know if Bella’s car is white or black.":
+
+$$
+p(car = white \mid person = Bella) = 50\%
 $$
 
 $$
-p(Alice\ car \neq white) = 10\%
+p(car \neq white \mid person = Bella) = 50\%
+$$
+
+"Similarly, she’s \\(90\%\\) sure that Bella likes sushi":
+
+$$
+p( sushi = true \mid person = Bella) = 90\%
+$$
+
+From this we can infer that Sally thinks that if the person is Bella then
+there's only a \\(10\%\\) chance that the person hates sushi:
+
+$$
+p( sushi = false\mid person = Bella) = 10\%
+$$
+
+"... but doesn’t know if Alice likes sushi.":
+
+$$
+p( sushi = true\mid person = Alice) = 50\%
 $$
 
 $$
-p(Bella's\ car = white) = 50\%
-$$
-
-$$
-p(Bella's\ car = black) = 50\%
-$$
-
-"Similarly, she’s \\(90\%\\) sure that Bella likes sushi, but doesn’t know if Alice
-likes sushi.":
-
-$$
-p(Bella\ likes\ sushi = true) = 90\%
-$$
-
-$$
-p(Bella\ likes\ sushi = false) = 10\%
-$$
-
-$$
-p(Alice\ likes\ sushi = true) = 50\%
-$$
-
-$$
-p(Alice\ likes\ sushi = false) = 50 \%
+p( sushi = false\mid person = Alice) = 50\%
 $$
 
 "Sally hears from the conversation that the person being discussed hates sushi
-and drives a white car. What is the probability that the friends are talking
-about Alice?":
+and drives a white car.":
 
 $$
-p(Alice) = p(Alice\ car = white)
+\begin{align}
+p(sushi = false) &= 1.0 \\
+p(sushi = true) &= 0.0 \\
+\end{align}
+$$
+
+$$
+\begin{align}
+p(car = white) &= 1.0 \\
+p(car \neq white) &= 0.0 \\
+\end{align}
+$$
+
+"What is the probability that the friends are talking about Alice?":
+
+$$
+\begin{align}
+p(person = Alice \mid car = white, sushi=false)
+&= \frac{p(car = white, sushi = false \mid person = Alice)p(person =
+Alice)}{p(car = white, sushi = false)} \\
+    &= \frac{p(car = white, sushi = false \mid person = Alice)p(person =
+    Alice)}{\sum_{p}p(person = p, car = white, sushi = false)} \\
+\end{align}
+$$
+
+$$
+\begin{align}
+p(car = white, sushi = false \mid person = Alice) &= p(car = white \mid person = Alice)p(sushi = false \mid person = Alice) \\
+                                                  &= 0.90 \times 0.50 \\
+                                                  &= 0.45
+\end{align}
+$$
+
+$$
+    \sum_{p}p(person = p, car = white, sushi = false) \\
+    = p(car = white, sushi = false \mid person = Alice)p(Alice) \\
+     + p(car = white, sushi = false \mid person = Bella)p(Bella) \\
+    = p(car = white\mid person = Alice)p(sushi = false \mid person = Alice)p(Alice) \\
+     + p(car = white\mid person = Bella)p(sushi = false \mid person = Bella)p(Bella) \\
+    = 0.90 \times 0.50 \times 0.50 + 0.50 \times 0.10 \times 0.50 \\
+    = 0.225 + 0.025 \\
+    = 0.25 \\
+$$
+
+Therefore, Sally should be quite certain that the person her friends are
+talking about is Alice (\\(90\%\\)):
+
+$$
+\begin{align}
+p(person = Alice \mid car = white, sushi=false)
+&= \frac{0.45\times0.5}{0.25} \\
+&= 0.90 \\
+\end{align}
 $$
