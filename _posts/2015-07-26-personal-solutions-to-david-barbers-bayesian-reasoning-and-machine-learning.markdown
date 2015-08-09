@@ -1521,3 +1521,135 @@ p(person = Alice \mid car = white, sushi=false)
 &= 0.90 \\
 \end{align}
 $$
+
+### Exercise 1.19
+
+The weather in London can be summarised as: if it rains one day there’s a \\(70\%\\)
+chance it will rain the following day; if it’s sunny one day there’s a \\(40\%\\)
+chance it will be sunny the following day.
+
+$$
+p(today=rainy \mid yesterday=rainy) = 70\%
+$$
+
+$$
+p(today=sunny \mid yesterday=sunny) = 40\%
+$$
+
+From these likelihoods, I infer the following:
+
+$$
+p(today=sunny \mid yesterday=rainy) = 30\%
+$$
+
+$$
+p(today=rainy \mid yesterday=sunny) = 60\%
+$$
+
+#### Part I
+
+Assuming that the prior probability it rained yesterday is \\(0.5\\), what is the
+probability that it was raining yesterday given that it’s sunny today?
+
+$$
+p(yesterday=rainy) = 50\%
+$$
+
+I infer from this that the probability of being sunny yesterday is also \\(50\%\\):
+
+$$
+p(yesterday=sunny) = 50\%
+$$
+
+$$
+\begin{align}
+p(yesterday=rainy \mid today=sunny) &= \frac{p(today=sunny \mid yesterday=sunny)p(yesterday=rainy)}{p(today=sunny)} \\
+\end{align}
+$$
+
+$$
+\begin{align}
+    p(today=sunny) &= \sum_{y}p(today=sunny,yesterday=y) \\
+                   &= \sum_{y}p(today=sunny \mid yesterday=y)p(yesterday=y) \\
+                   &= p(today=sunny \mid yesterday=sunny)p(yesterday=sunny) + p(today=sunny \mid yesterday=rainy)p(yesterday=rainy) \\
+                   &= 0.40 \times 0.5 + 0.30 \times 0.50 \\
+                   &= 0.20 + 0.15 \\
+                   &= 0.35 \\
+\end{align}
+$$
+
+Thus, the probability of raining yesterday given that today is sunny:
+
+$$
+\begin{align}
+p(yesterday=rainy \mid today=sunny) &= \frac{0.20}{0.35} \\
+                                   &= 57.14 \%
+\end{align}
+$$
+
+#### Part 2
+
+If the weather follows the same pattern as above, day after day, what is the
+probability that it will rain on any day (based on an effectively infinite
+number of days of observing the weather)?
+
+On any day, not considering whether it rained or not the day before, the
+probability of raining is:
+
+$$
+\begin{align}
+p(today=rainy) &= \sum_y p(today=rainy, yesterday=y) \\
+               &= \sum_y p(today=rainy \mid yesterday=y)p(yesterday=y) \\
+               &= p(today=rainy \mid yesterday=rainy)p(yesterday=rainy) + p(today=rainy \mid yesterday=sunny)p(yesterday=sunny) \\
+               &= 0.7 \times 0.5 + 0.6 \times 0.5 \\
+               &= 0.65 \\
+\end{align}
+$$
+
+#### Part 3
+
+Use the result from part \\(2\\) above as a new prior probability of rain
+yesterday and recompute the probability that it was raining yesterday given
+that it’s sunny today.)
+
+$$
+\begin{align}
+p(yesterday=rainy) &= 0.65 \\
+\end{align}
+$$
+
+Therefore:
+
+$$
+\begin{align}
+p(yesterday=sunny) &= 0.35 \\
+\end{align}
+$$
+
+$$
+\begin{align}
+p(yesterday=rainy \mid today=sunny) &= \frac{p(today=sunny \mid yesterday=rainy)p(yesterday=rainy)}{p(today=sunny)} \\
+\end{align}
+$$
+
+$$
+\begin{align}
+p(today=sunny) &= \sum_y p(today=sunny, yesterday=y) \\
+               &= \sum_y p(today=sunny \mid yesterday=y)p(yesterday=y) \\
+               &= p(today=sunny \mid yesterday=sunny)p(yesterday=sunny) + p(today=sunny \mid yesterday=rainy)p(yesterday=rainy) \\
+               &= 0.40 \times 0.35 + 0.30 \times 0.65 \\
+               &= 0.14 + 0.195 \\
+               &= 0.335 \\
+\end{align}
+$$
+
+$$
+\begin{align}
+p(yesterday=rainy \mid today=sunny) &= \frac{0.30 \times 0.65}{0.335} \\
+                                    &= 58.21\% \\
+\end{align}
+$$
+
+Very interesting. The probability of raining has increased a little bit after
+updating the prior probabilities. Since it was likely that it rained yesterday,
+it's slightly more likely that it will rain today.
