@@ -388,10 +388,10 @@ $$
 
 ### Exercise 1.7
 
-Repeat the Inspector Clouseau scenario, example(1.3), but with the restriction
+Repeat the Inspector Clouseau scenario, example(\\(1.3\\)), but with the restriction
 that either the maid or the butler is the murderer, but not both. Explicitly,
-the probability of the maid being the murderer and not the butler is 0.04, the
-probability of the butler being the murderer and not the maid is 0.64. Modify
+the probability of the maid being the murderer and not the butler is \\(0.04\\), the
+probability of the butler being the murderer and not the maid is \\(0.64\\). Modify
 *demoClouseau.m* to implement this.)
 
 {% highlight matlab %}
@@ -447,18 +447,18 @@ $$
 
 ### Exercise 1.10
 
-*As a young man Mr Gott visits Berlin in 1969. He’s surprised that he cannot
+As a young man Mr Gott visits Berlin in \\(1969\\). He’s surprised that he cannot
 cross into East Berlin since there is a wall separating the two halves of the
-city. He’s told that the wall was erected 8 years previously. He reasons that :
+city. He’s told that the wall was erected \\(8\\) years previously. He reasons that :
 The wall will have a finite lifespan; his ignorance means that he arrives
-uniformly at random at some time in the lifespan of the wall. Since only 5% of
-the time one would arrive in the first or last 2.5% of the lifespan of the wall
-he asserts that with 95% confidence the wall will survive between 8/0.975 ≈ 8.2
-and 8/0.025 = 320 years. In 1989 the now Professor Gott is pleased to find that
+uniformly at random at some time in the lifespan of the wall. Since only \\(5\\%\\) of
+the time one would arrive in the first or last \\(2.5\\%\\) of the lifespan of the wall
+he asserts that with \\(95\\%\\) confidence the wall will survive between \\(8/0.975 \approx 8.2\\)
+and \\(8/0.025 = 320\\) years. In \\(1989\\) the now Professor Gott is pleased to find that
 his prediction was correct and promotes his prediction method in prestigious
 journals. This ‘delta-t’ method is widely adopted and used to form predictions
 in a range of scenarios about which researchers are ‘totally ignorant’. Would
-you ‘buy’ a prediction from Prof. Gott? Explain carefully your reasoning.*
+you ‘buy’ a prediction from Prof. Gott? Explain carefully your reasoning.
 
 I would think that it would be hard to be totally ignorant about something
 if we are really trying hard to create a good model that predicts the lifespan
@@ -469,7 +469,7 @@ I would not 'buy' a prediction from Prof. Gott.
 
 ### Exercise 1.11
 
-Implement the soft XOR gate, example(1.7) using BRMLtoolbox. You may find
+Implement the soft XOR gate, example(\\(1.7\\)) using BRMLtoolbox. You may find
 condpot.m of use.)
 
 {% highlight matlab %}
@@ -526,7 +526,7 @@ TODO
 
 ### Exercise 1.13
 
-Implement the two-dice example, section(1.3.1) using BRMLtoolbox.
+Implement the two-dice example, section(\\(1.3.1\\)) using BRMLtoolbox.
 
 {% highlight matlab %}
 
@@ -1389,4 +1389,63 @@ $$
 
 Calculating the probability that the delivery person has the correct order,
 regardless of what the customers and the chef actually chose, gives us
-\\(1.84%\\).
+\\(1.84\%\\).
+
+### Exercise 1.18
+
+Sally is new to the area and listens to some friends discussing about another
+female friend. Sally knows that they are talking about either Alice or Bella
+but doesn’t know which. From previous conversations Sally knows some
+independent pieces of information: She’s \\(90\%\\) sure that Alice has a white
+car, but doesn’t know if Bella’s car is white or black. Similarly, she’s
+\\(90\%\\) sure that Bella likes sushi, but doesn’t know if Alice likes sushi.
+Sally hears from the conversation that the person being discussed hates sushi
+and drives a white car. What is the probability that the friends are talking
+about Alice?  Assume maximal uncertainty in the absence of any knowledge of the
+probabilities.
+
+"She’s \\(90\%\\) sure that Alice has a white car, but doesn’t know if Bella’s
+car is white or black.":
+
+$$
+p(Alice\ car = white) = 90\%
+$$
+
+$$
+p(Alice\ car \neq white) = 10\%
+$$
+
+$$
+p(Bella's\ car = white) = 50\%
+$$
+
+$$
+p(Bella's\ car = black) = 50\%
+$$
+
+"Similarly, she’s \\(90\%\\) sure that Bella likes sushi, but doesn’t know if Alice
+likes sushi.":
+
+$$
+p(Bella\ likes\ sushi = true) = 90\%
+$$
+
+$$
+p(Bella\ likes\ sushi = false) = 10\%
+$$
+
+$$
+p(Alice\ likes\ sushi = true) = 50\%
+$$
+
+$$
+p(Alice\ likes\ sushi = false) = 50 \%
+$$
+
+"Sally hears from the conversation that the person being discussed hates sushi
+and drives a white car. What is the probability that the friends are talking
+about Alice?":
+
+$$
+p(Alice) = p(Alice\ car = white)
+$$
