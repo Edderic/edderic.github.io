@@ -1218,7 +1218,7 @@ class Pizza4U
 
   def prob_correct
     corrects_of_joint_distribution.inject(0) do |accum, hash|
-      accum = accum + hash[:prior_prob]
+      accum = accum + hash[:posterior_prob]
       accum
     end
   end
@@ -1232,8 +1232,8 @@ class Pizza4U
   def joint_distribution
     unique_absolute_freqs.inject([]) do |accum_1, (chef_k,chef_v)|
       accum_1 + unique_absolute_freqs.inject([]) do |accum_2, (customers_k,customers_v)|
-        prior_prob = chef_v / combinations_size.to_f * customers_v / combinations_size.to_f
-        hash = { correct: false, prior_prob: prior_prob}
+        posterior_prob = chef_v / combinations_size.to_f * customers_v / combinations_size.to_f
+        hash = { correct: false, posterior_prob: posterior_prob}
 
         if chef_k == customers_k
           hash[:correct] = true
