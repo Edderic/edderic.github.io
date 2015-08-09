@@ -1325,6 +1325,8 @@ What is the probability that the delivery boy has the right order?
 
 Let \\(p(p_{x_y}=z)\\) where \\(dom(x)=\\{chef, customer\\}\\),
 \\(dom(y)=\\{1,2,3,4\\}\\), and \\(dom(z)=\\{1,2,...,6,7\\}\\).
+\\(y\\) corresponds to the pizza options available to each customer,
+and \\(z\\) corresponds to the seven customers.
 
 The overall correctness of the delivery person, regardless of what the chef
 or customers have picked can be represented as follows:
