@@ -58,6 +58,15 @@ body, .home {
     }
 
     figure {
+      pre {
+        text-align: initial;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+      }
+
       text-align: center;
       figcaption {
         font-size: 0.75em;
@@ -187,7 +196,7 @@ body, .home {
       overflow: auto;
     }
 
-    pre code, .MathJax_Display {
+    pre code, .MathJax_Display, figure pre {
       word-wrap: normal;
       font-size: 0.55em;
 
