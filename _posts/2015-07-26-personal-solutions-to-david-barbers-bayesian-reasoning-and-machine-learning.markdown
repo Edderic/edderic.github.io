@@ -1653,3 +1653,851 @@ $$
 Very interesting. The probability of raining has increased a little bit after
 updating the prior probabilities. Since it was likely that it rained yesterday,
 it's slightly more likely that it will rain today.
+
+### Exercise 1.20
+
+A game of Battleships is played on a \\(10 \times 10\\) pixel grid. There are
+two \\(5\\)-pixel length ships placed uniformly at random on the grid, subject
+to the constraints that (i) the ships cannot overlap and (ii) one ship is
+vertical and the other horizontal. After 10 unsuccessful ‘misses’ in locations
+\\((1,10)\\),\\((2,2)\\),\\((3,8)\\),\\((4,4)\\),\\((5,6)\\),\\((6,5)\\),\\((7,4)\\),\\((7,7)\\),\\((9,2)\\),\\((9,9)\\)
+calculate which pixel has the highest probability of containing a ship. State
+this pixel and the value of the highest probability.
+
+Here's a diagram:
+
+<figure>
+<pre>
+   |1 |2 |3 |4 |5 |6 |7 |8 |9 |10
+---|--|--|--|--|--|--|--|--|--|--
+ 1                             M
+---|--|--|--|--|--|--|--|--|--|--
+ 2     M
+---|--|--|--|--|--|--|--|--|--|--
+ 3                       M
+---|--|--|--|--|--|--|--|--|--|--
+ 4           M
+---|--|--|--|--|--|--|--|--|--|--
+ 5                 M
+---|--|--|--|--|--|--|--|--|--|--
+ 6              M
+---|--|--|--|--|--|--|--|--|--|--
+ 7           M        M
+---|--|--|--|--|--|--|--|--|--|--
+ 8
+---|--|--|--|--|--|--|--|--|--|--
+ 9     M                    M
+---|--|--|--|--|--|--|--|--|--|--
+10
+---|--|--|--|--|--|--|--|--|--|--
+</pre>
+<figcaption>
+Misses in the game of Battleship
+</figcaption>
+</figure>
+
+
+The way I computed the probability of a given point being a hit is by using the
+available ships that I have (\\(1\\) horizontal and \\(1\\) vertical) and sliding
+them across the board; if the ship occupies valid points (points on the board
+and no point being labeled as "miss"), then we update the absolute frequencies of
+those points by one. The points with the highest (absolute and relative) frequencies
+are good candidates to be pegged next.
+
+Here are the computed absolute frequencies:
+
+<figure>
+<pre>
+[[2, 2, 4, 4, 6, 4, 4, 2, 2, 0],
+ [2, 0, 3, 2, 4, 4, 6, 3, 4, 2],
+ [4, 3, 6, 3, 4, 2, 3, 0, 3, 2],
+ [4, 2, 4, 0, 2, 2, 4, 3, 6, 4],
+ [6, 3, 6, 1, 2, 0, 2, 2, 4, 4],
+ [5, 2, 5, 0, 0, 2, 2, 4, 4, 6],
+ [4, 2, 4, 0, 0, 1, 0, 3, 2, 4],
+ [4, 3, 6, 4, 5, 6, 4, 6, 3, 4],
+ [2, 0, 3, 2, 2, 3, 2, 3, 0, 2],
+ [2, 2, 4, 4, 5, 6, 4, 4, 2, 2]]
+</pre>
+<figcaption>
+Absolute frequencies of possible hits
+</figcaption>
+</figure>
+
+<figure>
+<pre>
+  <div id="heatmap"></div>
+</pre>
+<figcaption>
+Heatmap of targets (Red is more likely)
+</figcaption>
+</figure>
+
+The points with the most likely hits are the following \\((1,5)\\),
+\\((2,7)\\), \\((3,3)\\), \\((4,9)\\), \\((5,1)\\),
+\\((5,3)\\),\\((6,10)\\),\\((8,3)\\),\\((8,6)\\),\\((8,8)\\), \\((10,6)\\).
+The probability of the ship being in one of these points is \\(0.02\\).
+
+Here's the code:
+
+{% highlight ruby linenos %}
+module Battleship
+  class Board
+    attr_reader :table
+
+    def initialize(init_hash)
+      @misses = init_hash[:misses]
+      @ships = init_hash[:ships]
+      @table = Battleship::Table.new(row_length:row_length,
+                                     col_length: col_length,
+                                     misses: @misses,
+                                     ships: @ships)
+      # table should listen to changes in ship status
+      # if hit, then recalculate frequencies...
+      @table.recalculate_abs_freq!
+    end
+
+    def miss?(point)
+      @misses.select {|miss| miss.same_as?(point) }.count >= 1
+    end
+
+    def row_length
+      10
+    end
+
+    def col_length
+      10
+    end
+
+    def best_targets
+      @table.select {|point| point.abs_freq == @table.max_abs_freq}
+    end
+
+    def abs_freqs
+      @table.rows.map do |row|
+        row.map do |point|
+          point.abs_freq
+        end
+      end
+    end
+
+    def rel_freqs
+      abs_freqs.map do |row|
+        row.map do |abs_freq|
+          abs_freq / @table.sum_of_abs_freqs.to_f
+        end
+      end
+    end
+
+    def abs_freq_at(point)
+      point_at(point).abs_freq
+    end
+
+    def point_at(*args)
+      @table.point_at(args)
+   end
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+require 'spec_helper'
+
+describe Battleship::Board do
+  before do
+    @miss_1 = Battleship::Point.new(1, 10, :missed)
+    @miss_2 = Battleship::Point.new(2, 2, :missed)
+    @miss_3 = Battleship::Point.new(3, 8, :missed)
+    @miss_4 = Battleship::Point.new(4, 4, :missed)
+    @miss_5 = Battleship::Point.new(5, 6, :missed)
+    @miss_6 = Battleship::Point.new(6, 5, :missed)
+    @miss_7 = Battleship::Point.new(7, 4, :missed)
+    @miss_8 = Battleship::Point.new(7, 7, :missed)
+    @miss_9 = Battleship::Point.new(9, 2, :missed)
+    @miss_10 = Battleship::Point.new(9, 9, :missed)
+
+    @misses = [@miss_1, @miss_2, @miss_3, @miss_4, @miss_5,
+               @miss_6, @miss_7, @miss_8, @miss_9, @miss_10 ]
+
+    @ship_1 = Battleship::VerticalShip.new(length: 5)
+    @ship_2 = Battleship::HorizontalShip.new(length: 5)
+
+    @ships = [@ship_1, @ship_2]
+
+    @board = Battleship::Board.new(misses: @misses, ships: @ships)
+  end
+
+  describe '#row_length' do
+    it 'should return 10' do
+      expect(@board.row_length).to eq 10
+    end
+  end
+
+  describe '#col_length' do
+    it 'should return 10' do
+      expect(@board.col_length).to eq 10
+    end
+  end
+
+  describe '#miss?(point)' do
+    it 'should return true if the point was a miss' do
+      miss_point = Battleship::Point.new(1, 10 , :missed)
+      expect( @board.miss?(miss_point)).to eq true
+    end
+
+    it 'should return false if the point was not a miss' do
+      miss_point = Battleship::Point.new(1, 9 , :missed)
+      expect( @board.miss?(miss_point)).to eq false
+    end
+  end
+
+  describe '#point_at(row, col)' do
+    it 'should return the point with those attributes' do
+      row = 1
+      col = 1
+
+      point = @board.point_at(row, col)
+
+      expect(point.row).to eq row
+      expect(point.col).to eq col
+    end
+  end
+
+  describe '#abs_freq_at(point)' do
+    it'should return the number of possible hits' do
+      point_of_interest = Battleship::Point.new(1, 1, :missed)
+      expect(@board.abs_freq_at(point_of_interest)).to eq 2
+    end
+  end
+
+  describe '#best_targets' do
+    it 'returns the points with the highest likelihood of overlapping with a ship' do
+      def has_point(some_point, occupied_points)
+        occupied_points.any? {|point| point.row == some_point.row && point.col == some_point.col}
+      end
+      expect(has_point(Battleship::Point.new(1,5), @board.best_targets)).to eq true
+      expect(has_point(Battleship::Point.new(2,7), @board.best_targets)).to eq true
+      expect(has_point(Battleship::Point.new(3,3), @board.best_targets)).to eq true
+      expect(has_point(Battleship::Point.new(4,9), @board.best_targets)).to eq true
+      expect(has_point(Battleship::Point.new(5,1), @board.best_targets)).to eq true
+      expect(has_point(Battleship::Point.new(5,3), @board.best_targets)).to eq true
+      expect(has_point(Battleship::Point.new(6,10), @board.best_targets)).to eq true
+      expect(has_point(Battleship::Point.new(8,3), @board.best_targets)).to eq true
+      expect(has_point(Battleship::Point.new(8,6), @board.best_targets)).to eq true
+      expect(has_point(Battleship::Point.new(8,8), @board.best_targets)).to eq true
+      expect(has_point(Battleship::Point.new(10,6), @board.best_targets)).to eq true
+    end
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+module Battleship
+  class Table
+    include Enumerable
+
+    attr_reader :row_length, :col_length
+
+    def initialize(hash)
+      @row_length = hash.fetch(:row_length)
+      @col_length = hash.fetch(:col_length)
+      @ships = hash.fetch(:ships)
+      @misses = hash.fetch(:misses)
+      recreate!
+    end
+
+    def max_abs_freq
+      self.max {|point1, point2| point1.abs_freq <=> point2.abs_freq}.abs_freq
+    end
+
+    def rows
+      @table
+    end
+
+    def recreate!
+      @table = (1..row_length).inject([]) do |accum1, item1 |
+        accum1 << (1..col_length).inject([]) do |accum2, item2|
+        accum2 << Battleship::Point.new(item1, item2)
+      end
+      end
+
+      @misses.each {|miss| point_at(miss).miss!}
+    end
+
+    def each(&block)
+      (1..row_length).each do |row|
+        (1..col_length).each do |col|
+          block.call(point_at([row,col]))
+        end
+      end
+    end
+
+    def sum_of_abs_freqs
+      self.inject(0) {|accum, point| accum = accum + point.abs_freq }
+    end
+
+    def recalculate_abs_freq!
+      recreate!
+
+      @ships.each do |ship|
+        ship.table = self
+        self.each do |point|
+          ship.start_at(point)
+          ship.abs_freq!
+        end
+      end
+    end
+
+    def point_at(*args)
+      args.flatten!
+      row, col = 0,0
+
+      if args.length == 1
+        point = args.first
+        row, col = point.row, point.col
+      else
+        row = args[0]
+        col = args[1]
+      end
+
+      @table[row-1][col-1]
+    end
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+require 'spec_helper'
+
+describe Battleship::Table do
+  describe '#rows' do
+    it 'should return the rows' do
+      ships = []
+      misses = []
+      hash = {row_length: 2, col_length: 1, ships: ships, misses: misses}
+      table = Battleship::Table.new(hash)
+      table.recreate!
+      expect(table.rows[0][0].row).to eq 1
+      expect(table.rows[0][0].col).to eq 1
+
+      expect(table.rows[1][0].row).to eq 2
+      expect(table.rows[1][0].col).to eq 1
+    end
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+module Battleship
+  class VerticalShip < Battleship::Ship
+    def occupies_point?(row, col)
+      starting_point.col == col &&
+        (starting_point.row...starting_point.row + @length).any? {|item| item == row}
+    end
+
+    def fully_onboard?
+      @table.row_length >= @starting_point.row - 1 + @length
+    end
+
+    def occupied_points
+      (@starting_point.row...@starting_point.row + @length).map do |row|
+        @table.point_at(row, @starting_point.col)
+      end
+    end
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+require 'spec_helper'
+
+describe Battleship::VerticalShip do
+  before do
+    @starting_point = Battleship::Point.new(1,1)
+    @table = (1..3).map do |row|
+      (1..3).map do |col|
+        Battleship::Point.new(row,col)
+      end
+    end
+
+    def @table.row_length; 3; end
+    def @table.col_length; 3; end
+    def @table.point_at(row, col)
+      self[row-1][col-1]
+    end
+    @table[2][2].miss!
+
+    def has_point(some_point, occupied_points)
+      occupied_points.any? {|point| point.row == some_point.row && point.col == some_point.col}
+    end
+  end
+
+  describe '#occupied_points' do
+    it 'returns a list of occupied points' do
+      def @table.point_at(row, col)
+        self[row-1][col-1]
+      end
+      vertical_ship = Battleship::VerticalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: @starting_point)
+
+      occupied_points = vertical_ship.occupied_points
+
+      expect(has_point(Battleship::Point.new(1,1), occupied_points)).to eq true
+      expect(has_point(Battleship::Point.new(2,1), occupied_points)).to eq true
+      expect(has_point(Battleship::Point.new(3,1), occupied_points)).to eq false
+    end
+  end
+
+  describe '#occupies_a_missed_point?' do
+    it 'returns true if ship occupies a missed point' do
+      starting_point = Battleship::Point.new(2,3)
+      vertical_ship = Battleship::VerticalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: starting_point)
+      expect(vertical_ship).to be_occupies_a_missed_point
+    end
+
+    it 'returns false if ship does not occupy a missed point' do
+      starting_point = Battleship::Point.new(1,1)
+      vertical_ship = Battleship::VerticalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: starting_point)
+      expect(vertical_ship).not_to be_occupies_a_missed_point
+    end
+  end
+
+  describe '#occupies?(point)' do
+    it 'returns true if occupies the point' do
+      vertical_ship = Battleship::VerticalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: @starting_point)
+
+      expect(vertical_ship.occupies_point?(1,1)).to eq true
+      expect(vertical_ship.occupies_point?(2,1)).to eq true
+      expect(vertical_ship.occupies_point?(3,1)).to eq false
+    end
+  end
+
+  describe '#fully_onboard?' do
+    it 'returns true if no part of the ship is off the board' do
+      vertical_ship = Battleship::VerticalShip.new(length: 2,
+                                                   orientation: :vertical,
+                                                   table: @table,
+                                                   starting_point: @starting_point)
+      expect(vertical_ship).to be_fully_onboard
+
+      vertical_ship.start_at(Battleship::Point.new(2,1))
+      expect(vertical_ship).to be_fully_onboard
+
+    end
+
+    it 'returns false if part of the ship is off the board' do
+      vertical_ship = Battleship::VerticalShip.new(length: 2,
+                                                   orientation: :vertical,
+                                                   table: @table,
+                                                   starting_point: @starting_point)
+      vertical_ship.start_at(Battleship::Point.new(3,1))
+      expect(vertical_ship).not_to be_fully_onboard
+    end
+  end
+
+  describe '#abs_freq!' do
+    it 'should update the values of occupied points' do
+      vertical_ship = Battleship::VerticalShip.new(length: 2,
+                                                   orientation: :vertical,
+                                                   table: @table,
+                                                   starting_point: @starting_point)
+      vertical_ship.abs_freq!
+      expect(@table.point_at(1,1).abs_freq).to eq 1
+    end
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+module Battleship
+  class HorizontalShip < Battleship::Ship
+    def fully_onboard?
+      @table.col_length >= @starting_point.col - 1 + @length
+    end
+
+    def occupies_point?(row, col)
+      starting_point.row == row &&
+        (starting_point.col...starting_point.col + @length).any? {|item| item == col}
+    end
+
+    def occupied_points
+      (@starting_point.col...@starting_point.col + @length).map do |col|
+        @table.point_at(@starting_point.row, col)
+      end
+    end
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+require 'spec_helper'
+
+describe Battleship::HorizontalShip do
+  before do
+    @starting_point = Battleship::Point.new(1,1)
+    @table = (1..3).map do |row|
+      (1..3).map do |col|
+        Battleship::Point.new(row,col)
+      end
+    end
+
+    def @table.row_length; 3; end
+    def @table.col_length; 3; end
+    def has_point(some_point, occupied_points)
+      occupied_points.any? {|point| point.row == some_point.row && point.col == some_point.col}
+    end
+    @table[2][2].miss!
+
+    def @table.point_at(row, col)
+      self[row-1][col-1]
+    end
+  end
+
+  describe '#occupies?(point)' do
+    it 'returns true if occupies the point' do
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: @starting_point)
+
+      expect(horizontal_ship.occupies_point?(1,1)).to eq true
+      expect(horizontal_ship.occupies_point?(1,2)).to eq true
+      expect(horizontal_ship.occupies_point?(1,3)).to eq false
+    end
+  end
+
+  describe '#occupied_points' do
+    it 'returns a list of occupied points' do
+      def @table.point_at(row, col)
+        self[row-1][col-1]
+      end
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: @starting_point)
+
+      occupied_points = horizontal_ship.occupied_points
+
+      expect(has_point(Battleship::Point.new(1,1), occupied_points)).to eq true
+      expect(has_point(Battleship::Point.new(1,2), occupied_points)).to eq true
+      expect(has_point(Battleship::Point.new(1,3), occupied_points)).to eq false
+    end
+  end
+
+  describe '#occupies_a_missed_point?' do
+    it 'returns true if ship occupies a missed point' do
+      starting_point = Battleship::Point.new(3,2)
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: starting_point)
+      expect(horizontal_ship).to be_occupies_a_missed_point
+    end
+
+    it 'returns false if ship does not occupy a missed point' do
+      starting_point = Battleship::Point.new(2,2)
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: starting_point)
+      expect(horizontal_ship).not_to be_occupies_a_missed_point
+    end
+  end
+
+  describe '#occupies_valid_points?' do
+    it 'returns true if all points are valid' do
+      starting_point = Battleship::Point.new(1,1)
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: starting_point)
+      expect(horizontal_ship).to be_occupies_valid_points
+    end
+
+    it 'returns false if some points are not valid' do
+      starting_point = Battleship::Point.new(3,3)
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: starting_point)
+      expect(horizontal_ship).not_to be_occupies_valid_points
+    end
+  end
+
+  describe '#fully_onboard?' do
+    it 'returns true if no part of the ship is off the board' do
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: @starting_point)
+      expect(horizontal_ship).to be_fully_onboard
+
+      horizontal_ship.start_at(Battleship::Point.new(1,2))
+      expect(horizontal_ship).to be_fully_onboard
+    end
+
+    it 'returns false if part of the ship is off the board' do
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: @starting_point)
+      horizontal_ship.start_at(Battleship::Point.new(1,3))
+      expect(horizontal_ship).not_to be_fully_onboard
+    end
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+module Battleship
+  class Ship
+    attr_reader :orientation, :starting_point
+    attr_accessor :table
+
+    def initialize(hash)
+      @length = hash.fetch(:length)
+      @table = hash.fetch(:table) { :no_table_initialized }
+      @starting_point = hash.fetch(:starting_point) { :no_starting_point }
+    end
+
+    def start_at(point)
+      @starting_point = point
+    end
+
+    def occupies_valid_points?
+      fully_onboard? && !occupies_a_missed_point?
+    end
+
+    def occupies_a_missed_point?
+      occupied_points.any? {|point| point.missed? }
+    end
+
+    def abs_freq!
+      occupied_points.each {|point| point.abs_freq += 1} if self.occupies_valid_points?
+    end
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+require 'spec_helper'
+
+describe Battleship::Ship do
+  before do
+    @starting_point = Battleship::Point.new(1,1)
+    @table = (1..3).map do |row|
+      (1..3).map do |col|
+        Battleship::Point.new(row,col)
+      end
+    end
+
+    def @table.row_length; 3; end
+    def @table.col_length; 3; end
+  end
+
+  describe '#occupies?(point)' do
+    it 'returns true if occupies the point' do
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: @starting_point)
+
+      expect(horizontal_ship.occupies_point?(1,1)).to eq true
+      expect(horizontal_ship.occupies_point?(1,2)).to eq true
+      expect(horizontal_ship.occupies_point?(1,3)).to eq false
+    end
+  end
+
+  describe '#occupied_points' do
+    it 'returns a list of occupied points' do
+      def @table.point_at(row, col)
+        self[row-1][col-1]
+      end
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: @starting_point)
+
+      occupied_points = horizontal_ship.occupied_points
+      def has_point(some_point, occupied_points)
+        occupied_points.any? {|point| point.row == some_point.row && point.col == some_point.col}
+      end
+
+      expect(has_point(Battleship::Point.new(1,1), occupied_points)).to eq true
+      expect(has_point(Battleship::Point.new(1,2), occupied_points)).to eq true
+      expect(has_point(Battleship::Point.new(1,3), occupied_points)).to eq false
+    end
+  end
+
+  describe '#fully_onboard?' do
+    it 'returns true if no part of the ship is off the board' do
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: @starting_point)
+      expect(horizontal_ship).to be_fully_onboard
+
+      horizontal_ship.start_at(Battleship::Point.new(1,2))
+      expect(horizontal_ship).to be_fully_onboard
+
+    end
+
+    it 'returns false if part of the ship is off the board' do
+      horizontal_ship = Battleship::HorizontalShip.new(length: 2,
+                                                       table: @table,
+                                                       starting_point: @starting_point)
+      horizontal_ship.start_at(Battleship::Point.new(1,3))
+      expect(horizontal_ship).not_to be_fully_onboard
+    end
+
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+module Battleship
+  class Point
+    attr_reader :row, :col
+    attr_accessor :abs_freq
+
+    def initialize(row, col, *args)
+      @row = row
+      @col = col
+      @abs_freq = 0
+      @state = args.first || :untried
+    end
+
+    def hit!
+      @state = :hit
+    end
+
+    def hit?
+      @state == :hit
+    end
+
+    def miss!
+      @state = :missed
+    end
+
+    def missed?
+      @state == :missed
+    end
+
+    def untried?
+      @state == :untried
+    end
+
+    def same_as?(point)
+      row == point.row && col == point.col
+    end
+  end
+end
+
+{% endhighlight %}
+
+{% highlight ruby linenos %}
+require 'spec_helper'
+
+describe Battleship::Point do
+  describe '#row' do
+    it 'should return the row' do
+      bp = Battleship::Point.new(1,2)
+      expect(bp.row).to eq 1
+    end
+  end
+
+  describe '#col' do
+    it 'should return the col' do
+      bp = Battleship::Point.new(1,2)
+      expect(bp.col).to eq 2
+    end
+  end
+
+  describe '#miss!' do
+    it 'sets the state of the point to :miss' do
+      bp = Battleship::Point.new(1,2)
+      bp.miss!
+
+      expect(bp).to be_missed
+    end
+  end
+
+  describe '#same_as?(point)' do
+    it 'should be true if point has the same coordinates as the given point' do
+      bp = Battleship::Point.new(1,2)
+      expect(bp.same_as?(bp)).to eq true
+    end
+  end
+
+  describe '#hit!' do
+    it 'sets the state of the point to :hit' do
+      bp = Battleship::Point.new(1,2)
+      bp.hit!
+
+      expect(bp).to be_hit
+    end
+  end
+
+  it 'should be untried at first' do
+    bp = Battleship::Point.new(1,2)
+    expect(bp).to be_untried
+  end
+
+  it 'can be initialized to being missed' do
+    bp = Battleship::Point.new(1,2, :missed)
+    expect(bp).to be_missed
+  end
+end
+
+{% endhighlight %}
+  <script src="http://d3js.org/d3.v3.js"></script>
+  <script type="text/javascript">
+  var unprocessed_data = [[0.3333333333333333, 0.3333333333333333, 0.6666666666666666, 0.6666666666666666, 1.0, 0.6666666666666666, 0.6666666666666666, 0.3333333333333333, 0.3333333333333333, 0.0], [0.3333333333333333, 0.0, 0.5, 0.3333333333333333, 0.6666666666666666, 0.6666666666666666, 1.0, 0.5, 0.6666666666666666, 0.3333333333333333], [0.6666666666666666, 0.5, 1.0, 0.5, 0.6666666666666666, 0.3333333333333333, 0.5, 0.0, 0.5, 0.3333333333333333], [0.6666666666666666, 0.3333333333333333, 0.6666666666666666, 0.0, 0.3333333333333333, 0.3333333333333333, 0.6666666666666666, 0.5, 1.0, 0.6666666666666666], [1.0, 0.5, 1.0, 0.16666666666666666, 0.3333333333333333, 0.0, 0.3333333333333333, 0.3333333333333333, 0.6666666666666666, 0.6666666666666666], [0.8333333333333334, 0.3333333333333333, 0.8333333333333334, 0.0, 0.0, 0.3333333333333333, 0.3333333333333333, 0.6666666666666666, 0.6666666666666666, 1.0], [0.6666666666666666, 0.3333333333333333, 0.6666666666666666, 0.0, 0.0, 0.16666666666666666, 0.0, 0.5, 0.3333333333333333, 0.6666666666666666], [0.6666666666666666, 0.5, 1.0, 0.6666666666666666, 0.8333333333333334, 1.0, 0.6666666666666666, 1.0, 0.5, 0.6666666666666666], [0.3333333333333333, 0.0, 0.5, 0.3333333333333333, 0.3333333333333333, 0.5, 0.3333333333333333, 0.5, 0.0, 0.3333333333333333], [0.3333333333333333, 0.3333333333333333, 0.6666666666666666, 0.6666666666666666, 0.8333333333333334, 1.0, 0.6666666666666666, 0.6666666666666666, 0.3333333333333333, 0.3333333333333333]]
+  var row_length = unprocessed_data[0].length
+  var col_length = unprocessed_data.length
+  var data = []
+  for (row=0; row< row_length; row++) {
+    for (col=0; col< col_length; col++) {
+      data.push({score: unprocessed_data[col][row], row: row, col: col})
+    }
+  }
+
+//height of each row in the heatmap
+//width of each column in the heatmap
+var gridSize = 20,
+    h = gridSize,
+    w = gridSize,
+    rectPadding = 60;
+
+var colorLow = 'green', colorMed = 'yellow', colorHigh = 'red';
+
+var margin = {top: 20, right: 80, bottom: 30, left: 50},
+    width = 300 - margin.left - margin.right,
+    height = 230 - margin.top - margin.bottom;
+
+  var colorScale = d3.scale.linear()
+.domain([-1, 0, 1])
+  .range([colorLow, colorMed, colorHigh]);
+
+  var svg = d3.select("#heatmap").append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var heatMap = svg.selectAll(".heatmap")
+  .data(data, function(d) { return d.col + ':' + d.row; })
+  .enter().append("svg:rect")
+  .attr("x", function(d) { return d.row * w; })
+  .attr("y", function(d) { return d.col * h; })
+  .attr("width", function(d) { return w; })
+  .attr("height", function(d) { return h; })
+  .style("fill", function(d) { return colorScale(d.score); });
+
+  </script>
