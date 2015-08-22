@@ -1,4 +1,4 @@
-# Personal Solutions to David Barber's Bayesian Reasoning and Machine Learning
+# Personal Solutions to David Barber's Bayesian Reasoning and Machine Learning (Chapter 1)
 
 I've decided to post my solutions to the problems in David Barber's Bayesian
 Reasoning and Machine Learning book. My hope is that people who are in
