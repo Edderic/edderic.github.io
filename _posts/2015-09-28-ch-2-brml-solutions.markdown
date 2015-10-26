@@ -298,3 +298,83 @@ inside the \\(N\\)-gons. See the third and fourth example below.
 </figcaption>
 </figure>
 
+
+## Exercise 2.9
+
+Let \\(N\\) be divisible by \\(3\\). Construct a graph with \\(N\\) nodes by partitioning the
+nodes into \\(N/3\\) subsets, each subset containing \\(3\\) nodes. Then connect all nodes,
+provided they are not in the same subset. Show that such a graph has \\(3N/3\\)
+maximal cliques. This shows that a graph can have an exponentially large number
+of maximal cliques.
+
+### Ans
+
+When \\(N\\) is greater than \\(3\\) and is divisible by \\(3\\), for any arbitrary graph,
+it seems that we will have \\(3N/3\\) maximal cliques. One can see that the second and third
+examples below show the exponential growth.
+
+<figure>
+   <img src="/images/exponential-growth-of-maximal-cliques.svg" alt="Exponential growth of maximal cliques">
+<figcaption>Exponential growth of maximal cliques
+</figcaption>
+</figure>
+
+## Exercise 2.10
+
+A jewel was stolen from a room during a party. Each of the guests
+(\\(A\\),\\(B\\),\\(C\\),\\(D\\),\\(E\\),\\(F\\)) enters the room, stays for
+some time, and leaves. The testimonies they gave to the police are:
+
+1. \\(A\\): I was present in the room with \\(E\\), \\(B\\)
+2. \\(B\\): I was present in the room with \\(A\\), \\(F\\) and \\(E\\)
+3. \\(C\\): I was present in the room with \\(F\\) and \\(D\\)
+4. \\(D\\): I was present in the room with \\(A\\) and \\(F\\)
+5. \\(E\\): I was present in the room with \\(C\\)
+6. \\(F\\): I was present in the room with \\(C\\) and \\(E\\)
+
+One of the statements in the testimonies is false. Which is it?
+
+Notes:
+
+If any two people are present in the room at the same time, then at least one
+of them will report the fact that he was present in the room with the other
+person. Each above testimony should be interpreted as, for example:
+
+\\(A\\): I was present in the room with \\(E\\). I was present in the room with
+\\(B\\). It does not necessarily mean that A was simultaneously present in the
+room with both \\(E\\) and \\(B\\) (so \\(A\\) and \\(B\\) could have been
+present in the room at some time \\(t_1\\), and \\(A\\) and \\(E\\) present in
+the room at some other time \\(t_2\\). The other testimonies have a similar
+interpretation.
+
+The testimonies could be partially false. If \\(X\\) says that he was present in the
+room with \\(Y\\) and \\(Z\\), it could be that the statement \\(X\\) was present in the room
+with \\(Y\\) is true, but X was present in the room with \\(Z\\) is false.
+
+<figure>
+   <img src="/images/all-testimonies-jewelry.svg" alt="All testimonies">
+<figcaption>All testimonies</figcaption>
+</figure>
+
+The direction of an arrow depicts who is claiming to have been with whom.
+For example, \\(A\\) pointing to \\(B\\) means that \\(A\\) claimed to
+be with person \\(B\\).
+
+Since we know that only one statement is false, we can assume that
+bidirectional edges are true (e.g. both \\(A\\) and \\(B\\) were definitely
+together). Both statements have to be true because if one person were lying,
+then the other person must have lied too, which violates the constraint that
+only one statement is false. Thus, we know that \\(A\\) must have been in the
+room with \\(B\\), and \\(F\\) and \\(C\\) must also have been together.
+
+
+<figure>
+   <img src="/images/d_lied_about_being_with_a_and_f.svg" alt="D lied about being with A and F">
+<figcaption>D lied about being with A and F</figcaption>
+</figure>
+
+We know that \\(D\\) lied about being with \\(A\\) and \\(F\\) because if \\(D\\)
+was actually with \\(A\\) and \\(F\\), then \\(D\\) would have to have been in
+the room with \\(B\\) and \\(E\\) as well, but \\(D\\) did not say anything
+about being with those two, and vice versa. Therefore, we should be more
+suspicious of \\(D\\).
