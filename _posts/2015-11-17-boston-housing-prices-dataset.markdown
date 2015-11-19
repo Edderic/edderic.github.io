@@ -1,6 +1,7 @@
 # Project 1: Boston Housing Prices Dataset
 
 This project is part of Udacity's Machine Learning Nanodegree.
+My solutions to the code is [https://github.com/Edderic/udacity-machine-learning-nanodegree/blob/master/p1-boston-housing-prices/boston_housing_students.py](https://github.com/Edderic/udacity-machine-learning-nanodegree/blob/master/p1-boston-housing-prices/boston_housing_students.py)
 
 ### Task
 
@@ -161,5 +162,5 @@ GridSearch with DecisionTreeRegressor and an \\(80/20\\) split of training and
 test sets gives us a prediction of \\($21,629.74\\). This is only about
 \\($400\\) more than the median, and about \\($900\\) less than the mean.
 Given the features of the house, relative to other houses, \\(\approx
-$21,600.00\\) is a good, *fair* price to sell,
+$21,600.00\\) is a good, *fair* price to sell.
 
