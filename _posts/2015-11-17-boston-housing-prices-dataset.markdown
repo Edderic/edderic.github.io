@@ -45,7 +45,7 @@ We use the Mean Squared Error (`MSE`) as a performance metric. The main reason
 we are using it is because of implementation necessities.  The regressor of
 choice for this project is Scikit's DecisionTree Regressor, which only works
 with `MSE` (and does not work with other metrics like Mean Absolute Error
-(`MAE`)). The regressor might be exploiting the fact that `MSE` is
+(`MAE`)) See 'criterion' at [http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html](http://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html). The regressor might be exploiting the fact that `MSE` is
 differentiable (i.e. the local minima of the error function can be found by
 finding the point where the derivative of the `MSE` is zero and the second
 derivative is positive).
@@ -71,7 +71,8 @@ It lets us reappropriate test data for training data, and vice versa, and gives
 us an averaged score, so it's accuracy should be more robust than the former.
 The specific variations of `k-fold` cross validation, such as `Stratified
 k-fold` and `Label k-fold` do not apply to our problem because they are meant
-for classification problems, not regression problems.
+for classification problems, not regression problems. See the following for an
+example: [http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedKFold.html#sklearn.cross_validation.StratifiedKFold](http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedKFold.html#sklearn.cross_validation.StratifiedKFold)
 
 #### What does grid search do and why might you want to use it?
 
@@ -83,6 +84,7 @@ combinations of those parameters and gives us the values of the parameters that
 optimize the scoring function. This is a methodical, automatic way to find the
 best values for the parameters that could save Machine Learning practitioners
 time. It is especially helpful when there are so many parameters to tweak.
+Learn more about GridSearch here: [http://scikit-learn.org/stable/modules/generated/sklearn.grid_search.GridSearchCV.html](http://scikit-learn.org/stable/modules/generated/sklearn.grid_search.GridSearchCV.html)
 
 ## III: Analyzing Model Performance
 
