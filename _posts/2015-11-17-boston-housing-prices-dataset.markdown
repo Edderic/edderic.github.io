@@ -163,7 +163,7 @@ $$
 GridSearch with DecisionTreeRegressor and an \\(80/20\\) split of training and
 test sets gives us a prediction of \\($21,629.74\\). This is only about
 \\($400\\) more than the median, and about \\($900\\) less than the mean. The
-suggested price is within \\(1-\\)-standard deviation of the mean, so the price
+suggested price is within \\(1\\)-standard deviation of the mean, so the price
 definitely does not seem like it might be an outlier that might warrant
 stringent inquiry. Thus, given the features of the house, relative to other
 houses, \\(\approx $21,600.00\\) is a good, *fair* price to sell.
