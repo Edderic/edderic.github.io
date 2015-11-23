@@ -1,7 +1,7 @@
 # Project 1: Boston Housing Prices Dataset
 
 This project is part of Udacity's Machine Learning Nanodegree.
-My solutions to the code is [https://github.com/Edderic/udacity-machine-learning-nanodegree/blob/master/p1-boston-housing-prices/boston_housing_students.py](https://github.com/Edderic/udacity-machine-learning-nanodegree/blob/master/p1-boston-housing-prices/boston_housing_students.py)
+My solutions to the code is located at [https://github.com/Edderic/udacity-machine-learning-nanodegree/blob/master/p1-boston-housing-prices/boston_housing_students.py](https://github.com/Edderic/udacity-machine-learning-nanodegree/blob/master/p1-boston-housing-prices/boston_housing_students.py)
 
 ### Task
 
