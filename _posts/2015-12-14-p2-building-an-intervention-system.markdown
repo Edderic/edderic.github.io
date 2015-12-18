@@ -280,7 +280,5 @@ The best alpha seems to hover in the range of \\(31.1 \pm 17.8\\).
 | 75%     |  0.812500
 | max     |  0.870968
 
-It seems that we could safely say that the \\(F1\\) score would hover around
-\\(79 \%\\) to \\(80 \%\\), since the mean in around that, and the standard
-deviation is a couple of percentages.
+The \\(F1\\) score seems to hover around \\(79.6 \% \pm 0.029\\).
 
