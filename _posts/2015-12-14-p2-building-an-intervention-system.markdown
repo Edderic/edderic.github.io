@@ -65,42 +65,53 @@ features, including the target feature \\(passed\\). Out of those \\(395\\) stud
 
 We have several issues with this dataset. Namely, they are 1) the dataset
 having lots more of one target class than the other, and 2) we have so many
-features but so relative to the number of training instances, which make our
-models more likely to suffer overfitting.
+features but so relative to the number of training instances, which might make
+our models more likely to suffer overfitting.
 
 First of all, the labels are imbalanced.  Instead of having similar amounts of
-students who passed and students who failed, we have significantly much more of
-the latter than the former. Assuming that the test set has the same
-distribution of \\(passed\\) as the training set (e.g. we have much more
-students who are likely to pass than students who are unlikely), and assuming
-that we are using the accuracy metric, we will probably score "well" just by
-predicting each point in the test set as passing. However, we cannot assume
-that the distribution of incoming students is going to be the same. It is
-possible that next year's batch of students really do have a lot more students
-that might need intervention, for some reason. In such situations, a model that
-is "trigger happy" in labeling students as "likely to pass" means that our
-model  is most likely to perform poorly.  Thus we should use the \\(F1\\)
-score, which takes into account the precision and recall scores -- they factor
-false positives and false negatives into the equation, and further give us
-insight as to how our machine learning model is performing. For the students
-that it is labelling incorrectly, is it more likely to claim that students who
-have passed the exam were going to fail the exam (i.e. false negative)? Or is
-it the other way around -- does it think that students who have failed the exam
-were successful (i.e. false positive)?  \\(F1\\) score in this case will give
-us more nuanced insights than the accuracy metric.
+students who passed and students who failed, we have a bit  more of the latter
+than the former. Assuming that the test set has the same distribution of
+\\(passed\\) as the training set (e.g. we have much more students who are
+likely to pass than students who are unlikely), and assuming that we are using
+the accuracy metric, we will probably score "well" just by predicting each
+point in the test set as passing. However, we cannot assume that the
+distribution of incoming students is going to be the same. It is possible that
+next year's batch of students really do have a lot more students that might
+need intervention, for some reason. In such situations, a model that is
+"trigger happy" in labeling students as "likely to pass" means that our model
+is most likely to perform poorly.  Thus we should use the \\(F1\\) score, which
+takes into account the precision and recall scores -- they factor false
+positives and false negatives into the equation, and further give us insight as
+to how our machine learning model is performing. For the students that it is
+labelling incorrectly, is it more likely to claim that students who have passed
+the exam were going to fail the exam (i.e. false negative)? Or is it the other
+way around -- does it think that students who have failed the exam were
+successful (i.e. false positive)?  \\(F1\\) score in this case will give us
+more nuanced insights than the accuracy metric.
+
+A reason to worry about the labels being unbalanced is that some models are
+likely to perform poorly. Support Vector Machines (SVMs) are one example.  See
+the following:
+[http://scikit-learn.org/stable/auto_examples/svm/plot_separating_hyperplane_unbalanced.html](http://scikit-learn.org/stable/auto_examples/svm/plot_separating_hyperplane_unbalanced.html)
+Another consideration that is highlighted by unbalanced data is how we split
+the data into training and test sets. Simply splitting the data without regards
+to the balance of target feature could yield wildly different results. For
+example, imagine that a simple training and test split coming from
+`train_test_split` function might give us a training set that consists of
+students who have passed the final exam, and the testing set only consisted of
+students that didn't. Performance would probably be poor, given that the
+training and testing set distributions could not be any more different. In these
+cases, it is advised that we use cross-validation strategies that take unbalanced
+data into account. [http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html](http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedShuffleSplit.html) [http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedKFold.html](http://scikit-learn.org/stable/modules/generated/sklearn.cross_validation.StratifiedKFold.html) In this project, I used Stratified Shuffle Split, which
+makes sure that the training and testing sets have about the equal ratio of passed vs. failed students. It also shuffles to remove the bias that ordering of students might have in
+the dataset.
 
 Second of all, overfitting might be a strong possibility. The number of
 training instances needed to accurately classify or predict a target feature
 correctly increases exponentially as we increase the number of features. This
-is also known as the Curse of Dimensionality. Just to get a sense of the total
-number of possible combinations that each feature can have, which we can use to
-determine the appropriate size of the training set, we can assume the
-simplifying assumption that each feature can take in binary values. Many
-actually are not binary and take in more than two values, but the general point
-is not lost.  If they were all binary, then we would have \\(2^{31}\\) possible
-combinations, or \\(2,147,483,648\\), which is orders of magnitude bigger than
-the size of our data. Theoretically speaking, we would need about that many
-instances to classify students very accurately.
+is also known as the Curse of Dimensionality. See [https://en.wikipedia.org/wiki/Curse_of_dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality) We only have a
+relatively small number of training instances to consider. More data is generally
+better than less data, and we don't have that advantage here.
 
 ### 4. Training and Evaluating Models
 
@@ -109,7 +120,15 @@ compared to the number of features which might lead to models easily
 overfitting, and having imbalanced target features) and requirements of the
 school (i.e.  we want a classifier that is correct as much as possible and
 takes the least amount of space and time), the three models I chose were Random
-Forest, Ada Boost, and Multinomial Naïve Bayes.
+Forest, Ada Boost, and Multinomial Naïve Bayes. I decided to run each algorithm
+ten times instead of just once, in the process displaying the averaged training
+time, prediction time, and \\(F1\\) scores. I thought that it would be a good
+idea because it is possible that the models during training and testing might
+return different timing values due to garbage collection (or some other system
+process) in Python. More importantly, running the algorithms several times with
+different training and testing splits would address the issue of having small
+number of training instances, and might improve performance of the models
+overall.
 
 ```
 RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
@@ -124,10 +143,10 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
 |----------------------------|:-----------------:|:-------------:|:---------:|
 |                            |       *100*       |    *200*      | *300*     |
 |----------------------------|:-----------------:|:-------------:|:---------:|
-|Training time (secs)        | 0.013899          | 0.015723      | 0.017796  |
-|Prediction time (secs)      | 0.002034          | 0.001829      | 0.001538  |
-|F1 Score for training set   | 0.999259          | 1.000000      | 0.999513  |
-|F1 Score for test set       | 0.760050          | 0.781566      | 0.775048  |
+|Training time (secs)        | 0.012380          | 0.014373      | 0.016358  |
+|Prediction time (secs)      | 0.001203          | 0.001225      | 0.001284  |
+|F1 Score for training set   | 0.999259          | 1.000000      | 0.999504  |
+|F1 Score for test set       | 0.759810          | 0.784500      | 0.766378  |
 
 To address overfitting, the first model I picked was Random Forest. Random
 Forest divides the training set into smaller ones, and trains a bunch of
@@ -154,10 +173,10 @@ AdaBoostClassifier(algorithm='SAMME.R', base_estimator=None,
 |----------------------------|:-----------------:|:-------------:|:---------:|
 |                            |       *100*       |    *200*      |  *300*    |
 |----------------------------|:-----------------:|:-------------:|:---------:|
-|Training time (secs)        | 0.002103          | 0.002333      |  0.002417 |
-|Prediction time (secs)      | 0.000470          | 0.000426      |  0.000324 |
-|F1 Score for training set   | 0.826667          | 0.835526      |  0.829876 |
-|F1 Score for test set       | 0.781038          | 0.804124      |  0.800000 |
+|Training time (secs)        | 0.001782          | 0.002021      |  0.002200 |
+|Prediction time (secs)      | 0.000294          | 0.000300      |  0.000297 |
+|F1 Score for training set   | 0.836797          | 0.821001      |  0.818734 |
+|F1 Score for test set       | 0.787321          | 0.798216      |  0.808246 |
 
 
 To address imbalanced data, I thought of using AdaBoost. One fear I had was
@@ -184,10 +203,10 @@ MultinomialNB(alpha=10, class_prior=None, fit_prior=True)
 |----------------------------|:-----------------:|:-------------:|:---------:|
 |                            |       *100*       |    *200*      |  *300*    |
 |----------------------------|:-----------------:|:-------------:|:---------:|
-|Training time (secs)        | 0.000732          | 0.000665      |  0.000798 |
-|Prediction time (secs)      | 0.000146          | 0.000114      |  0.000128 |
-|F1 Score for training set   | 0.802469          | 0.840125      |  0.815145 |
-|F1 Score for test set       | 0.806723          | 0.795987      |  0.802919 |
+|Training time (secs)        | 0.000610          | 0.000668      |  0.000736 |
+|Prediction time (secs)      | 0.000106          | 0.000099      |  0.000101 |
+|F1 Score for training set   | 0.820898          | 0.800323      |  0.802214 |
+|F1 Score for test set       | 0.810732          | 0.805823      |  0.789492 |
 
 
 The third model I used was Naïve Bayes. It is relatively quick to train and
@@ -201,12 +220,13 @@ and in this case, it looks like it works.
 
 #### 5. Choosing the Best Model
 
-The best model out of these three is clearly the Naïve Bayes model. It has the
-best \\(F1\\) score, and is significantly faster than both of the other models
-I've tried.  It is \\(\approx 3\\) times faster than AdaBoost (with \\(3\\)
-estimators) on training and prediction, and \\(\approx 25\\) times faster than
-RandomForest with \\(30\\) estimators on training and \\(\approx 12\\) times on
-prediction.
+The best performing model out of these three in terms of \\(F1\\) score is
+AdaBoost. However, it is only marginally better than the other two. The best
+overall performing model, however, is Naïve Bayes. It is significantly faster
+than both of the other models I've tried.  It is \\(\approx 3\\) times faster
+than AdaBoost (with \\(3\\) estimators) on training and prediction, and
+\\(\approx 23\\) times faster than RandomForest with \\(30\\) estimators on
+training and \\(\approx 12\\) times on prediction.
 
 In layman's terms, Naïve Bayes, in our case, basically tries to calculate a
 student's probability of succeeding on the final test given what we know about
@@ -217,18 +237,50 @@ assumptions that are "simple", relative to what we know of the causal
 relationships in the world we are operating. More precisely, it assumes that
 qualities of a student are entirely independent (e.g. a student being really
 poor and a student having internet access at home are assumed to not be related
-at all, even though they might really be strongly correlated or even have
+at all, even though they might really be strongly correlated or even be
 causally related). A lot of times, this reductionist, simplistic view actually
 (and surprisingly) works well in practice when trying to predict an outcome.
 
+The way I calculated the final \\(F1\\) score of the Naïve Bayes classifier is
+by running it with `GridSearchCV` a hundred times and averaging the \\(F1\\)
+score.  I chose to do this because the `StratifyShuffleSplit` cross-validation
+approach to split the dataset into training and test sets has a randomization
+(shuffling) component before it gets fed into `GridSearchCV` (which uses
+cross-validation internally on the training set I supplied). The alphas I chose
+are as follows:
+
 ```
-GridSearchCV(cv=None, error_score='raise',
-       estimator=MultinomialNB(alpha=10, class_prior=None, fit_prior=True),
-       fit_params={}, iid=True, loss_func=None, n_jobs=1,
-       param_grid={'alpha': [10, 20, 25, 30, 32.5, 35, 40, 50]},
-       pre_dispatch='2*n_jobs', refit=True, score_func=None, scoring='f1',
+[0.01, 0.05 ,0.1, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60]
 ```
 
-The final \\(F1\\) score, when alpha was \\(30\\), turned out to be about
-\\(0.806\\), only slightly better than when the training set size was \\(300\\)
-and the alpha was \\(10\\).
+Here are the results:
+
+|Alphas | |
+| ----------|-----------
+|count   |100.000000
+|mean    | 31.101000
+|std     | 17.815777
+|min     |  0.100000
+|25%     | 15.000000
+|50%     | 25.000000
+|75%     | 50.000000
+|max     | 60.000000
+
+The best alpha seems to hover in the range of \\(31.1 \pm 17.8\\).
+
+
+| F1 Scores | |
+| ----------|-----------
+|  count  |  100.000000
+| mean    |  0.796050
+| std     |  0.028908
+| min     |  0.701754
+| 25%     |  0.780853
+| 50%     |  0.805970
+| 75%     |  0.812500
+| max     |  0.870968
+
+It seems that we could safely say that the \\(F1\\) score would hover around
+\\(79 \%\\) to \\(80 \%\\), since the mean in around that, and the standard
+deviation is a couple of percentages.
+
