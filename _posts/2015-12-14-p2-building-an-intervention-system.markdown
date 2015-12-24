@@ -60,7 +60,7 @@ student, but instead, we only know whether a student failed or passed.
 ### 2. Exploring the Data
 
 In the dataset, there are \\(395\\) total students. There are \\(31\\) total
-features, including the target feature \\(passed\\). Out of those \\(395\\) students,
+features, including the target label \\(passed\\). Out of those \\(395\\) students,
 \\(265\\) passed and \\(130\\) failed. Graduation rate, then, hovered around \\(67\%\\).
 
 We have several issues with this dataset. Namely, they are 1) the dataset
@@ -95,7 +95,7 @@ the following:
 [http://scikit-learn.org/stable/auto_examples/svm/plot_separating_hyperplane_unbalanced.html](http://scikit-learn.org/stable/auto_examples/svm/plot_separating_hyperplane_unbalanced.html)
 Another consideration that is highlighted by unbalanced data is how we split
 the data into training and test sets. Simply splitting the data without regards
-to the balance of target feature could yield wildly different results. For
+to the balance of target label could yield wildly different results. For
 example, imagine that a simple training and test split coming from
 `train_test_split` function might give us a training set that consists of
 students who have passed the final exam, and the testing set only consisted of
@@ -107,7 +107,7 @@ makes sure that the training and testing sets have about the equal ratio of pass
 the dataset.
 
 Second of all, overfitting might be a strong possibility. The number of
-training instances needed to accurately classify or predict a target feature
+training instances needed to accurately classify or predict a target label
 correctly increases exponentially as we increase the number of features. This
 is also known as the Curse of Dimensionality. See [https://en.wikipedia.org/wiki/Curse_of_dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality) We only have a
 relatively small number of training instances to consider. More data is generally
@@ -117,7 +117,7 @@ better than less data, and we don't have that advantage here.
 
 Given the characteristics of the data (i.e. small number of training instances
 compared to the number of features which might lead to models easily
-overfitting, and having imbalanced target features) and requirements of the
+overfitting, and having imbalanced target labels) and requirements of the
 school (i.e.  we want a classifier that is correct as much as possible and
 takes the least amount of space and time), the three models I chose were Random
 Forest, Ada Boost, and Multinomial Naïve Bayes. I decided to run each algorithm
@@ -156,7 +156,7 @@ the ensemble classifier. I chose that instead of just having one decision tree
 because a decision tree tends to overfit easily. When splitting the data,
 decision trees, in their quest to max out information gain (or gini) might
 split data based on a feature even if the relationship between a feature and
-the target feature is really spurious. Using Random Forests, we enforce much
+the target label is really spurious. Using Random Forests, we enforce much
 shallower trees and hence prevent overfitting. A slight con of Random Forests
 is that it is a bit more complex under the hood than just a decision tree, so
 it might be harder to explain to someone how the ensemble is reaching a certain
@@ -255,30 +255,29 @@ are as follows:
 
 Here are the results:
 
-|Alphas | |
+|Alphas |               |
 | ----------|-----------
-|count   |100.000000
-|mean    | 31.101000
-|std     | 17.815777
-|min     |  0.100000
-|25%     | 15.000000
-|50%     | 25.000000
-|75%     | 50.000000
-|max     | 60.000000
+| count   | 100.000000
+| mean    |  34.100000
+| std     |  18.550777
+| min     |   5.000000
+| 25%     |  15.000000
+| 50%     |  27.500000
+| 75%     |  50.000000
+| max     |  60.000000
 
-The best alpha seems to hover in the range of \\(31.1 \pm 17.8\\).
-
+The best alpha seems to hover in the range of \\(34.1 \pm 18.6\\).
 
 | F1 Scores | |
 | ----------|-----------
-|  count  |  100.000000
-| mean    |  0.796050
-| std     |  0.028908
-| min     |  0.701754
-| 25%     |  0.780853
-| 50%     |  0.805970
-| 75%     |  0.812500
-| max     |  0.870968
+| count     |100.000000
+| mean      |0.799192
+| std       |0.027628
+| min       |0.701754
+| 25%       |0.787879
+| 50%       |0.805970
+| 75%       |0.812500
+| max       |0.885246
 
-The \\(F1\\) score seems to hover around \\(79.6 \% \pm 2.9 \%\\).
+The \\(F1\\) score seems to hover around \\(79.9 \% \pm 2.8 \%\\).
 
