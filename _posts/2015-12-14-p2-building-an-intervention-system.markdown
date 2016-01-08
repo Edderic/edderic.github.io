@@ -220,13 +220,14 @@ and in this case, it looks like it works.
 
 #### 5. Choosing the Best Model
 
-The best performing model out of these three in terms of \\(F1\\) score is
-AdaBoost. However, it is only marginally better than the other two. The best
-overall performing model, however, is Naïve Bayes. It is significantly faster
-than both of the other models I've tried.  It is \\(\approx 3\\) times faster
-than AdaBoost (with \\(3\\) estimators) on training and prediction, and
-\\(\approx 23\\) times faster than RandomForest with \\(30\\) estimators on
-training and \\(\approx 12\\) times on prediction.
+The best performing model out of these three, on average, in terms of \\(F1\\)
+score is AdaBoost (\\(80.8\%\\)). However, it is only marginally better than
+Random Forest (\\(76.6\%\\)) and Naïve Bayes (\\(78.9\%\\)).  The best overall
+performing model, however, is Naïve Bayes. It is significantly faster than both
+of the other models I've tried; it is \\(\approx 3\\) times faster than
+AdaBoost (with \\(3\\) estimators) on training and prediction, and \\(\approx
+23\\) times faster than RandomForest with \\(30\\) estimators on training and
+\\(\approx 12\\) times on prediction.
 
 In layman's terms, Naïve Bayes, in our case, basically tries to calculate a
 student's probability of succeeding on the final test given what we know about
@@ -246,8 +247,12 @@ by running it with `GridSearchCV` a hundred times and averaging the \\(F1\\)
 score.  I chose to do this because the `StratifyShuffleSplit` cross-validation
 approach to split the dataset into training and test sets has a randomization
 (shuffling) component before it gets fed into `GridSearchCV` (which uses
-cross-validation internally on the training set I supplied). The alphas I chose
-are as follows:
+cross-validation internally on the training set I supplied). Thus, we get
+different results depending on how the training and test sets were split. I
+wanted to find out in terms of \\(F1\\), on average, what is the best performing
+model.
+
+The alphas I chose are as follows:
 
 ```
 [0.01, 0.05 ,0.1, 1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60]
