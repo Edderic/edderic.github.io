@@ -248,9 +248,7 @@ score.  I chose to do this because the `StratifyShuffleSplit` cross-validation
 approach to split the dataset into training and test sets has a randomization
 (shuffling) component before it gets fed into `GridSearchCV` (which uses
 cross-validation internally on the training set I supplied). Thus, we get
-different results depending on how the training and test sets were split. I
-wanted to find out in terms of \\(F1\\), on average, what is the best performing
-model.
+different results depending on how the training and test sets were split.
 
 The alphas I chose are as follows:
 
@@ -284,5 +282,16 @@ The best alpha seems to hover in the range of \\(34.1 \pm 18.6\\).
 | 75%       |0.812500
 | max       |0.885246
 
-The \\(F1\\) score seems to hover around \\(79.9 \% \pm 2.8 \%\\).
+The \\(F1\\) score with `GridSearchCV` hovers around \\(79.9 \% \pm 2.8 \%\\).
+Thus, it seems to perform slightly better than the original \\(78.9\%\\) (with
+`alpha` \\(= 10\\)) sometimes, but it also does more poorly than the latter on
+other times, depending on how the training and test sets are split. From
+running `GridSearchCV`, I would use \\(34.1\\) as the final `alpha`. However,
+since we ran `GridSearchCV` with `StratifiedShuffleSplit` many times, it is
+possible that this alpha value, which gives us marginally better discriminatory
+power (than the original), is making the model slightly overfit the data set.
+Though it is possible, I am not worried about the result, since it is only
+marginally better than the model with `alpha` \\(= 10\\) (i.e. the F1 score did
+not suddenly jump up to \\(99.9\%\\) or something ridiculous). Thus, I wholly
+recommend the Naïve Bayes model with `alpha` \\(= 10\\) as the final model.
 
