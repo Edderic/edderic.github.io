@@ -35,7 +35,11 @@ body, .home {
   }
 
   table {
-    margin: 30px 0;
+    margin: 30px auto;
+    th, td {
+      padding: 0.5em;
+      border: 1px solid #ddd;
+    }
   }
 
   header {
