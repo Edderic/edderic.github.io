@@ -1,5 +1,9 @@
 # Udacity MLND P4: Train a Smartcab
 
+## Code
+
+Code can be found [here](https://github.com/Edderic/udacity-machine-learning-nanodegree/tree/master/p4-smartcab)
+
 ## Tasks
 
 ### Implement a basic driving agent
@@ -198,7 +202,7 @@ through the run.
 I made a decision tree that seems to capture the reward system above:
 
 <figure>
-<img src="/images/mlnd/smartcab-decision-tree.jpeg" alt="Decision tree that seems to classify correctly when actions should be rewarded or punished.">
+<img src="/images/mlnd/smartcab-decision-tree.jpg" alt="Decision tree that seems to classify correctly when actions should be rewarded or punished.">
 <figcaption>
   Smartcab decision tree
 </figcaption>
@@ -217,12 +221,82 @@ because the environment seems to reward such behavior, as seen below:
 </figcaption>
 </figure>
 
-Thus, the best states to include are the nodes in the decision tree, as follows:
+Here are the U.S. right-of-way rules:
+
+- When `light` is green, the learning agent definitely has the right of way
+  when taking the `action` of moving forward or turning right. The only
+exception to this is when the learning agent wants to turn left, but there is
+an `oncoming` car that is moving forward.  In this case, the other car has the
+right of way. But if there is no car `oncoming`, the learning agent may turn
+left.
+
+- When `light` is red, the learning agent may not take the `action` of turning
+  left or move forward. It could turn right, but only when there is no car on
+the `left`, or if there is a car on the left but it is not moving forward.
+
+Thus, it makes sense to fold `light`, `action`, and `oncoming` into one state.
+It also made sense to consider the `next_waypoint` because its existence helps
+guide the agent to bigger rewards (i.e. following the next waypoint when also
+following the U.S. right-of-way rules results in bigger rewards than just
+following the U.S. right-of-way rules but meandering aimlessly).
+
+Therefore, the final states to consider are the following.
 
 1. Light: red or green.
-2. Next waypoint: forward, left, or right.
-3. Oncoming: forward, left, or right, or None.
+
+2. Oncoming: forward, left, or right, or None.
+
+3. Left: forward, left, or right, or None.
+
 4. Action: Take the next waypoint, or None.
+
+5. Next waypoint: forward, left, or right.
+
+Removing any of the first four would seriously impair the learning agent's
+ability to learn the right of way, and therefore, would endanger passengers
+lives. On the other hand, keeping the first four intact, but removing the next
+waypoint would impair the learning agent from learning the optimal policy; it
+would be a lot safer -- the learning agent would get to learn the right of way,
+but it might not meet the deadline as it would likely meander around aimlessly.
+
+Thus it is not necessary to add the fold the following state into the table:
+
+1. Right: forward, left, or right, or None.
+
+Knowing whether a car on the right of the intersection is unnecessary for the
+q-table. We could still choose to fold it in as part of each state in the table,
+but that would expand the state space by a lot.
+
+With the \\(5\\) folded states described above, our state-space in the q-table
+is the following size:
+
+$$
+\begin{align}
+  2*4*4*2*3 = 192
+\end{align}
+$$
+
+By adding `right` as part of the state, we would still be able to learn the
+right-of-way, but it would probably take a much longer time to do so, because
+our state-space would increase to the following:
+
+$$
+\begin{align}
+  192 * 4 = 768
+\end{align}
+$$
+
+Thus, it is important to only consider folding states that are actually
+relevant to the problem at hand to satisfy the following conditions: 1) that
+the learning agent learns the right-of-way rules, 2) that it does so in less
+steps than more (i.e. more efficient).
+
+Originally, I was also considering the deadline to fold into each state of the
+q-table, but I thought it was unnecessary, as the learning agent seems to learn
+the right-of-way rules under \\(100\\) trials, and consistently is able to get
+to the destination safely and on time, maximizing the rewards it got by
+following the `next_waypoint` when appropriate. Thus, I did not use `deadline`
+at all.
 
 ### Implement Q-Learning
 
@@ -390,30 +464,82 @@ This metric is also great because when the learning agent makes mistakes, the
 environment prevents it from taking a step, which means that the number of
 actions it takes increases without actually getting closer to the goal. Thus,
 when it makes a lot of mistakes, the \\(average\ reward\ /\ total\ moves\\)
-ratio will be lower than when it does not make a lot of mistakes, assuming
+ratio (RPM) will be lower than when it does not make a lot of mistakes, assuming
 everything else equal.
 
 So I actually made my own "grid-search" by testing different learning rate and
 discount factor values, and calculating the \\(average\ reward\ /\ total\
-moves\\) metric for each combination. I ran each combination \\(10\\) times
-because there is inherent randomness in the placement of dummy cars relative to
-the learning agent, and also there is randomness in the placement of the learning
-agent relative to the destination. I wanted to find the average ratio for each
-combination, and I got the following results:
+moves\\) metric for each combination. I set the possible values for the
+learning rate and alpha as follows: \\([0.1, 0.3, 0.5, 0.7, 0.9]\\). Thus,
+there are \\(25\\) combinations total. First, I ran the \\(100\\) trials for
+each \\(25\\) combination, and got the following result.  It seems that the
+best learning rate to discount factor pair is when learning rate is \\(0.9\\)
+and discount factor is \\(0.5\\), while the worst one is when the learning rate
+is \\(0.9\\) but the discount factor \\(0.3\\), resulting in RPM of \\(2.446
+\\) and \\(2.149\\) respectively.
 
 <figure>
-<img src="/images/mlnd/reward_per_action_across_different_alpha_gamma_values.png" alt="Results of Running Experiments with Different Learning Rate and Discount Factor Values">
+<img src="/images/mlnd/alpha_gamma_experiments_1_run.png" alt="">
 <figcaption>
   Results of Running Experiments with Different Learning Rate and Discount Factor Values
 </figcaption>
 </figure>
 
+However, this was only \\(1\\) run of \\(100\\) trials for each of the
+combination.  I think that there is a lot of variability and inherent
+randomness in the placement of dummy cars relative to the learning agent, and
+also there is randomness in the placement of the learning agent relative to the
+destination. To be more confident about our results, for each combination of
+parameters, we could have run many more experiments of \\(100\\) trials and then
+do Analysis of Variance to see if at least of the groups RPM data varies
+significantly from the others.  However, that would have taken a lot of time,
+considering that \\(1\\) run of \\(100\\) trials takes almost \\(2\\) minutes.
+So if I decided to do ANOVA, I would have ran each combination maybe at least
+\\(10\\) times.  That would have taken a long time:
 
-I found out that the "best" combination seems to be when learning rate
-\\(alpha\\) is \\(0.9\\) and \\(gamma\\) is \\(0.3\\), which gives us
-\\(2.275381\\) as the average reward per action. However this metric
-seems to be pretty close throughout each combination, and it does not
-look like there really is a clear winner.
+\\(25\\) combinations * \\(10\\) experiments / combination * \\(2\\) minutes / experiment * \\(1\\) hour / \\(60\\) minutes = \\(8.33\\) hours
+
+The shortcut I did instead, was to just focus on the pairs that had the maximum
+and minimum RPM, ran \\(15\\) experiments for each pair, and then took a
+difference of two means for each group.  I wanted to see whether or not these
+settings give significantly different results. Given that the original run of
+\\(100\\) trials for alpha=\\(0.9\\), gamma=\\(0.3\\) resulted in
+\\(2.149222\\) RPA and alpha=\\(0.9\\), gamma=\\(0.5\\) in \\(2.446097\\) RPA,
+which is slightly higher than the latter, I expected the average of the set of
+rewards per action for alpha=\\(0.9\\) and gamma=\\(0.5\\) to be higher than
+the set for alpha=\\(0.9\\) and gamma=\\(0.3\\), but that does not seem to be
+the case.  This suggests that changing the alpha and gamma values, considering
+the current the "best action" decision criteria, might be of little
+consequence.
+
+To further investigate whether or not changing the pair of parameter settings
+(learning rate, discount factor) from \\((0.9, 0.5)\\) to \\((0.9, 0.3)\\)
+actually makes a difference on RPA, I calculated the p-value with the following, using shuffling:
+
+- Calculate the original group means, and subtract them.
+- Set counter to \\(0\\)
+- Run \\(10,000\\) experiments of the following
+  - Assume that the null hypothesis is true by shuffling the data between the two groups.
+  - Calculate the group means and subtract them.
+  - See if the original difference between two means has been surpassed by that of the shuffled one.
+  - if so increase counter by 1
+
+- P-value is then the counter divided by \\(10,000\\).
+
+Several runs of the p-value calculation strongly suggest that we should fail to
+reject the null hypothesis (i.e. the difference of two means between the two
+groups of different parameters might just really be due to chance). In some
+runs, p-value does go under \\(0.05\\), but most of the time, it doesn't. In
+the cases when it does not, it sometimes reaches really high values.  See
+below:
+
+<figure>
+<img src="/images/mlnd/p-values-vary-a-lot.png" alt="P-Values Varying Widely">
+<figcaption>
+  P-Values Varying Widely
+</figcaption>
+</figure>
+
 
 #### Does your agent get close to finding an optimal policy, i.e. reach the destination in the minimum possible time, and not incur any penalties?
 
@@ -427,5 +553,3 @@ those events happen more frequently). By increasing the number of dummy agents,
 the car would probably interact more with them, and would accumulate penalties
 to avoid earlier than later. This would then translate to less "training time",
 and would be a nice enhancement.
-
-
