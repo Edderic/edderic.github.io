@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edderic Ugaddan — Resume</title>
+  <style>
+    :root { color-scheme: light; --ink: #17252b; --muted: #495a61; --accent: #285747; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #eef1ef; color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+    .toolbar { max-width: 8.5in; margin: 22px auto 14px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 12px; font-size: 13px; color: var(--muted); }
+    button { border: 0; border-radius: 5px; padding: 10px 16px; background: var(--accent); color: white; font: inherit; cursor: pointer; white-space: nowrap; }
+    button:focus-visible { outline: 3px solid #91b4a4; outline-offset: 3px; }
+    main { max-width: 8.5in; margin: 0 auto 28px; padding: .48in .55in; background: white; box-shadow: 0 8px 30px #17252b12; }
+    header { border-bottom: 2px solid var(--accent); padding-bottom: 12px; }
+    h1 { font-size: 29px; letter-spacing: -.7px; line-height: 1.1; margin: 0 0 5px; }
+    .headline { color: var(--accent); font-size: 14px; font-weight: 600; margin: 0 0 9px; }
+    .contact { display: flex; flex-wrap: wrap; gap: 4px 15px; font-size: 11.5px; line-height: 1.5; color: var(--muted); }
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .book-link { text-decoration: underline; text-underline-offset: 2px; }
+    p, li { font-size: 13.333px; line-height: 1.4; }
+    p { margin: 7px 0 0; }
+    .summary { margin: 12px 0 0; }
+    section { margin-top: 15px; }
+    h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 1.35px; color: var(--accent); margin: 0 0 9px; border-bottom: 1px solid #d7dfda; padding-bottom: 5px; }
+    .entry { margin-top: 11px; }
+    .entry:first-of-type { margin-top: 0; }
+    .entry-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+    h3 { margin: 0; font-size: 14px; line-height: 1.35; }
+    h4 { margin: 0; font-size: 12px; line-height: 1.35; }
+    .engagement { margin-top: 8px; }
+    .date { font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+    .subheading { color: var(--muted); font-size: 11.5px; margin-top: 3px; }
+    ul { margin: 6px 0 0; padding-left: 16px; }
+    li { padding-left: 2px; margin: 0 0 5px; }
+    li:last-child { margin-bottom: 0; }
+    strong { font-weight: 700; }
+    .project-links { font-size: 11.5px; margin-top: 7px; color: var(--accent); }
+    .project-links a { text-decoration: underline; text-underline-offset: 2px; }
+    .skills { font-size: 12px; line-height: 1.45; }
+    .page-two { margin-top: 28px; padding-top: 22px; border-top: 2px solid var(--accent); }
+    .page-two section { margin-top: 10px; }
+    .page-two .entry { margin-top: 7px; }
+    .page-two li { margin-bottom: 3px; }
+    .page-two p { margin-top: 5px; }
+    .continuation { display: flex; justify-content: space-between; margin-bottom: 16px; color: var(--muted); font-size: 10px; }
+    @page { size: Letter; margin: .48in .55in; }
+    @media print {
+      body { background: white; }
+      .toolbar { display: none; }
+      main { width: auto; max-width: none; margin: 0; padding: 0; box-shadow: none; }
+      h2, h3, .entry-heading { break-after: avoid; }
+      .entry, li, header { break-inside: avoid; }
+      a { color: inherit; }
+      .page-two { break-before: page; margin-top: 0; padding-top: 0; border-top: 0; }
+    }
+    @media screen and (max-width: 650px) {
+      main { margin: 0; padding: 26px 22px; }
+      .toolbar { margin-top: 14px; }
+      .entry-heading { flex-wrap: wrap; gap: 3px; }
+      p, li { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <span>PDF export: choose Letter, 100% scale, and turn off browser headers and footers.</span>
+    <button type="button" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+  <!-- Sources: application.md; user-supplied LinkedIn screenshots (October 9, 2026);
+       public LinkedIn profile for the fellowship; edderic.github.io for email.
+       Concurrent Dataplor role dates are preserved as shown in the screenshots.
+       The November 17 presentation is an invitation, not a completed talk.
+       NASEM = National Academies of Sciences, Engineering, and Medicine.
+       User clarification (October 30, 2026): the session helps standing committee members
+       understand CDC fit-testing infrastructure and facial-feature-based apps, and supports
+       an exchange between CDC and external experts, including Edderic.
+       Preserve the invited expert-exchange context when tailoring; do not imply committee membership. -->
+  <main aria-label="Resume">
+    <header>
+      <h1>Edderic Ugaddan</h1>
+      <p class="headline">Senior Machine Learning Engineer</p>
+      <div class="contact">
+        <span>Rumford, Rhode Island</span>
+        <a href="mailto:edderic@gmail.com">edderic@gmail.com</a>
+        <a href="https://www.linkedin.com/in/edderic/">linkedin.com/in/edderic</a>
+        <a href="https://github.com/Edderic">github.com/Edderic</a>
+      </div>
+    </header>
+
+    <p class="summary">Machine learning engineer who reduced geospatial name-cleaning costs by <strong>98% ($70,000 to $1,400 per run)</strong> and took <strong>MasqFit from idea to a production iOS app</strong>, securing a <strong>$50,000 research grant</strong> and leading participant recruitment and ML development. At CDC/NIOSH NPPTL’s recommendation, invited to present MasqFit as an external expert at a NASEM session on respirator-fit innovations on <strong>November 17, 2026</strong>.</p>
+
+    <section aria-labelledby="experience">
+      <h2 id="experience">Experience</h2>
+      <article class="entry">
+        <div class="entry-heading">
+          <h3>Dataplor · Senior Machine Learning Engineer</h3>
+          <span class="date">Oct 2024 – Oct 2026</span>
+        </div>
+        <p class="subheading">Remote</p>
+        <ul>
+          <li><strong>Reduced global name-cleaning inference cost by 98%</strong>, from $70,000 to $1,400 per run, by training a BERT token-labeling model to replace an API-based generative approach. KEEP/DROP labels prevent the model from inventing name tokens.</li>
+          <li>Developed and productionized <strong>location-hierarchy inference in PyTorch</strong>. Developed graph neural networks to predict containment and duplicate relationships; models improved on source-provided location-parent metrics.</li>
+          <li><strong>Finetuned transformers</strong> and implemented a custom <strong>hidden Markov model for named entity recognition</strong> to improve location-hierarchy inference. Demonstrated that category denoising improves predictions.</li>
+          <li>Built data pipelines with <strong>Python, Ruby, AWS Lambda, and AWS Batch</strong> to process global-scale datasets; collaborated with data validators on ground-truth datasets for training and evaluation across 450 million multilingual place records.</li>
+          <li>Worked directly with <strong>Apple, Dataplor’s largest client</strong>, to improve place-validity scoring. Built a multilingual sensitive-language cascade that handled clear cases with rules and routed ambiguous cases to an LLM, balancing precision, recall, and inference cost.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section aria-labelledby="research">
+      <h2 id="research">Research &amp; Consulting</h2>
+      <article class="entry">
+        <div class="entry-heading">
+          <h3>Breathesafe LLC · Lead Researcher &amp; Engineer</h3>
+          <span class="date">Feb 2023 – Present</span>
+        </div>
+        <div class="entry-heading engagement">
+          <h4>Inspired Air Fund · Contract Lead Engineer (part-time)</h4>
+          <span class="date">Jan 2026 – Present</span>
+        </div>
+        <ul>
+          <li>Lead engineering for a <strong>school dashboard</strong> that tracks <strong>air-quality sensor and air cleaner data</strong>, supporting efforts to improve classroom air quality and student health outcomes.</li>
+        </ul>
+        <p class="project-links"><a href="https://inspiredair.org/">Inspired Air Fund</a> &nbsp; / &nbsp; <a href="https://cleanschoolair.org/">Clean Air for Schools</a></p>
+        <div class="entry-heading engagement">
+          <h4>MasqFit · Research &amp; Engineering Lead</h4>
+          <span class="date">Sep 2024 – Present</span>
+        </div>
+        <ul>
+          <li>Received a <strong>$50,000 grant from Vitalik Buterin’s Kanro Fund</strong> to investigate whether facial scans can help people find better-fitting respirators.</li>
+          <li>Recruited participants and collected facial measurements and fit-test data; designed methods to combine qualitative and quantitative fit evidence. Experimented with <strong>neural networks and Bayesian logistic regression</strong> to predict fit.</li>
+          <li>Built and released an <strong>open-source iOS application</strong> that uses facial measurements and fit data to recommend respirators, taking the project from data collection and modeling to a public product.</li>
+          <li>At the recommendation of CDC/NIOSH’s NPPTL, invited to present MasqFit at a NASEM standing committee session (<strong>November 17, 2026</strong>), sharing implementation lessons relevant to NPPTL researchers developing facial-measurement apps for respirator selection.</li>
+        </ul>
+        <p class="project-links"><a href="https://apps.apple.com/ca/app/masqfit/id6756614276">MasqFit · App Store</a> &nbsp; / &nbsp; <a href="https://www.breathesafe.xyz/presentations/2026-09-nasem">Presentation draft</a></p>
+        <p class="engagement"><strong>LaminAir:</strong> Designed and sold an independently tested, <strong>open-source</strong> personal air cleaner.</p>
+      </article>
+    </section>
+
+    <div class="page-two">
+    <div class="continuation"><span>Edderic Ugaddan · Senior Machine Learning Engineer</span><span>Experience continued</span></div>
+    <section aria-labelledby="independent-projects">
+      <h2 id="independent-projects">Independent Project</h2>
+      <article class="entry">
+        <div class="entry-heading"><h3>PlateRhythm · Creator &amp; Engineer</h3><span class="date">Jul 2026 – Present</span></div>
+        <ul>
+          <li>Built a meal-planning and grocery-cart product that <strong>extracts structured recipes from photographed pages and websites</strong>, then uses embeddings and source-aware matching to find recipes and their components.</li>
+          <li>Developed an <strong>LLM-assisted product-selection workflow</strong> that uses recipe context, household dietary preferences, package quantities, and store results to fill carts. Validates picks against real products, allows abstention and review, and leaves checkout to the user.</li>
+        </ul>
+        <p class="project-links"><a href="https://platerhythm.com/">PlateRhythm</a></p>
+      </article>
+    </section>
+    <section aria-labelledby="earlier-experience">
+      <h2 id="earlier-experience">Earlier Experience</h2>
+      <article class="entry">
+        <div class="entry-heading"><h3>Panorama Education · Senior Data Scientist</h3><span class="date">Mar 2022 – May 2024</span></div>
+        <ul>
+          <li>Processed <strong>billions of K–12 attendance records</strong> to study chronic absenteeism and its relationship to demographics, social-emotional learning, family engagement, and staff surveys using PySpark, SQL, Pandas, EC2, and S3.</li>
+          <li><strong>Co-authored</strong> <a class="book-link" href="https://go.panoramaed.com/hubfs/White%20Paper_%20Student%20Surveys%20and%20Chronic%20Absenteeism.pdf"><em>Understanding the Link: The Correlation Between Student Mindsets and Chronic Absenteeism</em></a> (July 2024), a Panorama Education white paper. Research <a class="book-link" href="https://www.facebook.com/watch/?v=504705575303650"><strong>mentioned on NBC News</strong></a>.</li>
+          <li>Maintained usage-metrics pipelines to help Client Experience teams assess churn risk, integrating data from multiple applications with Redshift, Postgres, Argo, and PySpark.</li>
+          <li>Used <strong>Naive Bayes and custom rules</strong> to analyze counselor notes and quantify errors in college-and-career readiness flags, helping product stakeholders identify users’ largest pain points.</li>
+        </ul>
+      </article>
+      <article class="entry">
+        <div class="entry-heading"><h3>Panorama Education · Data Scientist</h3><span class="date">Dec 2020 – Mar 2022</span></div>
+        <ul><li>Designed and implemented the first version of Panorama’s <strong>data lake</strong>, processing gigabytes of data to support scientists and researchers analyzing approximately 10% of U.S. K–12 data.</li></ul>
+      </article>
+      <article class="entry">
+        <div class="entry-heading"><h3>Panorama Education · Software Engineer</h3><span class="date">Sep 2019 – Dec 2020</span></div>
+        <ul><li>Helped the research team access survey, attendance, grade, and demographic data using SQL, Ruby on Rails, and S3.</li></ul>
+      </article>
+      <article class="entry">
+        <div class="entry-heading"><h3>Lingo Live · Full Stack Engineer</h3><span class="date">Mar 2016 – Aug 2019</span></div>
+        <ul>
+          <li><strong>Accelerated the teacher–student matching algorithm 15×</strong>, reducing runtime from 45 seconds to 3 seconds.</li>
+          <li>Used machine learning to predict student demand; contributed full-stack engineering using Ruby on Rails.</li>
+        </ul>
+      </article>
+      <article class="entry">
+        <div class="entry-heading"><h3>Lingraphica · Software Developer</h3><span class="date">May 2014 – Mar 2016</span></div>
+        <ul>
+          <li>Implemented front-end and back-end features for a web application using Ruby on Rails, with additional iOS development.</li>
+          <li><strong>Reduced bug cycle time from approximately 130 hours to 16 hours.</strong></li>
+        </ul>
+      </article>
+    </section>
+    <section aria-labelledby="methods">
+      <h2 id="methods">Technical Focus</h2>
+      <p class="skills"><strong>Models &amp; methods:</strong> PyTorch, BERT, graph neural networks, hidden Markov models, Bayesian inference, logistic regression, scikit-learn, multilingual NLP, embeddings, retrieval, structured LLM extraction, ground-truth development, model evaluation.</p>
+      <p class="skills"><strong>Engineering &amp; data:</strong> Python, FastAPI, TypeScript, React, Ruby on Rails, Vue.js, SQL, PySpark, Pandas, NumPy, AWS (Lambda, Batch, EC2, S3, Redshift), Postgres, Argo, Git.</p>
+    </section>
+
+    <section aria-labelledby="education">
+      <h2 id="education">Education &amp; Recognition</h2>
+      <div class="entry-heading"><h3>University of Richmond · BA, Computer Science</h3><span class="date">2009 – 2013</span></div>
+      <p>Arts &amp; Sciences Summer Fellowship (2012): built a stochastic drum sequencer using Markov chains and probabilistic processes.</p>
+      <p>Udacity Machine Learning Engineer Nanodegree (2015–2016). Acknowledged in <a class="book-link" href="https://www.mbmlbook.com/Preface.html"><em>Model-Based Machine Learning</em></a>.</p>
+    </section>
+    </div>
+  </main>
+</body>
+</html>
